@@ -1,0 +1,17 @@
+{
+  "appId": "com.c4soft.meetup.openid.cafeskifo",
+  "appName": "Gestion des bacs à déchets",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "../dist/starter-ui",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  },
+  "cordova": {},
+  "server": {
+    "hostname": "bravo-ch4mp",
+    "androidScheme": "https"
+  }
+}

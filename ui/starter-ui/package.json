@@ -1,0 +1,25 @@
+{
+  "name": "starter-ui",
+  "version": "0.0.0",
+  "description": "app to order drinks",
+  "author": "ch4mp@c4-soft.com",
+  "scripts": {
+    "serve": "ionic serve --ssl --external --public-host=bravo-ch4mp -c=bravo-ch4mp",
+    "android": "ionic capacitor run android -l --ssl --external --public-host=bravo-ch4mp -c=bravo-ch4mp",
+    "i18n": "ng extract-i18n --output-path=starter-ui/i18n"
+  },
+  "dependencies": {
+    "@capacitor/android": "^2.4.7",
+    "@capacitor/core": "^2.4.7",
+    "@capacitor/ios": "^2.4.7",
+    "@ionic-native/core": "^5.31.1",
+    "@ionic-native/deeplinks": "^5.31.1",
+    "@ionic/angular": "^5.6.3",
+    "@ionic/storage-angular": "^3.0.2",
+    "ionic-plugin-deeplinks": "^1.0.22"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^2.4.7",
+    "@ionic/lab": "^3.2.10"
+  }
+}

@@ -1,0 +1,249 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": ".",
+  "projects": {
+    "starter-ui": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "starter-ui",
+      "sourceRoot": "starter-ui/src",
+      "prefix": "bar",
+      "i18n": {
+        "sourceLocale": "fr"
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/starter-ui",
+            "index": "starter-ui/src/index.html",
+            "main": "starter-ui/src/main.ts",
+            "polyfills": "starter-ui/src/polyfills.ts",
+            "preserveSymlinks": true,
+            "tsConfig": "starter-ui/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "starter-ui/src/silent-renew.html",
+              "starter-ui/src/favicon.ico",
+              "starter-ui/src/assets",
+              {
+                "glob": "**/*.svg",
+                "input": "node_modules/ionicons/dist/ionicons/svg",
+                "output": "./svg"
+              }
+            ],
+            "styles": [
+              "starter-ui/src/styles.css",
+              {
+                "input": "node_modules/@ionic/angular/css/normalize.css",
+                "inject": true
+              },
+              {
+                "input": "node_modules/@ionic/angular/css/structure.css",
+                "inject": true
+              },
+              {
+                "input": "node_modules/@ionic/angular/css/typography.css",
+                "inject": true
+              },
+              {
+                "input": "node_modules/@ionic/angular/css/core.css",
+                "inject": true
+              },
+              {
+                "input": "node_modules/@ionic/angular/css/padding.css",
+                "inject": true
+              },
+              {
+                "input": "node_modules/@ionic/angular/css/float-elements.css",
+                "inject": true
+              },
+              {
+                "input": "node_modules/@ionic/angular/css/text-alignment.css",
+                "inject": true
+              },
+              {
+                "input": "node_modules/@ionic/angular/css/text-transformation.css",
+                "inject": true
+              },
+              {
+                "input": "node_modules/@ionic/angular/css/flex-utils.css",
+                "inject": true
+              },
+              {
+                "input": "starter-ui/src/theme/variables.css",
+                "inject": true
+              }
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "bravo-ch4mp": {
+              "fileReplacements": [
+                {
+                  "replace": "starter-ui/src/environments/environment.ts",
+                  "with": "starter-ui/src/environments/environment.bravo-ch4mp.ts"
+                }
+              ]
+            },
+            "prod-web": {
+              "outputPath": "../api/target/classes/static/starter-ui",
+              "baseHref": "/starter-ui/",
+              "fileReplacements": [
+                {
+                  "replace": "starter-ui/src/environments/environment.ts",
+                  "with": "starter-ui/src/environments/environment.prod-web.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            },
+            "prod-android": {
+              "fileReplacements": [
+                {
+                  "replace": "starter-ui/src/environments/environment.ts",
+                  "with": "starter-ui/src/environments/environment.prod-android.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "starter-ui:build"
+          },
+          "configurations": {
+            "bravo-ch4mp": {
+              "browserTarget": "starter-ui:build:bravo-ch4mp",
+              "host": "bravo-ch4mp",
+              "ssl": true,
+              "sslCert": "C:/Users/ch4mp/.ssh/bravo-ch4mp_self_signed.crt",
+              "sslKey": "C:/Users/ch4mp/.ssh/bravo-ch4mp_self_signed_key.pem"
+            },
+            "prod-android": {
+              "browserTarget": "starter-ui:build:prod-android"
+            },
+            "prod-web": {
+              "browserTarget": "starter-ui:build:prod-web"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "starter-ui:build"
+          }
+        },
+        "ionic-cordova-serve": {
+          "builder": "@ionic/angular-toolkit:cordova-serve",
+          "options": {
+            "cordovaBuildTarget": "starter-ui:ionic-cordova-build",
+            "devServerTarget": "starter-ui:serve"
+          },
+          "configurations": {
+            "bravo-ch4mp": {
+              "cordovaBuildTarget": "starter-ui:ionic-cordova-build:bravo-ch4mp",
+              "devServerTarget": "starter-ui:serve:bravo-ch4mp"
+            },
+            "prod-android": {
+              "cordovaBuildTarget": "starter-ui:ionic-cordova-build:prod-android",
+              "devServerTarget": "starter-ui:serve:prod-android"
+            },
+            "prod-web": {
+              "cordovaBuildTarget": "starter-ui:ionic-cordova-build:prod-web",
+              "devServerTarget": "starter-ui:serve:prod-web"
+            }
+          }
+        },
+        "ionic-cordova-build": {
+          "builder": "@ionic/angular-toolkit:cordova-build",
+          "options": {
+            "browserTarget": "starter-ui:build"
+          },
+          "configurations": {
+            "bravo-ch4mp": {
+              "browserTarget": "starter-ui:build:bravo-ch4mp"
+            },
+            "prod-android": {
+              "browserTarget": "starter-ui:build:prod-android"
+            },
+            "prod-web": {
+              "browserTarget": "starter-ui:build:prod-web"
+            }
+          }
+        }
+      }
+    },
+    "@c4-soft/starter-api": {
+      "projectType": "library",
+      "root": "libs/c4-soft/starter-api",
+      "sourceRoot": "libs/c4-soft/starter-api/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "libs/c4-soft/starter-api/tsconfig.lib.json",
+            "project": "libs/c4-soft/starter-api/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/c4-soft/starter-api/tsconfig.lib.prod.json"
+            }
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "starter-ui",
+  "cli": {
+    "defaultCollection": "@ionic/angular-toolkit",
+    "analytics": false
+  },
+  "schematics": {
+    "@ionic/angular-toolkit:component": {
+      "styleext": "scss"
+    },
+    "@ionic/angular-toolkit:page": {
+      "styleext": "scss"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+api.module.ts
+api/api.ts
+api/householdController.service.ts
+configuration.ts
+encoder.ts
+index.ts
+model/householdDto.ts
+model/householdTypeDto.ts
+model/models.ts
+model/pageHouseholdDto.ts
+model/pageable.ts
+model/sort.ts
+model/taxpayerDto.ts
+variables.ts

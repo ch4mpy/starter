@@ -1,0 +1,13 @@
+{
+  "projects": {
+    "starter-ui": {
+      "name": "starter-ui",
+      "integrations": {
+        "capacitor": {}
+      },
+      "type": "angular",
+      "root": "starter-ui"
+    }
+  },
+  "defaultProject": "starter-ui"
+}

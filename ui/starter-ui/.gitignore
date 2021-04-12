@@ -1,0 +1,4 @@
+resources/android/icon/**
+resources/android/splash/**
+resources/ios/**
+resources/windows/**

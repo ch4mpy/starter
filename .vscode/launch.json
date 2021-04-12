@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-StarterApiApplication<starter-api>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.c4soft.starter.StarterApiApplication",
+            "projectName": "starter-api",
+            "args": "--spring.profiles.active=bravo-ch4mp"
+        }
+    ]
+}
