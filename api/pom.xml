@@ -9,17 +9,18 @@
 		<version>2.4.5</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.c4soft.starter</groupId>
+	<groupId>com.c4-soft.starter</groupId>
 	<artifactId>starter-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>${revision}</version>
+	<version>0.0.1-SNAPSHOT</version>
+	<description>Starter for projects with Spring Boot RESTful API and Ionic-Angular UI</description>
 
 	<modules>
-		<module>common-web</module>
 		<module>common-security</module>
+		<module>common-web</module>
 
-		<module>starter-domain</module>
 		<module>starter-api</module>
+		<module>starter-domain</module>
 	</modules>
 
 	<properties>
@@ -45,24 +46,29 @@
 				<version>${com.c4-soft.springaddons.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.c4soft.starter</groupId>
+				<groupId>com.c4-soft.starter</groupId>
 				<artifactId>starter-domain</artifactId>
-				<version>${revision}</version>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
-				<groupId>com.c4soft.starter</groupId>
+				<groupId>com.c4-soft.starter</groupId>
 				<artifactId>common-security</artifactId>
-				<version>${revision}</version>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
-				<groupId>com.c4soft.starter</groupId>
+				<groupId>com.c4-soft.starter</groupId>
 				<artifactId>common-web</artifactId>
-				<version>${revision}</version>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.modelmapper</groupId>
 				<artifactId>modelmapper</artifactId>
 				<version>${modelmapper.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springdoc</groupId>
+				<artifactId>springdoc-openapi-common</artifactId>
+				<version>${springdoc-openapi.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springdoc</groupId>
@@ -83,5 +89,21 @@
 			<artifactId>lombok</artifactId>
 		</dependency>
 	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>spring-releases</id>
+			<name>Spring Releases</name>
+			<url>https://repo.spring.io/release</url>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spring-releases</id>
+			<name>Spring Releases</name>
+			<url>https://repo.spring.io/release</url>
+		</pluginRepository>
+	</pluginRepositories>
 
 </project>

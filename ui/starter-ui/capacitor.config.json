@@ -1,5 +1,5 @@
 {
-  "appId": "com.c4soft.meetup.openid.cafeskifo",
+  "appId": "com.c4-soft.starter.ui",
   "appName": "Gestion des bacs à déchets",
   "bundledWebRuntime": false,
   "npmClient": "npm",

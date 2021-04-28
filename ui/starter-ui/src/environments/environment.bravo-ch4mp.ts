@@ -14,7 +14,7 @@ const openIdConfiguration: OpenIdConfiguration = {
   scope: 'email openid offline_access roles',
   silentRenew: true,
   useRefreshToken: true,
-  stsServer: 'https://bravo-ch4mp:6443/auth/realms/starter',
+  stsServer: 'https://bravo-ch4mp:9443/auth/realms/starter',
   unauthorizedRoute: '/settings',
 };
 

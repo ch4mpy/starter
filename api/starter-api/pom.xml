@@ -4,9 +4,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.c4soft.starter</groupId>
+		<groupId>com.c4-soft.starter</groupId>
 		<artifactId>starter-parent</artifactId>
-		<version>${revision}</version>
+		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<artifactId>starter-api</artifactId>
@@ -19,15 +19,15 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.c4soft.starter</groupId>
+			<groupId>com.c4-soft.starter</groupId>
 			<artifactId>starter-domain</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.c4soft.starter</groupId>
+			<groupId>com.c4-soft.starter</groupId>
 			<artifactId>common-security</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.c4soft.starter</groupId>
+			<groupId>com.c4-soft.starter</groupId>
 			<artifactId>common-web</artifactId>
 		</dependency>
 

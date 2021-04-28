@@ -25,7 +25,7 @@ import com.c4_soft.springaddons.security.oauth2.oidc.OidcIdAuthenticationToken;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value("${com.c4soft.security.cors-path}")
+    @Value("${com.c4-soft.security.cors-path}")
     String corsPath;
 
     @Autowired

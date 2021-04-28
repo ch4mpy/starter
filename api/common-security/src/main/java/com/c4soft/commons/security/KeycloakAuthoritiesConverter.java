@@ -17,7 +17,7 @@ import net.minidev.json.JSONObject;
 @Component
 public class KeycloakAuthoritiesConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
 
-    @Value("${com.c4soft.security.oauth2.client-id}")
+    @Value("${com.c4-soft.security.oauth2.client-id}")
     String clientId;
 
     @Override
