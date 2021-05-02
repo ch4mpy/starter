@@ -49,3 +49,7 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# SSL certificate files
+self_signed.jks
+self_signed.pfx

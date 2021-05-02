@@ -1,2 +1,3 @@
-server:
-  address: bravo-ch4mp
+spring:
+  datasource.url: jdbc:postgresql://bravo-ch4mp:5432/starter
+  security.oauth2.resourceserver.jwt.issuer-uri: https://bravo-ch4mp:9443/auth/realms/starter

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: starter-api
+  name: starter-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: starter-api
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: starter-api
+    spec:
+      containers:
+      - image: starter/api:snapshot
+        name: api
+status: {}
