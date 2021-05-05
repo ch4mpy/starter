@@ -6,8 +6,8 @@ metadata:
   name: starter-api
 spec:
   ports:
-  - name: 80-4210
-    port: 80
+  - name: 443-4210
+    port: 443
     protocol: TCP
     targetPort: 4210
   selector:

@@ -42,9 +42,16 @@ If you have several JDKs installed, you should run `self_signed.sh` for each and
 - Create a property file for a profile matching your hostname (see `application-bravo-ch4mp.properties` for a sample)
 - `./mvnw -pl starter-api spring-boot:run -Dspring.profiles.active=bravo-ch4mp` (use your own profile instead of `bravo-ch4mp`)
 
-### In a Docker container
+### Docker
 - `./mvnw clean package`
 - `cp $(echo $SERVER_SSL_KEY_STORE | sed "s/file:\/\/\///") ./starter-api/self_signed.jks`
 - `cp $(echo $SERVER_SSL_KEY_STORE | sed "s/\.jks/\.pfx/" | sed "s/file:\/\/\///") ./starter-api/self_signed.pfx`
 - `docker build --build-arg SERVER_SSL_KEY_STORE_PASSWORD --build-arg HOSTNAME -t starter/api ./starter-api/`
 - edit following command with your IP: `docker run --add-host $HOSTNAME:192.168.8.100 -e SPRING_DATASOURCE_PASSWORD=$SPRING_DATASOURCE_PASSWORD -e SERVER_SSL_KEY_STORE=self_signed.jks -e SERVER_SSL_KEY_PASSWORD=$SERVER_SSL_KEY_PASSWORD -e SERVER_SSL_KEY_STORE_PASSWORD=$SERVER_SSL_KEY_STORE_PASSWORD -e SPRING_PROFILES_ACTIVE=$HOSTNAME -p 80:4210 --name starter-api -t starter/api`
+
+### K8s
+- `kubectl create configmap starter-api --from-literal spring.profiles.active="k8s,${HOSTNAME}" --from-literal server.ssl.key-store=self_signed.jks`
+- `kubectl create secret generic starter-api --from-literal server.ssl.key.password=${SERVER_SSL_KEY_PASSWORD} --from-literal server.ssl.key-store.password=${SERVER_SSL_KEY_STORE_PASSWORD} --from-literal spring.datasource.password=${SPRING_DATASOURCE_PASSWORD}`
+- `docker tag starter/api starter/api:snapshot`
+- `kubectl apply -f starter-api/src/k8s/starter-api-service.yaml`
+- `kubectl apply -f starter-api/src/k8s/starter-api-deployment.yaml`
