@@ -12,6 +12,6 @@ spec:
     targetPort: 4210
   selector:
     app: starter-api
-  type: ClusterIP
+  type: LoadBalancer
 status:
   loadBalancer: {}

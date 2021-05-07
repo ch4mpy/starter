@@ -16,7 +16,7 @@ spec:
         app: starter-api
     spec:
       hostAliases:
-        - ip: 192.168.8.153
+        - ip: 192.168.8.100
           hostnames:
             - "bravo-ch4mp"
       containers:
