@@ -1,4 +1,4 @@
-package com.c4soft.starter.web;
+package com.c4_soft.starter.web;
 
 import java.util.Collection;
 import java.util.stream.Collectors;

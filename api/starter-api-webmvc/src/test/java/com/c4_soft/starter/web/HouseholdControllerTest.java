@@ -1,4 +1,4 @@
-package com.c4soft.starter.web;
+package com.c4_soft.starter.web;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
+import com.c4_soft.commons.security.WebSecurityConfig;
 import com.c4_soft.springaddons.security.oauth2.test.annotations.WithMockOidcId;
 import com.c4_soft.springaddons.security.oauth2.test.mockmvc.MockMvcSupport;
 import com.c4_soft.springaddons.test.support.web.SerializationHelper;
@@ -24,7 +25,6 @@ import com.c4_soft.starter.domain.HouseholdType;
 import com.c4_soft.starter.domain.Taxpayer;
 import com.c4_soft.starter.persistence.HouseholdRepo;
 import com.c4_soft.starter.persistence.HouseholdTypeRepo;
-import com.c4soft.commons.security.WebSecurityConfig;
 
 @WebMvcTest(HouseholdController.class)
 @Import({ MockMvcSupport.class, WebSecurityConfig.class, SerializationHelper.class })
