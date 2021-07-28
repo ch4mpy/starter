@@ -28,23 +28,24 @@ else
   echo "#   - import certificates into cacerts file"
   echo "#------------------------------------------"
   
-  echo "# key password: ${SERVER_SSL_KEY_PASSWORD}"
-  echo "# keystore password: ${SERVER_SSL_KEY_STORE_PASSWORD}"
+  echo "SERVER_SSL_KEY_PASSWORD: ${SERVER_SSL_KEY_PASSWORD}"
+  echo "SERVER_SSL_KEY_STORE_PASSWORD: ${SERVER_SSL_KEY_STORE_PASSWORD}"
   
   if [ -z "$1" ]
   then
 	if [ -z "$JAVA_HOME" ]
     then
-      echo "ERROR: could not locate java home"
+      echo "ERROR: could not locate JDK / JRE root directory"
 	  exit 1
     else
       JAVA=$JAVA_HOME
+	  echo "JDK / JRE root directory defaulted to JAVA_HOME. Provide JDK / JRE root directory as 1st command-line argument to change that."
     fi
   else
     JAVA=$1
   fi
   JAVA=$(echo $JAVA | sed 's/\\/\//g')
-  echo "# java home: $JAVA"
+  echo "JAVA: $JAVA"
   
   if [ -f "${JAVA}/lib/security/cacerts" ]
   then
@@ -55,35 +56,40 @@ else
     # legacy JDKs style (1.8 and older)
     CACERTS="${JAVA}/jre/lib/security/cacerts"
   else
-    echo "ERROR: could not locate cacerts under ${JAVA}"
+    echo "ERROR: could not locate cacerts under $JAVA"
     exit 1
   fi
-  echo "# cacerts path: $CACERTS"
+  echo "CACERTS path: $CACERTS"
   
   if [ -z "${2}" ]
   then
     HOST="$HOSTNAME"
+	echo "Using HOSTNAME env variable. Override with 2nd command-line argument"
   else
     HOST="${2}"
   fi
-  echo "# host (certificate CN): $HOST"
+  echo "HOST (certificate CN): $HOST"
   
   if [ -z "${3}" ]
   then
     CERTIF_DIR="."
+	echo "Using current directory as output directory for certificate files. Override with 3rd command-line argument"
   else
     CERTIF_DIR="${3}"
   fi
-  echo "# certificates directory path: $CERTIF_DIR"
   CERTIF_DIR=$(echo $CERTIF_DIR | sed 's/\\/\//g')
+  echo "certificates directory path: $CERTIF_DIR"
   
   if [ -z "${4}" ]
   then
     CACERTS_PASSWORD="changeit"
+	echo "Using $CACERTS_PASSWORD as cacerts file password. Override with 4th command-line argument"
   else
     CACERTS_PASSWORD="${4}"
   fi
-  echo "# cacerts password: $CACERTS_PASSWORD" 
+  echo "cacerts file password: $CACERTS_PASSWORD" 
+  echo "#------------------------------------------"
+  echo "self_signed.sh $JAVA $HOST $CERTIF_DIR $CACERTS_PASSWORD"
   echo "#------------------------------------------"
 fi
 
