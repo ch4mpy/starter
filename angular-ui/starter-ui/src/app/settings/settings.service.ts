@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { HouseholdControllerRestClient } from '@c4-soft/starter-api';
+import { HouseholdControllerRestClient } from '@c4-soft/starter-api-webmvc';
 
 @Injectable({ providedIn: 'root' })
 export class SettingsService {

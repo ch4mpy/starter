@@ -212,21 +212,21 @@
         }
       }
     },
-    "@c4-soft/starter-api": {
+    "@c4-soft/starter-api-webmvc": {
       "projectType": "library",
-      "root": "libs/c4-soft/starter-api",
-      "sourceRoot": "libs/c4-soft/starter-api/src",
+      "root": "libs/c4-soft/starter-api-webmvc",
+      "sourceRoot": "libs/c4-soft/starter-api-webmvc/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "tsConfig": "libs/c4-soft/starter-api/tsconfig.lib.json",
-            "project": "libs/c4-soft/starter-api/ng-package.json"
+            "tsConfig": "libs/c4-soft/starter-api-webmvc/tsconfig.lib.json",
+            "project": "libs/c4-soft/starter-api-webmvc/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "libs/c4-soft/starter-api/tsconfig.lib.prod.json"
+              "tsConfig": "libs/c4-soft/starter-api-webmvc/tsconfig.lib.prod.json"
             }
           }
         }

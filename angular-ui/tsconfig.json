@@ -16,9 +16,9 @@
       "dom"
     ],
     "paths": {
-      "@c4-soft/starter-api": [
-        "dist/c4-soft/starter-api/starter-api",
-        "dist/c4-soft/starter-api"
+      "@c4-soft/starter-api-webmvc": [
+        "dist/c4-soft/starter-api-webmvc/starter-api-webmvc",
+        "dist/c4-soft/starter-api-webmvc"
       ]
     }
   },

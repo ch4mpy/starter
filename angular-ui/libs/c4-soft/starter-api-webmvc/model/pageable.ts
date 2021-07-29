@@ -9,22 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Pageable } from './pageable';
-import { HouseholdDto } from './householdDto';
 import { Sort } from './sort';
 
 
-export interface PageHouseholdDto { 
-    totalPages?: number;
-    totalElements?: number;
-    size?: number;
-    content?: Array<HouseholdDto>;
-    number?: number;
+export interface Pageable { 
+    offset?: number;
     sort?: Sort;
-    first?: boolean;
-    last?: boolean;
-    numberOfElements?: number;
-    pageable?: Pageable;
-    empty?: boolean;
+    pageSize?: number;
+    pageNumber?: number;
+    unpaged?: boolean;
+    paged?: boolean;
 }
 

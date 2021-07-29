@@ -7,8 +7,8 @@ const openIdConfiguration: OpenIdConfiguration = {
   eagerLoadAuthWellKnownEndpoints: false,
   ignoreNonceAfterRefresh: true, // Keycloak sends refresh_token with nonce
   logLevel: LogLevel.Warn,
-  postLogoutRedirectUri: 'https://bravo-ch4mp:8100/settings',
-  redirectUrl: 'https://bravo-ch4mp:8100/',
+  postLogoutRedirectUri: 'https://bravo-ch4mp:8100',
+  redirectUrl: 'https://bravo-ch4mp:8100',
   renewTimeBeforeTokenExpiresInSeconds: 60,
   responseType: 'code',
   scope: 'email openid offline_access roles',

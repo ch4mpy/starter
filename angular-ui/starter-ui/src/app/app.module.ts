@@ -12,7 +12,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SettingsService } from './settings/settings.service';
 import { AuthConfigModule } from './auth/auth-config.module';
-import { ApiModule as StarterApiModule } from '@c4-soft/starter-api';
+import { ApiModule as StarterApiModule } from '@c4-soft/starter-api-webmvc';
 
 export function init(
   platform: Platform,

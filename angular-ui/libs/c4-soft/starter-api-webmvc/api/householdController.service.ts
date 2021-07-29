@@ -32,7 +32,7 @@ import { Configuration }                                     from '../configurat
 })
 export class HouseholdControllerRestClient {
 
-    protected basePath = 'https://bravo-ch4mp:4210';
+    protected basePath = 'https://localhost:4210';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
     public encoder: HttpParameterCodec;
