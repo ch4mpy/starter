@@ -22,7 +22,6 @@
             "polyfills": "starter-ui/src/polyfills.ts",
             "preserveSymlinks": true,
             "tsConfig": "starter-ui/tsconfig.app.json",
-            "aot": true,
             "assets": [
               "starter-ui/src/silent-renew.html",
               "starter-ui/src/favicon.ico",
@@ -76,7 +75,13 @@
                 "inject": true
               }
             ],
-            "scripts": []
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "bravo-ch4mp": {
@@ -143,7 +148,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
