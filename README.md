@@ -77,5 +77,7 @@ API is served at https://localhost
 - edit starter-api-webmvc/src/k8s/starter-api-webmvc-deployment.yaml with your IP and run `kubectl apply -f starter-api-webmvc/src/k8s/starter-api-webmvc-deployment.yaml`
 API is served at https://localhost
 
-## Building UI
+## Building and running UI
 - ensure you ran at least once `verify` maven goal with `openapi` profile activated (`mvn verify -Popenapi`, but `package` and `install` also trigger verify)
+- cd `angular-ui` and run `npm i`
+- edit `angular-ui/starter-ui/package.json` to set your $HOSTNAME instead of "bravo-ch4mp" and then either run `npm run starter-ui:serve` from `angular-ui` folder or `npm run serve` from `angular-ui/starter-ui` folder
