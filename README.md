@@ -44,10 +44,10 @@ If you have several JDKs installed, you should run `self_signed.sh` for each and
 
 ### Docker
 - `./mvnw clean package`
-- `cp $(echo $SERVER_SSL_KEY_STORE | sed "s/file:\/\/\///") ./starter-api/self_signed.jks`
-- `cp $(echo $SERVER_SSL_KEY_STORE | sed "s/\.jks/\.pfx/" | sed "s/file:\/\/\///") ./starter-api/self_signed.pfx`
-- `docker build --build-arg SERVER_SSL_KEY_STORE_PASSWORD --build-arg HOSTNAME -t starter/api ./starter-api/`
-- edit following command with your IP: `docker run --add-host $HOSTNAME:192.168.8.100 -e SPRING_DATASOURCE_PASSWORD=$SPRING_DATASOURCE_PASSWORD -e SERVER_SSL_KEY_STORE=self_signed.jks -e SERVER_SSL_KEY_PASSWORD=$SERVER_SSL_KEY_PASSWORD -e SERVER_SSL_KEY_STORE_PASSWORD=$SERVER_SSL_KEY_STORE_PASSWORD -e SPRING_PROFILES_ACTIVE=$HOSTNAME -p 80:4210 --name starter-api -t starter/api`
+- `cp $(echo $SERVER_SSL_KEY_STORE | sed "s/file:\/\/\///") ./starter-api-webmvc/self_signed.jks`
+- `cp $(echo $SERVER_SSL_KEY_STORE | sed "s/\.jks/\.pfx/" | sed "s/file:\/\/\///") ./starter-api-webmvc/self_signed.pfx`
+- `docker build --build-arg SERVER_SSL_KEY_STORE_PASSWORD --build-arg HOSTNAME -t starter-api-webmvc:0.0.1-SNAPSHOT ./starter-api-webmvc/`
+- edit following command with your IP: `docker run --add-host $HOSTNAME:192.168.1.59 -e SPRING_DATASOURCE_PASSWORD=$SPRING_DATASOURCE_PASSWORD -e SERVER_SSL_KEY_STORE=self_signed.jks -e SERVER_SSL_KEY_PASSWORD=$SERVER_SSL_KEY_PASSWORD -e SERVER_SSL_KEY_STORE_PASSWORD=$SERVER_SSL_KEY_STORE_PASSWORD -e SPRING_PROFILES_ACTIVE=$HOSTNAME -p 443:4210 --name starter-api-webmvc -t starter-api-webmvc:0.0.1-SNAPSHOT`
 
 ### K8s
 - `kubectl create configmap starter-api --from-literal spring.profiles.active="k8s,${HOSTNAME}" --from-literal server.ssl.key-store=self_signed.jks`

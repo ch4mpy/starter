@@ -59,7 +59,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.experimental</groupId>
 			<artifactId>spring-native</artifactId>
@@ -98,20 +98,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<classifier>${repackage.classifier}</classifier>
-					<image>
-						<builder>paketobuildpacks/builder:tiny</builder>
-						<env>
-							<BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
-						</env>
-						<pullPolicy>IF_NOT_PRESENT</pullPolicy>
-					</image>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.springframework.experimental</groupId>
-				<artifactId>spring-aot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>
@@ -119,11 +105,27 @@
 	<profiles>
 		<profile>
 			<id>buildImage</id>
+			<properties>
+				<repackage.classifier>exec</repackage.classifier>
+			</properties>
 			<build>
 				<plugins>
 					<plugin>
 						<groupId>org.springframework.boot</groupId>
 						<artifactId>spring-boot-maven-plugin</artifactId>
+						<configuration>
+							<classifier>${repackage.classifier}</classifier>
+							<image>
+								<builder>paketobuildpacks/builder:tiny</builder>
+								<env>
+									<BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
+									<BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
+										-H:+ReportExceptionStackTraces
+										--enable-https
+									</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
+								</env>
+							</image>
+						</configuration>
 						<executions>
 							<execution>
 								<id>build-image</id>
@@ -132,6 +134,10 @@
 								</goals>
 							</execution>
 						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.springframework.experimental</groupId>
+						<artifactId>spring-aot-maven-plugin</artifactId>
 					</plugin>
 				</plugins>
 			</build>
@@ -146,6 +152,10 @@
 						<configuration>
 							<!-- ... -->
 						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.springframework.experimental</groupId>
+						<artifactId>spring-aot-maven-plugin</artifactId>
 					</plugin>
 				</plugins>
 			</build>

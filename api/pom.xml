@@ -96,20 +96,6 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-maven-plugin</artifactId>
-					<configuration>
-						<classifier>${repackage.classifier}</classifier>
-						<image>
-							<builder>${builder}</builder>
-							<env>
-								<BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
-							</env>
-							<pullPolicy>IF_NOT_PRESENT</pullPolicy>
-						</image>
-					</configuration>
-				</plugin>
-				<plugin>
 					<groupId>org.springframework.experimental</groupId>
 					<artifactId>spring-aot-maven-plugin</artifactId>
 					<version>${spring-native.version}</version>
