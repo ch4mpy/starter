@@ -3,14 +3,17 @@ Mono repo for both:
 - spring-boot REST micro-services contained in a maven multi-module project (see `api` below)
 - Angular front-end containing libraries and a Ionic application (see `angular-ui` below)
 
-The aim here is to go further than most "getting-started" guides with following stuf ready:
+The aim here is to go further than most "getting-started" guides with following stuff ready:
 - mono-repo but hight modularity from start
 - all traffic over https, even on dev machine
 - security with OpenID on both resource (REST APIs) and client (Angular app). I use Keycloak as authorisation-server, but switch to another should be easy
+- spring-security annotations
+- no session (use OAuth2 token instead)
 - API documented with Swagger
 - client-side lib generated from OpenAPI spec => UI code consumes strongly typed payloads
-- persitent data access through spring-data
+- persitent data access with spring-data
 - REST API services packaging as runnable jars, but also java Docker container and (soon) native Docker container
+- UI packaging as web app as well as Android and iOS apps
 
 ## Requirements
 - JDK 11 or above
