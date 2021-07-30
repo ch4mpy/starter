@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.c4-soft</groupId>
+		<artifactId>starter-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<artifactId>starter-parent-webflux</artifactId>
+	<packaging>pom</packaging>
+	<description>Starter for projects with Spring Boot RESTful API</description>
+
+	<modules>
+		<module>common-exception-webflux</module>
+		<module>common-security-webflux</module>
+		<module>starter-domain-relational</module>
+
+		<module>starter-api-webflux</module>
+	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.c4-soft</groupId>
+				<artifactId>common-exception-webflux</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.c4-soft</groupId>
+				<artifactId>common-security-webflux</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.c4-soft.starter</groupId>
+				<artifactId>starter-domain-relational</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.c4-soft.springaddons</groupId>
+				<artifactId>spring-security-oauth2-test-webflux-addons</artifactId>
+				<version>${com.c4-soft.springaddons.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springdoc</groupId>
+				<artifactId>springdoc-openapi-webflux-ui</artifactId>
+				<version>${springdoc-openapi.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+</project>
