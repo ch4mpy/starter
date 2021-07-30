@@ -1,4 +1,4 @@
-package com.c4_soft.starter.domain;
+package com.c4_soft.starter.domain.household;
 
 import java.util.Set;
 

@@ -9,7 +9,6 @@
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
-	<groupId>com.c4-soft</groupId>
 	<artifactId>starter-parent-webmvc</artifactId>
 	<packaging>pom</packaging>
 	<description>Starter for projects with Spring Boot servlet RESTful API</description>

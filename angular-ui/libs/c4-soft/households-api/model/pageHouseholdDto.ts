@@ -15,16 +15,16 @@ import { Sort } from './sort';
 
 
 export interface PageHouseholdDto { 
-    totalElements?: number;
     totalPages?: number;
+    totalElements?: number;
     number?: number;
     size?: number;
     content?: Array<HouseholdDto>;
     sort?: Sort;
-    pageable?: Pageable;
-    numberOfElements?: number;
     first?: boolean;
     last?: boolean;
+    numberOfElements?: number;
+    pageable?: Pageable;
     empty?: boolean;
 }
 

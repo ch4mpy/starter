@@ -10,8 +10,8 @@ import org.springframework.nativex.hint.ProxyBits;
 
 import com.c4_soft.commons.security.WebSecurityConfig;
 import com.c4_soft.commons.web.CommonResponseEntityExceptionHandler;
-import com.c4_soft.starter.domain.Household;
-import com.c4_soft.starter.persistence.HouseholdRepo;
+import com.c4_soft.starter.domain.household.Household;
+import com.c4_soft.starter.persistence.household.HouseholdRepo;
 
 @SpringBootApplication(scanBasePackageClasses = { StarterApiApplication.class, WebSecurityConfig.class, CommonResponseEntityExceptionHandler.class })
 @EntityScan(basePackageClasses = { Household.class })

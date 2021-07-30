@@ -159,6 +159,10 @@
 			<dependencies>
 				<dependency>
 					<groupId>org.springdoc</groupId>
+					<artifactId>springdoc-openapi-security</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.springdoc</groupId>
 					<artifactId>springdoc-openapi-webflux-ui</artifactId>
 				</dependency>
 			</dependencies>
@@ -168,9 +172,9 @@
 						<groupId>org.springdoc</groupId>
 						<artifactId>springdoc-openapi-maven-plugin</artifactId>
 						<configuration>
-							<apiDocsUrl>https://localhost:4443/v3/api-docs</apiDocsUrl>
+							<apiDocsUrl>https://localhost:4310/v3/api-docs</apiDocsUrl>
 							<outputFileName>faults-openapi.json</outputFileName>
-							<outputDir>../..</outputDir>
+							<outputDir>../../..</outputDir>
 							<skip>false</skip>
 						</configuration>
 					</plugin>

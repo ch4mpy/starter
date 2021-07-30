@@ -1,0 +1,10 @@
+api.module.ts
+api/api.ts
+api/faultController.service.ts
+configuration.ts
+encoder.ts
+index.ts
+model/faultEditDto.ts
+model/faultResponseDto.ts
+model/models.ts
+variables.ts

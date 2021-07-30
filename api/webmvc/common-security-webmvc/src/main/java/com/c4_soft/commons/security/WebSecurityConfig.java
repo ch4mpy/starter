@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -56,7 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        
+
         http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(authenticationConverter());
 
         // @formatter:off
@@ -68,7 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 response.addHeader(HttpHeaders.WWW_AUTHENTICATE, "Basic realm=\"Restricted Content\"");
                 response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
             });
-        
+
         http.authorizeRequests().antMatchers(
                 "/actuator/**",
                 "/v3/api-docs/**",
@@ -93,16 +92,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         };
     }
-    
-    protected ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry authorize(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry) {
-        return registry.antMatchers(
-                "/actuator/**",
-                "/v3/api-docs/**",
-                "/swagger-ui/**",
-                "/swagger-ui.html").permitAll()
-            .anyRequest().authenticated();
+
+    protected ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry authorize(
+            ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry) {
+        return registry.antMatchers("/actuator/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll().anyRequest().authenticated();
     }
-    
+
     @Component
     class KeycloakAuthoritiesConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
 

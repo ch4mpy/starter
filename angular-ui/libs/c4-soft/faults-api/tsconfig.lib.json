@@ -1,0 +1,18 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+    "extends": "../../../tsconfig.json",
+    "compilerOptions": {
+      "outDir": "../../../dist/c4-soft/faults-api",
+      "declarationMap": true,
+      "declaration": true,
+      "inlineSources": true,
+      "types": []
+    },
+    "angularCompilerOptions": {
+      "skipTemplateCodegen": true,
+      "strictMetadataEmit": true,
+      "enableResourceInlining": true
+    },
+    "exclude": ["node_modules"],
+    "filesGlob": ["./model/*.ts", "./api/*.ts"]
+  }

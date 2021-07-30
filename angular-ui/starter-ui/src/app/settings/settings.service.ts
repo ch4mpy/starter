@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { HouseholdControllerRestClient } from '@c4-soft/starter-api-webmvc';
+import { HouseholdControllerRestClient } from '@c4-soft/households-api';
 
 @Injectable({ providedIn: 'root' })
 export class SettingsService {
   constructor(
     private storage: Storage,
-    private starterApi: HouseholdControllerRestClient,
+    private householdsApi: HouseholdControllerRestClient,
   ) {
     this.init();
   }
@@ -15,13 +15,14 @@ export class SettingsService {
     return this.storage.create();
   }
 
-  getStarterApiUrl(): Promise<string> {
-    return this.storage.get(SettingsService.CITIZEN_API_URL_BASE_PATH_KEY).then(url => url || this.starterApi.configuration.basePath);
+  async getHouseholdsApiUrl(): Promise<string> {
+    const url = await this.storage.get(SettingsService.CITIZEN_API_URL_BASE_PATH_KEY);
+    return url || this.householdsApi.configuration.basePath;
   }
 
-  setStarterApiUrl(url: string) {
+  setHouseholdsApiUrl(url: string) {
     return this.storage.set(SettingsService.CITIZEN_API_URL_BASE_PATH_KEY, url);
   }
 
-  private static readonly CITIZEN_API_URL_BASE_PATH_KEY = "starterApiUrl";
+  private static readonly CITIZEN_API_URL_BASE_PATH_KEY = "householdsApiBasePath";
 }

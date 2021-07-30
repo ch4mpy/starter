@@ -181,8 +181,8 @@
 						<artifactId>springdoc-openapi-maven-plugin</artifactId>
 						<configuration>
 							<apiDocsUrl>https://localhost:4210/v3/api-docs</apiDocsUrl>
-							<outputFileName>starter-api-webmvc-openapi.json</outputFileName>
-							<outputDir>../..</outputDir>
+							<outputFileName>households-openapi.json</outputFileName>
+							<outputDir>../../..</outputDir>
 							<skip>false</skip>
 						</configuration>
 					</plugin>

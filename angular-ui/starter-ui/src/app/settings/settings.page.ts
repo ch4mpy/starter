@@ -55,10 +55,10 @@ export class SettingsPage implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    await this.settings.getStarterApiUrl().then(url => this.settingsForm.get('starterBasePath').setValue(url));
+    await this.settings.getHouseholdsApiUrl().then(url => this.settingsForm.get('starterBasePath').setValue(url));
     
     this.settingsFormValueSubscription = this.settingsForm.valueChanges.subscribe(form => {
-      this.settings.setStarterApiUrl(form.starterBasePath);
+      this.settings.setHouseholdsApiUrl(form.starterBasePath);
     });
   }
 

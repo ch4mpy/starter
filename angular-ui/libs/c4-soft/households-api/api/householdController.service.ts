@@ -116,7 +116,7 @@ export class HouseholdControllerRestClient {
             responseType = 'text';
         }
 
-        return this.httpClient.get<Array<HouseholdTypeDto>>(`${this.configuration.basePath}/starter/types`,
+        return this.httpClient.get<Array<HouseholdTypeDto>>(`${this.configuration.basePath}/households/types`,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
@@ -160,7 +160,7 @@ export class HouseholdControllerRestClient {
             responseType = 'text';
         }
 
-        return this.httpClient.get<HouseholdDto>(`${this.configuration.basePath}/starter/${encodeURIComponent(String(id))}`,
+        return this.httpClient.get<HouseholdDto>(`${this.configuration.basePath}/households/${encodeURIComponent(String(id))}`,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
@@ -225,7 +225,7 @@ export class HouseholdControllerRestClient {
             responseType = 'text';
         }
 
-        return this.httpClient.get<PageHouseholdDto>(`${this.configuration.basePath}/starter`,
+        return this.httpClient.get<PageHouseholdDto>(`${this.configuration.basePath}/households`,
             {
                 params: queryParameters,
                 responseType: <any>responseType,

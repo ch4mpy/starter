@@ -1,4 +1,4 @@
-package com.c4_soft.starter.persistence;
+package com.c4_soft.starter.persistence.household;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -7,9 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.c4_soft.starter.domain.HouseholdType;
-
-import lombok.val;
+import com.c4_soft.starter.domain.household.HouseholdType;
 
 @SpringBootTest
 class HouseholdRepoTest {
@@ -25,21 +23,21 @@ class HouseholdRepoTest {
 
     @Test
     void whenHouseholdLabelIsProvidedThenCaseInsensitiveSearchIsPerformed() {
-        val actual = repo.findAll(HouseholdRepo.searchSpec("pat", null, null));
+        final var actual = repo.findAll(HouseholdRepo.searchSpec("pat", null, null));
         assertEquals(1, actual.size());
         assertEquals("Famille Pat Redway", actual.get(0).getLabel());
     }
 
     @Test
     void whenTaxpayerIdIsProvidedThenSearchIsPerformed() {
-        val actual = repo.findAll(HouseholdRepo.searchSpec(null, "4", null));
+        final var actual = repo.findAll(HouseholdRepo.searchSpec(null, "4", null));
         assertEquals(1, actual.size());
         assertEquals("Lara Masset", actual.get(0).getLabel());
     }
 
     @Test
     void whenTaxpayerNameIsProvidedThenCaseInsensitiveSearchIsPerformed() {
-        val actual = repo.findAll(HouseholdRepo.searchSpec(null, "honnet", null));
+        final var actual = repo.findAll(HouseholdRepo.searchSpec(null, "honnet", null));
         assertEquals(2, actual.size());
         assertEquals("Camille Honnette", actual.get(0).getTaxpayer().getName());
         assertEquals("Camille Honnette", actual.get(1).getTaxpayer().getName());
@@ -47,7 +45,7 @@ class HouseholdRepoTest {
 
     @Test
     void whenTaxpayerIdIsProvidedThenCaseInsensitiveSearchIsPerformed() {
-        val actual = repo.findAll(HouseholdRepo.searchSpec(null, null, new HouseholdType(2L, "appartement")));
+        final var actual = repo.findAll(HouseholdRepo.searchSpec(null, null, new HouseholdType(2L, "appartement")));
         assertEquals(3, actual.size());
     }
 

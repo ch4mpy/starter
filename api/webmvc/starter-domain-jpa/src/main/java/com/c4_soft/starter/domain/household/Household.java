@@ -1,10 +1,12 @@
-package com.c4_soft.starter.domain;
+package com.c4_soft.starter.domain.household;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -15,14 +17,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "household_type")
-public class HouseholdType {
+@Table(name = "household")
+public class Household {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String label;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "type_id")
+    private HouseholdType type;
+
+    @ManyToOne
+    @JoinColumn(name = "taxpayer_id")
+    private Taxpayer taxpayer;
 
 }

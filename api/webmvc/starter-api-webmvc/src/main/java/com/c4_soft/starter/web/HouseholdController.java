@@ -15,14 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.c4_soft.commons.web.ResourceNotFoundException;
-import com.c4_soft.starter.persistence.HouseholdRepo;
-import com.c4_soft.starter.persistence.HouseholdTypeRepo;
+import com.c4_soft.starter.persistence.household.HouseholdRepo;
+import com.c4_soft.starter.persistence.household.HouseholdTypeRepo;
 
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 
 @RestController
-@RequestMapping("/starter")
+@RequestMapping("/households")
 @RequiredArgsConstructor
 public class HouseholdController {
 
@@ -35,7 +34,7 @@ public class HouseholdController {
     @GetMapping("/types")
     @PreAuthorize("isAuthenticated()")
     public Collection<HouseholdTypeDto> getAllTypes() {
-        val householdTypes = householdTypeRepo.findAll();
+        final var householdTypes = householdTypeRepo.findAll();
         return StreamSupport.stream(householdTypes.spliterator(), false)
                 .map(entity -> modelMapper.map(entity, HouseholdTypeDto.class))
                 .collect(Collectors.toList());
@@ -44,7 +43,7 @@ public class HouseholdController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('CITIZEN_VIEW')")
     public HouseholdDto getById(@PathVariable long id) {
-        val household = householdRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("No household with ID: " + id));
+        final var household = householdRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("No household with ID: " + id));
         return modelMapper.map(household, HouseholdDto.class);
     }
 
@@ -64,8 +63,8 @@ public class HouseholdController {
             @RequestParam(required = false, defaultValue = "") String taxpayerNameOrId,
             @RequestParam(required = false, defaultValue = "") String householdTypeLabel) {
 
-        val householdType = householdTypeRepo.findByLabelIgnoreCase(householdTypeLabel).orElse(null);
-        val page = householdRepo.findAll(HouseholdRepo.searchSpec(householdLabel, taxpayerNameOrId, householdType), pageable);
+        final var householdType = householdTypeRepo.findByLabelIgnoreCase(householdTypeLabel).orElse(null);
+        final var page = householdRepo.findAll(HouseholdRepo.searchSpec(householdLabel, taxpayerNameOrId, householdType), pageable);
         return page.map(household -> modelMapper.map(household, HouseholdDto.class));
 
     }

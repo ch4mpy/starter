@@ -13,17 +13,16 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
 import com.c4_soft.springaddons.security.oauth2.test.annotations.WithMockOidcId;
 import com.c4_soft.springaddons.security.oauth2.test.mockmvc.MockMvcSupport;
 import com.c4_soft.springaddons.test.support.web.SerializationHelper;
-import com.c4_soft.starter.domain.Household;
-import com.c4_soft.starter.domain.HouseholdType;
-import com.c4_soft.starter.domain.Taxpayer;
-import com.c4_soft.starter.persistence.HouseholdRepo;
-import com.c4_soft.starter.persistence.HouseholdTypeRepo;
+import com.c4_soft.starter.domain.household.Household;
+import com.c4_soft.starter.domain.household.HouseholdType;
+import com.c4_soft.starter.domain.household.Taxpayer;
+import com.c4_soft.starter.persistence.household.HouseholdRepo;
+import com.c4_soft.starter.persistence.household.HouseholdTypeRepo;
 import com.c4_soft.starter.persistence.intervention.FaultAttachmentRepo;
 import com.c4_soft.starter.persistence.intervention.FaultRepo;
 import com.c4_soft.starter.persistence.user.LifixUserRepo;
@@ -50,7 +49,7 @@ class HouseholdControllerTest {
     @Autowired
     private MockMvcSupport mockMvc;
 
-    private final RequestPostProcessor sslPostProcessor = (MockHttpServletRequest request) -> {
+    private final RequestPostProcessor sslPostProcessor = (var request) -> {
         request.setSecure(true);
         return request;
     };
@@ -59,7 +58,7 @@ class HouseholdControllerTest {
     @WithMockOidcId("CITIZEN_VIEW")
     void whenGetHouseholdsPageWithNoFilterArgumentThenOk() throws Exception {
         when(householdRepo.findAll(any(), any(Pageable.class))).thenReturn(Page.empty());
-        mockMvc.with(sslPostProcessor).get("/starter").andExpect(status().isOk());
+        mockMvc.with(sslPostProcessor).get("/households").andExpect(status().isOk());
     }
 
     @Test
@@ -67,7 +66,7 @@ class HouseholdControllerTest {
     void whenGetHouseholdsPageWithNonEmptyHouseholdLabelThenOk() throws Exception {
         when(householdRepo.findAll(any(), any(Pageable.class))).thenReturn(Page.empty());
 
-        mockMvc.with(sslPostProcessor).get("/starter", "householdLabel", "machin").andExpect(status().isOk());
+        mockMvc.with(sslPostProcessor).get("/households", "householdLabel", "machin").andExpect(status().isOk());
     }
 
     @Test
@@ -75,7 +74,7 @@ class HouseholdControllerTest {
     void whenGetHouseholdsPageWithNonEmptyTaxpayerNameThenOk() throws Exception {
         when(householdRepo.findAll(any(), any(Pageable.class))).thenReturn(Page.empty());
 
-        mockMvc.with(sslPostProcessor).get("/starter", "taxpayerNameOrId", "truc").andExpect(status().isOk());
+        mockMvc.with(sslPostProcessor).get("/households", "taxpayerNameOrId", "truc").andExpect(status().isOk());
     }
 
     @Test
@@ -83,7 +82,7 @@ class HouseholdControllerTest {
     void whenGetHouseholdsPageWithNonEmptyTaxpayerIdThenOk() throws Exception {
         when(householdRepo.findAll(any(), any(Pageable.class))).thenReturn(Page.empty());
 
-        mockMvc.with(sslPostProcessor).get("/starter", "taxpayerNameOrId", "42").andExpect(status().isOk());
+        mockMvc.with(sslPostProcessor).get("/households", "taxpayerNameOrId", "42").andExpect(status().isOk());
     }
 
     @Test
@@ -91,7 +90,7 @@ class HouseholdControllerTest {
     void whenGetExistingHouseholdThenOk() throws Exception {
         when(householdRepo.findById(42L)).thenReturn(Optional.of(new Household(42L, "Machin", new HouseholdType(), new Taxpayer())));
 
-        mockMvc.with(sslPostProcessor).get("/starter/42").andExpect(status().isOk());
+        mockMvc.with(sslPostProcessor).get("/households/42").andExpect(status().isOk());
     }
 
     @Test
@@ -99,7 +98,7 @@ class HouseholdControllerTest {
     void whenGetInexistantHouseholdThenNotFound() throws Exception {
         when(householdRepo.findById(51L)).thenReturn(Optional.empty());
 
-        mockMvc.with(sslPostProcessor).get("/starter/51").andExpect(status().isNotFound());
+        mockMvc.with(sslPostProcessor).get("/households/51").andExpect(status().isNotFound());
     }
 
 }

@@ -1,4 +1,4 @@
-package com.c4_soft.starter.persistence;
+package com.c4_soft.starter.persistence.household;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,21 +12,19 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
-import com.c4_soft.starter.domain.Household;
-import com.c4_soft.starter.domain.HouseholdType;
-
-import lombok.val;
+import com.c4_soft.starter.domain.household.Household;
+import com.c4_soft.starter.domain.household.HouseholdType;
 
 @Repository
 public interface HouseholdRepo extends PagingAndSortingRepository<Household, Long>, JpaSpecificationExecutor<Household> {
-    static final String TAXPAYER = "taxpayer";
-    static final Pattern POSITIVE_LONG_PATTERN = Pattern.compile("^\\d+$");
+    String TAXPAYER = "taxpayer";
+    Pattern POSITIVE_LONG_PATTERN = Pattern.compile("^\\d+$");
 
-    public static EntityNotFoundException notFound(Long id) {
+    static EntityNotFoundException notFound(Long id) {
         return new EntityNotFoundException("No household with id " + id);
     }
 
-    public static Specification<Household> searchSpec(String householdLabel, String taxpayerNameOrId, HouseholdType householdType) {
+    static Specification<Household> searchSpec(String householdLabel, String taxpayerNameOrId, HouseholdType householdType) {
         if (!StringUtils.hasText(householdLabel) && !StringUtils.hasText(taxpayerNameOrId) && householdType == null) {
             return null;
         }
@@ -40,7 +38,7 @@ public interface HouseholdRepo extends PagingAndSortingRepository<Household, Lon
         }
 
         if (StringUtils.hasText(taxpayerNameOrId)) {
-            val idMatcher = POSITIVE_LONG_PATTERN.matcher(taxpayerNameOrId);
+            final var idMatcher = POSITIVE_LONG_PATTERN.matcher(taxpayerNameOrId);
             specs.add(
                     (root, query, criteriaBuilder) -> idMatcher.matches()
                             ? criteriaBuilder.equal(root.get(TAXPAYER).get("id"), Long.parseLong(taxpayerNameOrId))
@@ -52,7 +50,7 @@ public interface HouseholdRepo extends PagingAndSortingRepository<Household, Lon
         }
 
         var spec = Specification.where(specs.get(0));
-        for (int i = 1; i < specs.size(); ++i) {
+        for (var i = 1; i < specs.size(); ++i) {
             spec = spec.and(specs.get(i));
         }
 

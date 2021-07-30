@@ -2,7 +2,7 @@
 {
     "extends": "../../../tsconfig.json",
     "compilerOptions": {
-      "outDir": "../../../dist/c4-soft/starter-api-webmvc",
+      "outDir": "../../../dist/c4-soft/households-api",
       "declarationMap": true,
       "declaration": true,
       "inlineSources": true,

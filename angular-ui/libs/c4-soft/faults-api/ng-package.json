@@ -1,6 +1,6 @@
 {
   "$schema": "../../../node_modules/ng-packagr/ng-package.schema.json",
-  "dest": "../../../dist/c4-soft/starter-api-webmvc",
+  "dest": "../../../dist/c4-soft/faults-api",
   "lib": {
     "entryFile": "index.ts"
   }
