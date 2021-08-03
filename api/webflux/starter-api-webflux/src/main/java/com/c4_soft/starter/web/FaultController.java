@@ -23,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.c4_soft.commons.web.ResourceNotFoundException;
 import com.c4_soft.lifix.common.storage.StorageService;
+import com.c4_soft.springaddons.security.oauth2.oidc.OidcIdAuthenticationToken;
 import com.c4_soft.starter.domain.intervention.Fault;
 import com.c4_soft.starter.domain.intervention.FaultAttachment;
 import com.c4_soft.starter.persistence.intervention.FaultAttachmentRepo;
@@ -32,8 +34,6 @@ import com.c4_soft.starter.web.dto.FaultEditDto;
 import com.c4_soft.starter.web.dto.FaultResponseDto;
 import com.c4_soft.starter.web.exception.EmptyDescriptionException;
 import com.c4_soft.starter.web.exception.NotAcceptableFileNameException;
-import com.c4_soft.springaddons.security.oauth2.oidc.OidcIdAuthenticationToken;
-import com.c4_soft.commons.web.ResourceNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Flux;

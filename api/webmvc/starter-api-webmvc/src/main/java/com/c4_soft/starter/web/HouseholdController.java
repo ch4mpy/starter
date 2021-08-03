@@ -32,7 +32,6 @@ public class HouseholdController {
     private final ModelMapper modelMapper = new ModelMapper();
 
     @GetMapping("/types")
-    @PreAuthorize("isAuthenticated()")
     public Collection<HouseholdTypeDto> getAllTypes() {
         final var householdTypes = householdTypeRepo.findAll();
         return StreamSupport.stream(householdTypes.spliterator(), false)

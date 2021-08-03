@@ -1,6 +1,7 @@
 package com.c4_soft.commons.security;
 
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,9 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authorization.ServerAccessDeniedHandler;
 import org.springframework.security.web.server.context.NoOpServerSecurityContextRepository;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.config.CorsRegistry;
-import org.springframework.web.reactive.config.WebFluxConfigurer;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsConfigurationSource;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.server.ServerWebExchange;
 
 import com.c4_soft.springaddons.security.oauth2.oidc.OidcIdAuthenticationToken;
@@ -83,17 +85,29 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public WebFluxConfigurer corsConfigurer() {
-        return new WebFluxConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping(corsPath)
-                        .allowedOrigins("http://localhost", "https://localhost", "https://bravo-ch4mp:8100", "https://bravo-ch4mp:4200")
-                        .allowedMethods("*")
-                        .exposedHeaders("Origin", "Accept", "Content-Type", "Location");
-            }
+    public CorsConfigurationSource getCorsConfiguration() {
+        final var source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration(corsPath, corsConfiguration());
+        return source;
+    }
 
-        };
+    private CorsConfiguration corsConfiguration() {
+        final var corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowedHeaders(List.of("Origin", "Accept", "Content-Type", "Location"));
+        corsConfiguration.setAllowedOrigins(
+                List.of(
+                        "http://localhost",
+                        "https://localhost",
+                        "https://localhost:8100",
+                        "https://localhost:4200",
+                        "http://localhost:8080",
+                        "https://localhost:8443",
+                        "https://bravo-ch4mp:8100",
+                        "https://bravo-ch4mp:4200",
+                        "http://bravo-ch4mp:8080",
+                        "https://bravo-ch4mp:8443"));
+        corsConfiguration.setAllowedMethods(List.of("*"));
+        return corsConfiguration;
     }
 
     protected ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry authorize(
@@ -146,8 +160,8 @@ public class WebSecurityConfig {
                 final var response = exchange.getResponse();
                 response.setStatusCode(principal instanceof AnonymousAuthenticationToken ? HttpStatus.UNAUTHORIZED : HttpStatus.FORBIDDEN);
                 response.getHeaders().setContentType(MediaType.TEXT_PLAIN);
-                var dataBufferFactory = response.bufferFactory();
-                var buffer = dataBufferFactory.wrap(ex.getMessage().getBytes(Charset.defaultCharset()));
+                final var dataBufferFactory = response.bufferFactory();
+                final var buffer = dataBufferFactory.wrap(ex.getMessage().getBytes(Charset.defaultCharset()));
                 return response.writeWith(Mono.just(buffer)).doOnError(error -> DataBufferUtils.release(buffer));
             });
         }

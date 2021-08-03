@@ -72,7 +72,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/actuator/**",
                 "/v3/api-docs/**",
                 "/swagger-ui/**",
-                "/swagger-ui.html").permitAll()
+                "/swagger-ui.html",
+                "/households/types").permitAll()
             .anyRequest().authenticated();
         // @formatter:on
 
@@ -85,7 +86,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping(corsPath)
-                        .allowedOrigins("http://localhost", "https://localhost", "https://bravo-ch4mp:8100", "https://bravo-ch4mp:4200")
+                        .allowedOrigins(
+                                "http://localhost",
+                                "https://localhost",
+                                "https://localhost:8100",
+                                "https://localhost:4200",
+                                "http://localhost:8080",
+                                "https://localhost:8443",
+                                "https://bravo-ch4mp:8100",
+                                "https://bravo-ch4mp:4200",
+                                "http://bravo-ch4mp:8080",
+                                "https://bravo-ch4mp:8443")
                         .allowedMethods("*")
                         .exposedHeaders("Origin", "Accept", "Content-Type", "Location");
             }
