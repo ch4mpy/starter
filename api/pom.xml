@@ -26,7 +26,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<modelmapper.version>2.3.9</modelmapper.version>
-		<springdoc-openapi.version>1.5.9</springdoc-openapi.version>
+		<springdoc-openapi.version>1.5.10</springdoc-openapi.version>
+		<springdoc-openapi-maven-plugin.version>1.3</springdoc-openapi-maven-plugin.version>
+		<integration-tests.host>localhost</integration-tests.host>
 		<com.c4-soft.springaddons.version>2.5.5</com.c4-soft.springaddons.version>
 
 		<spring-native.version>0.10.1</spring-native.version>
@@ -42,7 +44,7 @@
 				<artifactId>common-storage</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>com.c4-soft.springaddons</groupId>
 				<artifactId>spring-security-oauth2-addons</artifactId>
@@ -52,12 +54,6 @@
 				<groupId>com.c4-soft.springaddons</groupId>
 				<artifactId>spring-security-oauth2-test-addons</artifactId>
 				<version>${com.c4-soft.springaddons.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.springdoc</groupId>
-				<artifactId>springdoc-openapi-security</artifactId>
-				<version>${springdoc-openapi.version}</version>
 			</dependency>
 
 			<dependency>
@@ -84,40 +80,6 @@
 						</execution>
 						<execution>
 							<id>generate</id>
-							<goals>
-								<goal>generate</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.graalvm.buildtools</groupId>
-					<artifactId>native-maven-plugin</artifactId>
-					<version>${native.buildtools.version}</version>
-					<executions>
-						<execution>
-							<id>build-native</id>
-							<goals>
-								<goal>build</goal>
-							</goals>
-							<phase>package</phase>
-						</execution>
-						<execution>
-							<id>test-native</id>
-							<goals>
-								<goal>test</goal>
-							</goals>
-							<phase>test</phase>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.springdoc</groupId>
-					<artifactId>springdoc-openapi-maven-plugin</artifactId>
-					<version>1.3</version>
-					<executions>
-						<execution>
-							<id>integration-test</id>
 							<goals>
 								<goal>generate</goal>
 							</goals>
@@ -152,6 +114,43 @@
 
 	<profiles>
 		<profile>
+			<id>buildImage</id>
+			<properties>
+				<repackage.classifier>exec</repackage.classifier>
+			</properties>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.springframework.boot</groupId>
+							<artifactId>spring-boot-maven-plugin</artifactId>
+							<configuration>
+								<classifier>${repackage.classifier}</classifier>
+								<image>
+									<builder>paketobuildpacks/builder:tiny</builder>
+									<env>
+										<BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
+										<BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
+											-H:+ReportExceptionStackTraces
+											--enable-https
+										</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
+									</env>
+								</image>
+							</configuration>
+							<executions>
+								<execution>
+									<id>build-image</id>
+									<goals>
+										<goal>build-image</goal>
+									</goals>
+								</execution>
+							</executions>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+		<profile>
 			<id>graalvm</id>
 			<properties>
 				<!-- Avoid a clash between Spring Boot repackaging and native-maven-plugin -->
@@ -165,6 +164,94 @@
 					<scope>test</scope>
 				</dependency>
 			</dependencies>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.graalvm.buildtools</groupId>
+							<artifactId>native-maven-plugin</artifactId>
+							<version>${native.buildtools.version}</version>
+							<configuration>
+								<!-- ... -->
+							</configuration>
+							<executions>
+								<execution>
+									<id>build-native</id>
+									<goals>
+										<goal>build</goal>
+									</goals>
+									<phase>package</phase>
+								</execution>
+								<execution>
+									<id>test-native</id>
+									<goals>
+										<goal>test</goal>
+									</goals>
+									<phase>test</phase>
+								</execution>
+							</executions>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+		<profile>
+			<id>openapi</id>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.springdoc</groupId>
+							<artifactId>springdoc-openapi-maven-plugin</artifactId>
+							<version>${springdoc-openapi-maven-plugin.version}</version>
+							<dependencies>
+								<dependency>
+									<groupId>org.springdoc</groupId>
+									<artifactId>springdoc-openapi-security</artifactId>
+									<version>${springdoc-openapi.version}</version>
+								</dependency>
+							</dependencies>
+							<configuration>
+								<apiDocsUrl>https://${integration-tests.host}:${integration-tests.port}/v3/api-docs</apiDocsUrl>
+								<outputFileName>${project.artifactId}.json</outputFileName>
+								<outputDir>../../..</outputDir>
+								<skip>false</skip>
+							</configuration>
+							<executions>
+								<execution>
+									<id>integration-test</id>
+									<goals>
+										<goal>generate</goal>
+									</goals>
+								</execution>
+							</executions>
+						</plugin>
+						<plugin>
+							<groupId>org.springframework.boot</groupId>
+							<artifactId>spring-boot-maven-plugin</artifactId>
+							<configuration>
+								<jvmArguments>
+									-Dspring.application.admin.enabled=true
+								</jvmArguments>
+							</configuration>
+							<executions>
+								<execution>
+									<id>pre-integration-test</id>
+									<goals>
+										<goal>start</goal>
+									</goals>
+								</execution>
+								<execution>
+									<id>post-integration-test</id>
+									<goals>
+										<goal>stop</goal>
+									</goals>
+								</execution>
+							</executions>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
 		</profile>
 	</profiles>
 

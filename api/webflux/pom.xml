@@ -45,12 +45,31 @@
 				<version>${com.c4-soft.springaddons.version}</version>
 			</dependency>
 
-			<dependency>
-				<groupId>org.springdoc</groupId>
-				<artifactId>springdoc-openapi-webflux-ui</artifactId>
-				<version>${springdoc-openapi.version}</version>
-			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
+	<profiles>
+		<profile>
+			<id>openapi</id>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.springdoc</groupId>
+							<artifactId>springdoc-openapi-maven-plugin</artifactId>
+							<version>${springdoc-openapi-maven-plugin.version}</version>
+							<dependencies>
+								<dependency>
+									<groupId>org.springdoc</groupId>
+									<artifactId>springdoc-openapi-webflux-ui</artifactId>
+									<version>${springdoc-openapi.version}</version>
+								</dependency>
+							</dependencies>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
