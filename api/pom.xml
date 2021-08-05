@@ -64,13 +64,41 @@
 		</dependencies>
 	</dependencyManagement>
 
+	<dependencies>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+	</dependencies>
+
 	<build>
 		<pluginManagement>
 			<plugins>
 				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<configuration>
+						<excludes>
+							<exclude>
+								<groupId>org.projectlombok</groupId>
+								<artifactId>lombok</artifactId>
+							</exclude>
+						</excludes>
+						<classifier>${repackage.classifier}</classifier>
+					</configuration>
+				</plugin>
+				<plugin>
 					<groupId>org.springframework.experimental</groupId>
 					<artifactId>spring-aot-maven-plugin</artifactId>
 					<version>${spring-native.version}</version>
+					<configuration>
+						<removeXmlSupport>true</removeXmlSupport>
+						<removeSpelSupport>false</removeSpelSupport>
+						<removeYamlSupport>true</removeYamlSupport>
+						<removeJmxSupport>true</removeJmxSupport>
+						<removeUnusedConfig>false</removeUnusedConfig>
+					</configuration>
 					<executions>
 						<execution>
 							<id>test-generate</id>
@@ -114,7 +142,7 @@
 
 	<profiles>
 		<profile>
-			<id>buildImage</id>
+			<id>build-image</id>
 			<properties>
 				<repackage.classifier>exec</repackage.classifier>
 			</properties>
@@ -125,7 +153,6 @@
 							<groupId>org.springframework.boot</groupId>
 							<artifactId>spring-boot-maven-plugin</artifactId>
 							<configuration>
-								<classifier>${repackage.classifier}</classifier>
 								<image>
 									<builder>paketobuildpacks/builder:tiny</builder>
 									<env>
@@ -133,6 +160,7 @@
 										<BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
 											-H:+ReportExceptionStackTraces
 											--enable-https
+											-H:+InlineBeforeAnalysis
 										</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
 									</env>
 								</image>
