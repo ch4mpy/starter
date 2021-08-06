@@ -127,6 +127,14 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+		<repository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>https://repo.spring.io/snapshot</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
 	</repositories>
 
 	<pluginRepositories>
@@ -138,14 +146,16 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</pluginRepository>
+		<pluginRepository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>https://repo.spring.io/snapshot</url>
+		</pluginRepository>
 	</pluginRepositories>
 
 	<profiles>
 		<profile>
 			<id>build-image</id>
-			<properties>
-				<repackage.classifier>exec</repackage.classifier>
-			</properties>
 			<build>
 				<pluginManagement>
 					<plugins>
@@ -179,7 +189,7 @@
 			</build>
 		</profile>
 		<profile>
-			<id>graalvm</id>
+			<id>native</id>
 			<properties>
 				<!-- Avoid a clash between Spring Boot repackaging and native-maven-plugin -->
 				<repackage.classifier>exec</repackage.classifier>
