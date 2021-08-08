@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.5.2</version>
+		<version>2.5.3</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.c4-soft</groupId>
@@ -29,7 +29,7 @@
 		<springdoc-openapi.version>1.5.10</springdoc-openapi.version>
 		<springdoc-openapi-maven-plugin.version>1.3</springdoc-openapi-maven-plugin.version>
 		<integration-tests.host>localhost</integration-tests.host>
-		<com.c4-soft.springaddons.version>2.5.5</com.c4-soft.springaddons.version>
+		<com.c4-soft.springaddons.version>2.5.6</com.c4-soft.springaddons.version>
 
 		<spring-native.version>0.10.1</spring-native.version>
 		<native.buildtools.version>0.9.2</native.buildtools.version>
@@ -161,6 +161,8 @@
 											-H:+ReportExceptionStackTraces
 											--enable-https
 											-H:+InlineBeforeAnalysis
+											--initialize-at-run-time=io.netty.handler.codec.compression.BrotliDecoder
+											--verbose
 										</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
 									</env>
 								</image>
