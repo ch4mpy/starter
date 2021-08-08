@@ -108,6 +108,10 @@
 						<groupId>org.springframework.experimental</groupId>
 						<artifactId>spring-aot-maven-plugin</artifactId>
 					</plugin>
+					<plugin>
+						<groupId>org.hibernate.orm.tooling</groupId>
+						<artifactId>hibernate-enhance-maven-plugin</artifactId>
+					</plugin>
 				</plugins>
 			</build>
 		</profile>
@@ -122,6 +126,10 @@
 					<plugin>
 						<groupId>org.springframework.experimental</groupId>
 						<artifactId>spring-aot-maven-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<groupId>org.hibernate.orm.tooling</groupId>
+						<artifactId>hibernate-enhance-maven-plugin</artifactId>
 					</plugin>
 				</plugins>
 			</build>
