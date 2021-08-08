@@ -114,7 +114,7 @@
 			</build>
 		</profile>
 		<profile>
-			<id>graalvm</id>
+			<id>native</id>
 			<build>
 				<plugins>
 					<plugin>
