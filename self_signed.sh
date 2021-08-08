@@ -107,8 +107,9 @@ echo ""
 echo openssl pkcs12 -export -in \"${CERTIF_DIR}/${HOST}_self_signed.crt\" -inkey \"${CERTIF_DIR}/${HOST}_self_signed_key.pem\" -name ${HOST}_self_signed -password pass:${SERVER_SSL_KEY_PASSWORD} -out \"${CERTIF_DIR}/${HOST}_self_signed.pfx\"
 echo ""
 
-echo \"${JAVA}/bin/keytool\" -importkeystore -srckeystore \"${CERTIF_DIR}/${HOST}_self_signed.pfx\" -srcstorepass \"${SERVER_SSL_KEY_STORE_PASSWORD}\" -srcstoretype pkcs12 -srcalias ${HOST}_self_signed -destkeystore \"${CERTIF_DIR}/${HOST}_self_signed.jks\" -deststoretype PKCS12 -deststorepass ${SERVER_SSL_KEY_STORE_PASSWORD} -destalias ${HOST}_self_signed
+echo \"${JAVA}/bin/keytool\" -importkeystore -srckeystore \"${CERTIF_DIR}/${HOST}_self_signed.pfx\" -srcstorepass \"${SERVER_SSL_KEY_PASSWORD}\" -srcstoretype pkcs12 -srcalias ${HOST}_self_signed -destkeystore \"${CERTIF_DIR}/${HOST}_self_signed.jks\" -deststoretype PKCS12 -deststorepass ${SERVER_SSL_KEY_STORE_PASSWORD} -destalias ${HOST}_self_signed
 echo ""
 
-echo \"${JAVA}/bin/keytool\" -importkeystore -srckeystore \"${CERTIF_DIR}/${HOST}_self_signed.pfx\" -srcstorepass \"${SERVER_SSL_KEY_STORE_PASSWORD}\" -srcstoretype pkcs12 -srcalias ${HOST}_self_signed -destkeystore \"${CACERTS}\" -deststorepass ${CACERTS_PASSWORD} -destalias ${HOST}_self_signed
+echo "# Might need to sudo this one"
+echo \"${JAVA}/bin/keytool\" -importkeystore -srckeystore \"${CERTIF_DIR}/${HOST}_self_signed.pfx\" -srcstorepass \"${SERVER_SSL_KEY_PASSWORD}\" -srcstoretype pkcs12 -srcalias ${HOST}_self_signed -destkeystore \"${CACERTS}\" -deststorepass ${CACERTS_PASSWORD} -destalias ${HOST}_self_signed
 echo ""
