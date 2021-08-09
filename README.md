@@ -26,10 +26,16 @@ The aim here is to go further than most "getting-started" guides with following 
 - Keycloak with a `starter` client. See [Keycloak doc](https://www.keycloak.org/docs/latest/server_installation/#_setting_up_ssl) for configuring your SLL certificate
 - PostrgeSQL or any other relational DB with a `starter` db and `starter` user. It should be possible to connect to DB from docker containers.
 - Following environment variables:
-  - `SPRING_DATASOURCE_PASSWORD`: DB password for `starter` user
-  - `SPRING_R2DBC_PASSWORD`: DB password for `starter` user
-  - `SERVER_SSL_KEY_PASSWORD`: a password of your choice if you don't already SSL certificate
-  - `SERVER_SSL_KEY_STORE_PASSWORD`: a password of your choice if you don't already SSL certificate
+``` bash
+# ~/.bashrc
+export SPRING_DATASOURCE_PASSWORD=change-me
+export SPRING_R2DBC_PASSWORD=change-me
+export SERVER_SSL_KEY_PASSWORD=change-me
+export SERVER_SSL_KEY_STORE_PASSWORD=change-me
+export SSL_CERT_DIR=~/.ssh
+export SSL_CERT_FILE=${HOSTNAME}_self_signed.pem
+export SERVER_SSL_KEY_STORE=file://${SSL_CERT_DIR}/${HOSTNAME}_self_signed.jks
+```
 - openssl if you need to generate self-signed SSL certificate (Git bash includes it)
 
 
@@ -56,8 +62,10 @@ Two sub-modules: first for servlet (webmvc + JPA) and second for reactive (weflu
 - run `. ~/.ssh/self_signed.sh`.
 - review the printed commands, copy and execute it. At first run you should need all of it.
 If you have several JDKs installed, you should run `self_signed.sh` for each and execute last command only to keep the same certificate files.
-- install `.crt` file as "trusted root authority" on your system (on Windows, this is done with `certmgr.msc`)
-- define `SERVER_SSL_KEY_STORE` environement variable to something like `file:///C:/Users/ch4mp/.ssh/bravo-ch4mp_self_signed.jks`
+- install certificate file as "trusted root authority" on your system 
+  - on Windows: run `certmgr.msc` as admin and import .crt file as root authority certificate
+  - on Fedora 34 `sudo cp ~/.ssh/${HOSTNAME}_self_signed.pem /etc/pki/ca-trust/source/anchors/ && sudo update-ca-trust && certutil -A -t "TCu,TCu,TCu" -i ~/.ssh/${HOSTNAME}_self_signed.pem  -d sql:$HOME/.pki/nssdb -n ${HOSTNAME}`
+- define `SERVER_SSL_KEY_STORE` environement variable to something like `file:///C:/Users/ch4mp/.ssh/bravo-ch4mp_self_signed.jks` or `file:///home/ch4mp/.ssh/bravo-ch4mp_self_signed.jks`
 
 ## Building and running REST API
 APIs are served at https://localhost:4210/households (servlet) and https://localhost:4310/faults (reactive)

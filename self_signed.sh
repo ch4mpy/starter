@@ -94,21 +94,25 @@ else
 fi
 
 echo ""
-
+echo ""
 rm -f ${HOST}_self_signed.config;
 sed 's/\[hostname\]/'${HOST}'/g' "${CERTIF_DIR}/self_signed_template.config" > "${CERTIF_DIR}/${HOST}_self_signed.config"
 
-echo openssl req -config \"${CERTIF_DIR}/${HOST}_self_signed.config\" -new -keyout \"${CERTIF_DIR}/${HOST}_self_signed_key.pem\" -out \"${CERTIF_DIR}/${HOST}_self_signed_cert.pem\" -reqexts v3_req
+echo openssl req -config \"${CERTIF_DIR}/${HOST}_self_signed.config\" -new -keyout \"${CERTIF_DIR}/${HOST}_req_key.pem\" -passout pass:${SERVER_SSL_KEY_PASSWORD} -out \"${CERTIF_DIR}/${HOST}_cert_req.pem\" -reqexts v3_req
 echo ""
 
-echo openssl x509 -req -days 365 -extfile \"${CERTIF_DIR}/${HOST}_self_signed.config\" -in \"${CERTIF_DIR}/${HOST}_self_signed_cert.pem\" -extensions v3_req -signkey \"${CERTIF_DIR}/${HOST}_self_signed_key.pem\" -out \"${CERTIF_DIR}/${HOST}_self_signed.crt\"
+echo openssl x509 -req -days 365 -extfile \"${CERTIF_DIR}/${HOST}_self_signed.config\" -in \"${CERTIF_DIR}/${HOST}_cert_req.pem\" -extensions v3_req -signkey \"${CERTIF_DIR}/${HOST}_req_key.pem\" -passin pass:${SERVER_SSL_KEY_PASSWORD} -out \"${CERTIF_DIR}/${HOST}_self_signed.crt\"
 echo ""
 
-echo openssl pkcs12 -export -in \"${CERTIF_DIR}/${HOST}_self_signed.crt\" -inkey \"${CERTIF_DIR}/${HOST}_self_signed_key.pem\" -name ${HOST}_self_signed -password pass:${SERVER_SSL_KEY_PASSWORD} -out \"${CERTIF_DIR}/${HOST}_self_signed.pfx\"
+echo openssl x509 -in \"${CERTIF_DIR}/${HOST}_self_signed.crt\" -out \"${CERTIF_DIR}/${HOST}_self_signed.pem\" -outform PEM
+echo ""
+ 
+echo openssl pkcs12 -export -in \"${CERTIF_DIR}/${HOST}_self_signed.crt\" -inkey \"${CERTIF_DIR}/${HOST}_req_key.pem\" -passin pass:${SERVER_SSL_KEY_PASSWORD} -name ${HOST} -out \"${CERTIF_DIR}/${HOST}_self_signed.p12\" -passout pass:${SERVER_SSL_KEY_STORE_PASSWORD}
 echo ""
 
-echo \"${JAVA}/bin/keytool\" -importkeystore -srckeystore \"${CERTIF_DIR}/${HOST}_self_signed.pfx\" -srcstorepass \"${SERVER_SSL_KEY_STORE_PASSWORD}\" -srcstoretype pkcs12 -srcalias ${HOST}_self_signed -destkeystore \"${CERTIF_DIR}/${HOST}_self_signed.jks\" -deststoretype PKCS12 -deststorepass ${SERVER_SSL_KEY_STORE_PASSWORD} -destalias ${HOST}_self_signed
+echo \"${JAVA}/bin/keytool\" -importkeystore -srckeystore \"${CERTIF_DIR}/${HOST}_self_signed.p12\" -srcstorepass \"${SERVER_SSL_KEY_STORE_PASSWORD}\" -srcstoretype pkcs12 -srcalias ${HOST} -destkeystore \"${CERTIF_DIR}/${HOST}_self_signed.jks\" -deststoretype PKCS12 -deststorepass ${SERVER_SSL_KEY_STORE_PASSWORD} -destalias ${HOST}
 echo ""
 
-echo \"${JAVA}/bin/keytool\" -importkeystore -srckeystore \"${CERTIF_DIR}/${HOST}_self_signed.pfx\" -srcstorepass \"${SERVER_SSL_KEY_STORE_PASSWORD}\" -srcstoretype pkcs12 -srcalias ${HOST}_self_signed -destkeystore \"${CACERTS}\" -deststorepass ${CACERTS_PASSWORD} -destalias ${HOST}_self_signed
+echo "# Might need to sudo this one"
+echo \"${JAVA}/bin/keytool\" -importkeystore -srckeystore \"${CERTIF_DIR}/${HOST}_self_signed.p12\" -srcstorepass \"${SERVER_SSL_KEY_STORE_PASSWORD}\" -srcstoretype pkcs12 -srcalias ${HOST} -destkeystore \"${CACERTS}\" -deststorepass ${CACERTS_PASSWORD} -destalias ${HOST}
 echo ""
