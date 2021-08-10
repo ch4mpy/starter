@@ -32,7 +32,7 @@ export SPRING_DATASOURCE_PASSWORD=change-me
 export SPRING_R2DBC_PASSWORD=change-me
 export SERVER_SSL_KEY_PASSWORD=change-me
 export SERVER_SSL_KEY_STORE_PASSWORD=change-me
-export SSL_CERT_DIR=~/.ssh
+export SSL_CERT_DIR=/home/${USER}/.ssh
 export SSL_CERT_FILE=${HOSTNAME}_self_signed.pem
 export SERVER_SSL_KEY_STORE=file://${SSL_CERT_DIR}/${HOSTNAME}_self_signed.jks
 ```
@@ -64,7 +64,7 @@ Two sub-modules: first for servlet (webmvc + JPA) and second for reactive (weflu
 If you have several JDKs installed, you should run `self_signed.sh` for each and execute last command only to keep the same certificate files.
 - install certificate file as "trusted root authority" on your system 
   - on Windows: run `certmgr.msc` as admin and import .crt file as root authority certificate
-  - on Fedora 34 `sudo cp ~/.ssh/${HOSTNAME}_self_signed.pem /etc/pki/ca-trust/source/anchors/ && sudo update-ca-trust && certutil -A -t "TCu,TCu,TCu" -i ~/.ssh/${HOSTNAME}_self_signed.pem  -d sql:$HOME/.pki/nssdb -n ${HOSTNAME}`
+  - on Fedora 34 `sudo cp ~/.ssh/${HOSTNAME}_self_signed.pem /etc/pki/ca-trust/source/anchors/ && sudo update-ca-trust && certutil -d sql:$HOME/.pki/nssdb -n ${HOSTNAME} -A -t "TCu,TCu,TCu" -i ~/.ssh/${HOSTNAME}_self_signed.pem`
 - define `SERVER_SSL_KEY_STORE` environement variable to something like `file:///C:/Users/ch4mp/.ssh/bravo-ch4mp_self_signed.jks` or `file:///home/ch4mp/.ssh/bravo-ch4mp_self_signed.jks`
 
 ## Building and running REST API

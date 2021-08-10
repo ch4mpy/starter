@@ -31,15 +31,21 @@ else
   echo "SERVER_SSL_KEY_PASSWORD: ${SERVER_SSL_KEY_PASSWORD}"
   echo "SERVER_SSL_KEY_STORE_PASSWORD: ${SERVER_SSL_KEY_STORE_PASSWORD}"
   
+  if [ $SERVER_SSL_KEY_PASSWORD != $SERVER_SSL_KEY_STORE_PASSWORD ]
+  then
+    echo "Due to PCKS12 limitation key and keystore passowrds must be the same"
+    exit 1
+  fi
+
   if [ -z "$1" ]
   then
-	if [ -z "$JAVA_HOME" ]
+    if [ -z "$JAVA_HOME" ]
     then
       echo "ERROR: could not locate JDK / JRE root directory"
-	  exit 1
+      exit 1
     else
       JAVA=$JAVA_HOME
-	  echo "JDK / JRE root directory defaulted to JAVA_HOME. Provide JDK / JRE root directory as 1st command-line argument to change that."
+      echo "JDK / JRE root directory defaulted to JAVA_HOME. Provide JDK / JRE root directory as 1st command-line argument to change that."
     fi
   else
     JAVA=$1
@@ -83,7 +89,7 @@ else
   if [ -z "${4}" ]
   then
     CACERTS_PASSWORD="changeit"
-	echo "Using $CACERTS_PASSWORD as cacerts file password. Override with 4th command-line argument"
+    echo "Using $CACERTS_PASSWORD as cacerts file password. Override with 4th command-line argument"
   else
     CACERTS_PASSWORD="${4}"
   fi
@@ -110,9 +116,9 @@ echo ""
 echo openssl pkcs12 -export -in \"${CERTIF_DIR}/${HOST}_self_signed.crt\" -inkey \"${CERTIF_DIR}/${HOST}_req_key.pem\" -passin pass:${SERVER_SSL_KEY_PASSWORD} -name ${HOST} -out \"${CERTIF_DIR}/${HOST}_self_signed.p12\" -passout pass:${SERVER_SSL_KEY_STORE_PASSWORD}
 echo ""
 
-echo \"${JAVA}/bin/keytool\" -importkeystore -srckeystore \"${CERTIF_DIR}/${HOST}_self_signed.p12\" -srcstorepass \"${SERVER_SSL_KEY_STORE_PASSWORD}\" -srcstoretype pkcs12 -srcalias ${HOST} -destkeystore \"${CERTIF_DIR}/${HOST}_self_signed.jks\" -deststoretype PKCS12 -deststorepass ${SERVER_SSL_KEY_STORE_PASSWORD} -destalias ${HOST}
+echo \"${JAVA}/bin/keytool\" -importkeystore -srckeystore \"${CERTIF_DIR}/${HOST}_self_signed.p12\" -srckeypass \"${SERVER_SSL_KEY_PASSWORD}\" -srcstorepass \"${SERVER_SSL_KEY_STORE_PASSWORD}\" -srcstoretype pkcs12 -srcalias ${HOST} -destkeystore \"${CERTIF_DIR}/${HOST}_self_signed.jks\" -deststoretype PKCS12 -destkeypass ${SERVER_SSL_KEY_PASSWORD} -deststorepass ${SERVER_SSL_KEY_STORE_PASSWORD} -destalias ${HOST}
 echo ""
 
 echo "# Might need to sudo this one"
-echo \"${JAVA}/bin/keytool\" -importkeystore -srckeystore \"${CERTIF_DIR}/${HOST}_self_signed.p12\" -srcstorepass \"${SERVER_SSL_KEY_STORE_PASSWORD}\" -srcstoretype pkcs12 -srcalias ${HOST} -destkeystore \"${CACERTS}\" -deststorepass ${CACERTS_PASSWORD} -destalias ${HOST}
+echo \"${JAVA}/bin/keytool\" -importkeystore -srckeystore \"${CERTIF_DIR}/${HOST}_self_signed.p12\" -srckeypass \"${SERVER_SSL_KEY_PASSWORD}\" -srcstorepass \"${SERVER_SSL_KEY_STORE_PASSWORD}\" -srcstoretype pkcs12 -srcalias ${HOST} -destkeystore \"${CACERTS}\" -deststorepass ${CACERTS_PASSWORD} -destalias ${HOST}
 echo ""
