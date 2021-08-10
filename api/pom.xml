@@ -35,6 +35,7 @@
 		<native.buildtools.version>0.9.2</native.buildtools.version>
 		<repackage.classifier />
 		<builder>paketobuildpacks/builder:tiny</builder>
+		<ca-certificates.binding>${project.basedir}/bindings/ca-certificates</ca-certificates.binding>
 	</properties>
 
 	<dependencyManagement>
@@ -75,33 +76,6 @@
 	<build>
 		<pluginManagement>
 			<plugins>
-				<plugin>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-maven-plugin</artifactId>
-					<configuration>
-						<excludes>
-							<exclude>
-								<groupId>org.projectlombok</groupId>
-								<artifactId>lombok</artifactId>
-							</exclude>
-						</excludes>
-						<classifier>${repackage.classifier}</classifier>
-					</configuration>
-					<executions>
-						<execution>
-							<goals>
-								<goal>build-image</goal>
-							</goals>
-							<configuration>
-								<image>
-									<bindings>
-										<binding>${basedir}/bindings/ca-certificates:/platform/bindings/ca-certificates</binding>
-									</bindings>
-								</image>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
 				<plugin>
 					<groupId>org.springframework.experimental</groupId>
 					<artifactId>spring-aot-maven-plugin</artifactId>
@@ -197,19 +171,13 @@
 							<groupId>org.springframework.boot</groupId>
 							<artifactId>spring-boot-maven-plugin</artifactId>
 							<configuration>
-								<image>
-									<builder>paketobuildpacks/builder:tiny</builder>
-									<env>
-										<BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
-										<BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
-											-H:+ReportExceptionStackTraces
-											--enable-https
-											-H:+InlineBeforeAnalysis
-											--initialize-at-run-time=io.netty.handler.codec.compression.BrotliDecoder
-											--verbose
-										</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
-									</env>
-								</image>
+								<excludes>
+									<exclude>
+										<groupId>org.projectlombok</groupId>
+										<artifactId>lombok</artifactId>
+									</exclude>
+								</excludes>
+								<classifier>${repackage.classifier}</classifier>
 							</configuration>
 							<executions>
 								<execution>
@@ -217,6 +185,63 @@
 									<goals>
 										<goal>build-image</goal>
 									</goals>
+									<configuration>
+										<image>
+											<bindings>
+												<binding>${ca-certificates.binding}:/platform/bindings/ca-certificates:ro</binding>
+											</bindings>
+											<pullPolicy>IF_NOT_PRESENT</pullPolicy>
+										</image>
+									</configuration>
+								</execution>
+							</executions>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+		<profile>
+			<id>build-native-image</id>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.springframework.boot</groupId>
+							<artifactId>spring-boot-maven-plugin</artifactId>
+							<configuration>
+								<excludes>
+									<exclude>
+										<groupId>org.projectlombok</groupId>
+										<artifactId>lombok</artifactId>
+									</exclude>
+								</excludes>
+								<classifier>${repackage.classifier}</classifier>
+							</configuration>
+							<executions>
+								<execution>
+									<id>build-image</id>
+									<goals>
+										<goal>build-image</goal>
+									</goals>
+									<configuration>
+										<image>
+											<builder>paketobuildpacks/builder:tiny</builder>
+											<env>
+												<BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
+												<BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
+													-H:+ReportExceptionStackTraces
+													--enable-https
+													-H:+InlineBeforeAnalysis
+													--initialize-at-run-time=io.netty.handler.codec.compression.BrotliDecoder
+													--verbose
+												</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
+											</env>
+											<bindings>
+												<binding>${ca-certificates.binding}:/platform/bindings/ca-certificates:ro</binding>
+											</bindings>
+											<pullPolicy>IF_NOT_PRESENT</pullPolicy>
+										</image>
+									</configuration>
 								</execution>
 							</executions>
 						</plugin>

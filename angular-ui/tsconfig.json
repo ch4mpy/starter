@@ -17,11 +17,11 @@
     ],
     "paths": {
       "@c4-soft/faults-api": [
-        "dist/c4-soft/faults-api/faults-api",
+        "dist/c4-soft/faults-api/c4-soft-faults-api",
         "dist/c4-soft/faults-api"
       ],
       "@c4-soft/households-api": [
-        "dist/c4-soft/households-api/households-api",
+        "dist/c4-soft/households-api/c4-soft-households-api",
         "dist/c4-soft/households-api"
       ],
     }

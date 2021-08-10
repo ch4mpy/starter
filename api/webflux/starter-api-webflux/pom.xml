@@ -14,6 +14,10 @@
 	<name>starter-api-webflux</name>
 	<description>Reactive REST endpoints starter app</description>
 
+	<properties>
+		<ca-certificates.binding>${project.parent.parent.basedir}/bindings/ca-certificates</ca-certificates.binding>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.c4-soft</groupId>
@@ -103,7 +107,7 @@
 
 	<profiles>
 		<profile>
-			<id>build-image</id>
+			<id>build-native-image</id>
 			<build>
 				<plugins>
 					<plugin>

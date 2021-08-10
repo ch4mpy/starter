@@ -32,9 +32,9 @@ export SPRING_DATASOURCE_PASSWORD=change-me
 export SPRING_R2DBC_PASSWORD=change-me
 export SERVER_SSL_KEY_PASSWORD=change-me
 export SERVER_SSL_KEY_STORE_PASSWORD=$SERVER_SSL_KEY_PASSWORD
-export SSL_CERT_DIR=/home/${USER}/.ssh
-export SSL_CERT_FILE=${HOSTNAME}_self_signed.pem
-export SERVER_SSL_KEY_STORE=file://${SSL_CERT_DIR}/${HOSTNAME}_self_signed.jks
+
+# replace wlp4s0 with your network adapter ID or hardcode IP or wahtever
+export HOST_IP=`ip -f inet -o addr show wlp4s0 | cut -d\  -f 7 | cut -d/ -f 1`
 ```
 - openssl if you need to generate self-signed SSL certificate (Git bash includes it)
 
@@ -73,35 +73,51 @@ All requests must be issued with authentication.
 Use Postman or another REST client to get OAuth2 access-token from your OpenID authorisation-server and issue test requests.
 You might get OAuth2 token endpoints from Keycloak from an URI like https://${HOSTNAME}:9443/auth/realms/master/.well-known/openid-configuration
 
-### Runnable jar
+### Clone and configure project
 ``` bash
 git clone https://github.com/ch4mpy/starter.git
 cd starter/api
+cp ~/.ssh/${HOSTNAME}_self_signed.jks ./webmvc/starter-api-webmvc/src/main/resources/
+cp ~/.ssh/${HOSTNAME}_self_signed.jks ./webflux/starter-api-webflux/src/main/resources/
+cp ~/.ssh/${HOSTNAME}_self_signed.pem ./bindings/ca-certificates/
 ```
+
 Edit `webmvc/starter-api-webmvc/src/main/resources/application.properties` and `webflux/starter-api-webflux/src/main/resources/application.properties` to match your environment (copy `bravo-ch4mp` profile section and create one matching your `$HOSTNAME`).
+
+Edit `webmvc/starter-api-webmvc/src/k8s/starter-api-webmvc-deployment.yaml` and `webflux/starter-api-webflux/src/k8s/starter-api-webflux-deployment.yaml`with your IP.
+
+### Generate OpenAPI spec files
 ``` bash
-# generate OpenAPI spec files
 ./mvnw clean verify -Popenapi
-# generate runnable jars
+```
+
+### Packaging profiles
+
+#### no profile => genrate "fat" jars
+``` bash
 ./mvnw clean package
+```
+
+#### `-Pbuild-image` => Docker regular java container
+``` bash
+mvn clean package -Pbuild-image
+```
+
+### Run
+
+#### fat-jar
+``` bash
 java -jar webmvc/starter-api-webmvc/target/starter-api-webmvc-0.0.1-SNAPSHOT.jar &
 java -jar webflux/starter-api-webflux/target/starter-api-webflux-0.0.1-SNAPSHOT.jar &
 ```
 
-### Docker
-Edit `export HOST_IP=192.168.8.100` with your IP, then run:
+#### docker
 ``` bash
-# current dir should be starter/api
-cp $(echo $SERVER_SSL_KEY_STORE | sed "s/file:\/\/\///") ./webmvc/starter-api-webmvc/self_signed.jks
-cp $(echo $SERVER_SSL_KEY_STORE | sed "s/file:\/\/\///") ./webflux/starter-api-webflux/self_signed.jks
-cp $(echo $SERVER_SSL_KEY_STORE | sed "s/\.jks/\.pfx/" | sed "s/file:\/\/\///") ./webmvc/starter-api-webmvc/self_signed.pfx
-cp $(echo $SERVER_SSL_KEY_STORE | sed "s/\.jks/\.pfx/" | sed "s/file:\/\/\///") ./webflux/starter-api-webflux/self_signed.pfx
-docker build --build-arg SERVER_SSL_KEY_STORE_PASSWORD --build-arg HOSTNAME -t starter-api-webmvc:0.0.1-SNAPSHOT ./webmvc/starter-api-webmvc/
-docker build --build-arg SERVER_SSL_KEY_STORE_PASSWORD --build-arg HOSTNAME -t starter-api-webflux:0.0.1-SNAPSHOT ./webflux/starter-api-webflux/
+docker rm /tarter-api-webmvc
+docker rm /tarter-api-webflux
 docker run \
   --add-host $HOSTNAME:$HOST_IP \
   -e SPRING_DATASOURCE_PASSWORD=$SPRING_DATASOURCE_PASSWORD \
-  -e SERVER_SSL_KEY_STORE=self_signed.jks \
   -e SERVER_SSL_KEY_PASSWORD=$SERVER_SSL_KEY_PASSWORD \
   -e SERVER_SSL_KEY_STORE_PASSWORD=$SERVER_SSL_KEY_STORE_PASSWORD \
   -e SPRING_PROFILES_ACTIVE=$HOSTNAME \
@@ -111,7 +127,6 @@ docker run \
 docker run \
   --add-host $HOSTNAME:$HOST_IP \
   -e SPRING_R2DBC_PASSWORD=$SPRING_R2DBC_PASSWORD \
-  -e SERVER_SSL_KEY_STORE=self_signed.jks \
   -e SERVER_SSL_KEY_PASSWORD=$SERVER_SSL_KEY_PASSWORD \
   -e SERVER_SSL_KEY_STORE_PASSWORD=$SERVER_SSL_KEY_STORE_PASSWORD \
   -e SPRING_PROFILES_ACTIVE=$HOSTNAME \
@@ -120,13 +135,10 @@ docker run \
   -t starter-api-webflux:0.0.1-SNAPSHOT &
 ```
 
-### K8s
-Edit `webmvc/starter-api-webmvc/src/k8s/starter-api-webmvc-deployment.yaml` and `webflux/starter-api-webflux/src/k8s/starter-api-webflux-deployment.yaml`with your IP
+#### K8s
 ``` bash
-# current dir should be starter/api
 kubectl create configmap starter-api \
-  --from-literal spring.profiles.active="kubernetes,${HOSTNAME}" \
-  --from-literal server.ssl.key-store=self_signed.jks
+  --from-literal spring.profiles.active="kubernetes,${HOSTNAME}"
 kubectl create secret generic starter-api \
   --from-literal server.ssl.key.password=${SERVER_SSL_KEY_PASSWORD} \
   --from-literal server.ssl.key-store.password=${SERVER_SSL_KEY_STORE_PASSWORD} \
@@ -134,13 +146,13 @@ kubectl create secret generic starter-api \
   --from-literal spring.r2dbc.password=${SPRING_R2DBC_PASSWORD}
 docker tag starter-api-webmvc:0.0.1-SNAPSHOT starter-api-webmvc:0.0.1-SNAPSHOT
 docker tag starter-api-webflux:0.0.1-SNAPSHOT starter-api-webflux:0.0.1-SNAPSHOT
+
+# current dir should be starter/api
 kubectl apply -f webmvc/starter-api-webmvc/src/k8s/starter-api-webmvc-service.yaml
 kubectl apply -f webmvc/starter-api-webmvc/src/k8s/starter-api-webmvc-deployment.yaml
 kubectl apply -f webflux/starter-api-webflux/src/k8s/starter-api-webflux-service.yaml
 kubectl apply -f webflux/starter-api-webflux/src/k8s/starter-api-webflux-deployment.yaml
 ```
-API is served at https://localhost:4210 and https://localhost:4310
-
 
 ## Building and running Angular UI
 Edit `angular-ui/starter-ui/package.json` to set your $HOSTNAME instead of "bravo-ch4mp"
