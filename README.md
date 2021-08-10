@@ -31,7 +31,7 @@ The aim here is to go further than most "getting-started" guides with following 
 export SPRING_DATASOURCE_PASSWORD=change-me
 export SPRING_R2DBC_PASSWORD=change-me
 export SERVER_SSL_KEY_PASSWORD=change-me
-export SERVER_SSL_KEY_STORE_PASSWORD=change-me
+export SERVER_SSL_KEY_STORE_PASSWORD=$SERVER_SSL_KEY_PASSWORD
 export SSL_CERT_DIR=/home/${USER}/.ssh
 export SSL_CERT_FILE=${HOSTNAME}_self_signed.pem
 export SERVER_SSL_KEY_STORE=file://${SSL_CERT_DIR}/${HOSTNAME}_self_signed.jks

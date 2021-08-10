@@ -87,6 +87,20 @@
 						</excludes>
 						<classifier>${repackage.classifier}</classifier>
 					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<goal>build-image</goal>
+							</goals>
+							<configuration>
+								<image>
+									<bindings>
+										<binding>${basedir}/bindings/ca-certificates:/platform/bindings/ca-certificates</binding>
+									</bindings>
+								</image>
+							</configuration>
+						</execution>
+					</executions>
 				</plugin>
 				<plugin>
 					<groupId>org.springframework.experimental</groupId>
