@@ -28,11 +28,6 @@ spec:
               configMapKeyRef:
                 name: starter-api
                 key: spring.profiles.active
-          - name: SERVER_SSL_KEY_STORE
-            valueFrom:
-              configMapKeyRef:
-                name: starter-api
-                key: server.ssl.key-store
           - name: SPRING_R2DBC_PASSWORD
             valueFrom:
               secretKeyRef:
@@ -52,12 +47,12 @@ spec:
           httpGet:
             scheme: HTTPS
             path: /actuator/health/readiness
-            port: 4210
+            port: 4310
         livenessProbe:
           httpGet:
             scheme: HTTPS
             path: /actuator/health/liveness
-            port: 4210
+            port: 4310
         lifecycle:
           preStop:
             exec:

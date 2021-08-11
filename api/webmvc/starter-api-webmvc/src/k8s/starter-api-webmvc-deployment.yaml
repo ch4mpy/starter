@@ -28,11 +28,6 @@ spec:
               configMapKeyRef:
                 name: starter-api
                 key: spring.profiles.active
-          - name: SERVER_SSL_KEY_STORE
-            valueFrom:
-              configMapKeyRef:
-                name: starter-api
-                key: server.ssl.key-store
           - name: SPRING_DATASOURCE_PASSWORD
             valueFrom:
               secretKeyRef:
