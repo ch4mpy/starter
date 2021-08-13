@@ -13,6 +13,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.nativex.hint.AccessBits;
+import org.springframework.nativex.hint.TypeHint;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
 import com.c4_soft.springaddons.security.oauth2.test.annotations.WithMockOidcId;
@@ -29,6 +31,7 @@ import com.c4_soft.starter.persistence.user.LifixUserRepo;
 
 @WebMvcTest(HouseholdController.class)
 @Import({ MockMvcSupport.class, SerializationHelper.class })
+@TypeHint(types = MockMvcSupport.class, access = AccessBits.ALL)
 class HouseholdControllerTest {
 
     @MockBean

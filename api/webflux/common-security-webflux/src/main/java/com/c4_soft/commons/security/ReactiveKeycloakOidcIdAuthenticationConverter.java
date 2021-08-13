@@ -1,6 +1,7 @@
 package com.c4_soft.commons.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,7 @@ import com.c4_soft.springaddons.security.oauth2.oidc.OidcIdBuilder;
 import reactor.core.publisher.Mono;
 
 @Component
+@Profile("!disable-security")
 public class ReactiveKeycloakOidcIdAuthenticationConverter implements Converter<Jwt, Mono<OidcIdAuthenticationToken>> {
 
     private final KeycloakAuthoritiesConverter authoritiesConverter;

@@ -3,6 +3,7 @@ package com.c4_soft.commons.security;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,6 +17,7 @@ import reactor.core.publisher.Flux;
 import reactor.util.annotation.NonNull;
 
 @Component
+@Profile("!disable-security")
 public class KeycloakAuthoritiesConverter implements Converter<Jwt, Flux<GrantedAuthority>> {
 
     @Value("${com.c4-soft.security.oauth2.client-id}")

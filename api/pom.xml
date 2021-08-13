@@ -77,6 +77,19 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<configuration>
+						<excludes>
+							<exclude>
+								<groupId>org.projectlombok</groupId>
+								<artifactId>lombok</artifactId>
+							</exclude>
+						</excludes>
+						<classifier>${repackage.classifier}</classifier>
+					</configuration>
+				</plugin>
+				<plugin>
 					<groupId>org.springframework.experimental</groupId>
 					<artifactId>spring-aot-maven-plugin</artifactId>
 					<version>${spring-native.version}</version>
@@ -170,15 +183,6 @@
 						<plugin>
 							<groupId>org.springframework.boot</groupId>
 							<artifactId>spring-boot-maven-plugin</artifactId>
-							<configuration>
-								<excludes>
-									<exclude>
-										<groupId>org.projectlombok</groupId>
-										<artifactId>lombok</artifactId>
-									</exclude>
-								</excludes>
-								<classifier>${repackage.classifier}</classifier>
-							</configuration>
 							<executions>
 								<execution>
 									<id>build-image</id>
@@ -208,15 +212,6 @@
 						<plugin>
 							<groupId>org.springframework.boot</groupId>
 							<artifactId>spring-boot-maven-plugin</artifactId>
-							<configuration>
-								<excludes>
-									<exclude>
-										<groupId>org.projectlombok</groupId>
-										<artifactId>lombok</artifactId>
-									</exclude>
-								</excludes>
-								<classifier>${repackage.classifier}</classifier>
-							</configuration>
 							<executions>
 								<execution>
 									<id>build-image</id>
@@ -225,7 +220,7 @@
 									</goals>
 									<configuration>
 										<image>
-											<builder>paketobuildpacks/builder:tiny</builder>
+											<builder>${builder}</builder>
 											<env>
 												<BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
 												<BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
@@ -234,6 +229,8 @@
 													-H:+InlineBeforeAnalysis
 													--initialize-at-run-time=io.netty.handler.codec.compression.BrotliDecoder
 													--verbose
+													--allow-incomplete-classpath
+													--trace-class-initialization=org.springframework.util.unit.DataSize
 												</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
 											</env>
 											<bindings>
