@@ -17,9 +17,9 @@ export class AuthService {
 
       this.oidcSecurityService.userData$.subscribe(data => {
         this.user$.next(data === null ? OidcUser.ANONYMOUS : new OidcUser({ 
-          sub: data.sub,
-          preferredUsername: data.preferred_username,
-          roles: data.resource_access && data.resource_access[environment.openIdConfiguration.clientId]?.roles || [] }));
+          sub: data.userData?.sub,
+          preferredUsername: data.userData?.preferred_username,
+          roles: data.userData?.resource_access && data.userData?.resource_access[environment.openIdConfiguration.clientId]?.roles || [] }));
         console.log('User: ', this.user$.value);
       });
     });

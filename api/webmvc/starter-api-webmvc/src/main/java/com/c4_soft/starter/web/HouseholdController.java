@@ -25,46 +25,52 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class HouseholdController {
 
-    private final HouseholdTypeRepo householdTypeRepo;
+	private final HouseholdTypeRepo householdTypeRepo;
 
-    private final HouseholdRepo householdRepo;
+	private final HouseholdRepo householdRepo;
 
-    private final ModelMapper modelMapper = new ModelMapper();
+	private final ModelMapper modelMapper = new ModelMapper();
 
-    @GetMapping("/types")
-    public Collection<HouseholdTypeDto> getAllTypes() {
-        final var householdTypes = householdTypeRepo.findAll();
-        return StreamSupport.stream(householdTypes.spliterator(), false)
-                .map(entity -> modelMapper.map(entity, HouseholdTypeDto.class))
-                .collect(Collectors.toList());
-    }
+	@GetMapping("/types")
+	public
+			Collection<
+					HouseholdTypeDto>
+			getAllTypes() {
+		final var householdTypes = householdTypeRepo.findAll();
+		return StreamSupport
+				.stream(householdTypes.spliterator(), false)
+				.map(entity -> modelMapper.map(entity, HouseholdTypeDto.class))
+				.collect(Collectors.toList());
+	}
 
-    @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('CITIZEN_VIEW')")
-    public HouseholdDto getById(@PathVariable long id) {
-        final var household = householdRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("No household with ID: " + id));
-        return modelMapper.map(household, HouseholdDto.class);
-    }
+	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('CITIZEN_VIEW')")
+	public HouseholdDto getById(@PathVariable long id) {
+		final var household = householdRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("No household with ID: " + id));
+		return modelMapper.map(household, HouseholdDto.class);
+	}
 
-    /**
-     *
-     * @param pageable
-     * @param householdLabel
-     * @param taxpayerNameOrId
-     * @param householdType
-     * @return a page of matching Households
-     */
-    @GetMapping()
-    @PreAuthorize("hasAuthority('CITIZEN_VIEW')")
-    public Page<HouseholdDto> getPage(
-            Pageable pageable,
-            @RequestParam(required = false, defaultValue = "") String householdLabel,
-            @RequestParam(required = false, defaultValue = "") String taxpayerNameOrId,
-            @RequestParam(required = false, defaultValue = "") String householdTypeLabel) {
+	/**
+	 * @param  pageable
+	 * @param  householdLabel
+	 * @param  taxpayerNameOrId
+	 * @param  householdType
+	 * @return                  a page of matching Households
+	 */
+	@GetMapping()
+	@PreAuthorize("hasAuthority('CITIZEN_VIEW')")
+	public
+			Page<
+					HouseholdDto>
+			getPage(
+					Pageable pageable,
+					@RequestParam(required = false, defaultValue = "") String householdLabel,
+					@RequestParam(required = false, defaultValue = "") String taxpayerNameOrId,
+					@RequestParam(required = false, defaultValue = "") String householdTypeLabel) {
 
-        final var householdType = householdTypeRepo.findByLabelIgnoreCase(householdTypeLabel).orElse(null);
-        final var page = householdRepo.findAll(HouseholdRepo.searchSpec(householdLabel, taxpayerNameOrId, householdType), pageable);
-        return page.map(household -> modelMapper.map(household, HouseholdDto.class));
+		final var householdType = householdTypeRepo.findByLabelIgnoreCase(householdTypeLabel).orElse(null);
+		final var page = householdRepo.findAll(HouseholdRepo.searchSpec(householdLabel, taxpayerNameOrId, householdType), pageable);
+		return page.map(household -> modelMapper.map(household, HouseholdDto.class));
 
-    }
+	}
 }

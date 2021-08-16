@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Plugins, StatusBarStyle } from '@capacitor/core';
 import { Deeplinks } from '@ionic-native/deeplinks/ngx';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
 import { NavController, Platform } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { AuthService } from './auth/auth.service';
@@ -80,8 +81,7 @@ export class AppComponent implements OnInit, OnDestroy {
     console.log('PLATFORMS: ' + this.platform.platforms());
     if (this.platform.is('capacitor')) {
       this.setupDeeplinks();
-      const { SplashScreen, StatusBar } = Plugins;
-      StatusBar.setStyle({ style: StatusBarStyle.Light });
+      StatusBar.styleLightContent();
       SplashScreen.hide();
     }
 

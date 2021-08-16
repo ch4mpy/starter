@@ -15,8 +15,8 @@ import { Sort } from './sort';
 
 
 export interface PageHouseholdDto { 
-    totalPages?: number;
     totalElements?: number;
+    totalPages?: number;
     number?: number;
     size?: number;
     content?: Array<HouseholdDto>;

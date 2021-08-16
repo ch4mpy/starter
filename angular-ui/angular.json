@@ -161,8 +161,8 @@
               "browserTarget": "starter-ui:build:bravo-ch4mp",
               "host": "bravo-ch4mp",
               "ssl": true,
-              "sslCert": "C:/Users/ch4mp/.ssh/bravo-ch4mp_self_signed.crt",
-              "sslKey": "C:/Users/ch4mp/.ssh/bravo-ch4mp_self_signed_key.pem"
+              "sslCert": "C:/Users/jwaco/.ssh/bravo-ch4mp_self_signed.crt",
+              "sslKey": "C:/Users/jwaco/.ssh/bravo-ch4mp_req_key.pem"
             },
             "prod-android": {
               "browserTarget": "starter-ui:build:prod-android"
