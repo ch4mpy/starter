@@ -19,7 +19,7 @@ import { SettingsService } from './settings.service';
         <ion-item-divider i18n="@@settings-page_api_section-header">URLs des APIs</ion-item-divider>
         <ion-item>
           <ion-label position="floating" i18n="@@settings-page_api_starter">foyers & contribuables</ion-label>
-          <ion-input formControlName="starterBasePath" required></ion-input>
+          <ion-input formControlName="householdsBasePath" required></ion-input>
         </ion-item>
 
         <div *ngIf="currentUser.isAuthenticated()">
@@ -43,7 +43,7 @@ import { SettingsService } from './settings.service';
 })
 export class SettingsPage implements OnInit, OnDestroy {
   settingsForm = new FormGroup({
-    starterBasePath: new FormControl(null, [Validators.required]),
+    householdsBasePath: new FormControl(null, [Validators.required]),
   });
 
   private settingsFormValueSubscription: Subscription;
@@ -55,10 +55,10 @@ export class SettingsPage implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    await this.settings.getHouseholdsApiUrl().then(url => this.settingsForm.get('starterBasePath').setValue(url));
+    await this.settings.getHouseholdsApiUrl().then(url => this.settingsForm.get('householdsBasePath').setValue(url));
     
     this.settingsFormValueSubscription = this.settingsForm.valueChanges.subscribe(form => {
-      this.settings.setHouseholdsApiUrl(form.starterBasePath);
+      this.settings.setHouseholdsApiUrl(form.householdsBasePath);
     });
   }
 

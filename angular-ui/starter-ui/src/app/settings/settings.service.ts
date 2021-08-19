@@ -16,13 +16,13 @@ export class SettingsService {
   }
 
   async getHouseholdsApiUrl(): Promise<string> {
-    const url = await this.storage.get(SettingsService.CITIZEN_API_URL_BASE_PATH_KEY);
+    const url = await this.storage.get(SettingsService.HOUSEHOLDS_API_URL_BASE_PATH_KEY);
     return url || this.householdsApi.configuration.basePath;
   }
 
   setHouseholdsApiUrl(url: string) {
-    return this.storage.set(SettingsService.CITIZEN_API_URL_BASE_PATH_KEY, url);
+    return this.storage.set(SettingsService.HOUSEHOLDS_API_URL_BASE_PATH_KEY, url);
   }
 
-  private static readonly CITIZEN_API_URL_BASE_PATH_KEY = "householdsApiBasePath";
+  private static readonly HOUSEHOLDS_API_URL_BASE_PATH_KEY = "householdsApiBasePath";
 }

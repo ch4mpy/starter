@@ -12,7 +12,6 @@
 	"cordova": {},
 	"server": {
 		"hostname": "bravo-ch4mp",
-		"androidScheme": "https",
-		"url": "https://bravo-ch4mp:8100"
+		"androidScheme": "https"
 	}
 }
