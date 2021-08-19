@@ -1,30 +1,32 @@
 # Starter project for spring-boot & Ionic-Angular
-Mono repo for both:
+Mono repo for:
 - spring-boot REST micro-services contained in a maven multi-module project (see `api` below)
 - Angular front-end containing libraries and a Ionic application (see `angular-ui` below)
 
 The aim here is to go further than most "getting-started" guides with following stuff ready:
 - mono-repo but hight modularity from start
 - all traffic over https, even on dev machine or inside Docker (and K8s)
-- security with OpenID on both resource-server (REST APIs) and client (Angular app). I use Keycloak as authorisation-server, but switch to another should be easy
+- security with OpenID on both resource-server (REST APIs) and client (Angular app). Default authorisation server is Auth0, but it's just a matter of configuration to switch to Keycloak, MS Identity Server or whatever
 - spring-security annotations
 - no session (use OAuth2 token instead)
-- API documented with Swagger
+- API documented with OpenAPI (Swagger)
 - client-side lib generated from OpenAPI spec => UI code consumes strongly typed payloads
 - persitent data access with spring-data
-- REST API services packaging as runnable jars, but also "java" Docker container and (soon) "native" Docker container
+- REST API services packaging as runnable jars, but also "java" Docker container and GraalVM "native" Docker container
 - UI packaging as web app as well as Android and iOS apps
 - both servlet (with JPA) and fully reactive (webflux with R2DBC) API samples
 
 
 ## Requirements
 - bash prompt with git on the classpath (on Windows, Git bash is perfect)
-- JDK 11 or above
+- JDK 16 or above
 - Node LTS. You might use nvm to manage node version if you need other versions vor other projects
 - Docker and Kubernetes (Docker Desktop is just fine)
 - SSL certificate for your dev machine (see below to generate a self-signed one)
-- Keycloak with a `starter` client. See [Keycloak doc](https://www.keycloak.org/docs/latest/server_installation/#_setting_up_ssl) for configuring your SLL certificate
-- PostrgeSQL or any other relational DB with a `starter` db and `starter` user. It should be possible to connect to DB from docker containers.
+- access to a relational DB
+  * a local Postgresql instance with a `starter` db and `starter` user is fine. Do not forget to check in `pg_hba.conf` that it's be possible to connect to DB from docker containers / k8s nodes.
+  * a free instance from [elephantsql.com](https://elephantsql.com) works too. Just activate `elephant` profile (after editing `application.properties` files with the username you got from elephantsql.com)
+  * any other relational DB ... given you edit configuration
 - Following environment variables:
 ``` bash
 # ~/.bashrc
@@ -38,6 +40,8 @@ export HOST_IP=`ip -f inet -o addr show wlp4s0 | cut -d\  -f 7 | cut -d/ -f 1`
 ```
 - openssl if you need to generate self-signed SSL certificate (Git bash includes it)
 
+I defaulted OpenID authorisation server to an [Auth0](https://auth0.com) free plan.
+I also provide with a `keycloak` profile to switch from Auth0 in the cloud to a local Keycloak instance. This requires quite some configuration both on Keycloak instance (to add roles to tokens) and `application.properties`.
 
 ## Content
 
@@ -77,8 +81,8 @@ You might get OAuth2 token endpoints from Keycloak from an URI like https://${HO
 ``` bash
 git clone https://github.com/ch4mpy/starter.git
 cd starter/api
-cp ~/.ssh/${HOSTNAME}_self_signed.jks ./webmvc/starter-api-webmvc/src/main/resources/
-cp ~/.ssh/${HOSTNAME}_self_signed.jks ./webflux/starter-api-webflux/src/main/resources/
+cp ~/.ssh/${HOSTNAME}_self_signed.jks ./webmvc/starter-api-webmvc/src/main/resources/self_signed.jks
+cp ~/.ssh/${HOSTNAME}_self_signed.jks ./webflux/starter-api-webflux/src/main/resources/self_signed.jks
 cp ~/.ssh/${HOSTNAME}_self_signed.pem ./bindings/ca-certificates/
 ```
 
@@ -98,9 +102,22 @@ Edit `webmvc/starter-api-webmvc/src/k8s/starter-api-webmvc-deployment.yaml` and 
 ./mvnw clean package
 ```
 
-#### `-Pbuild-image` => Docker regular java container
+#### `build-image` => Docker containers with regular java app
 ``` bash
 mvn clean package -Pbuild-image
+```
+
+#### `build-native-image` => Docker containers with Graalvm native image
+Native image is build inside docker containers. Network eavy as GraalVM is downloaded at each build.
+Generate
+``` bash
+mvn clean package -Pbuild-native-image
+```
+
+#### `native` => Docker containers with Graalvm native image
+Requires Graalvm & native build-tools to be installed on the machine, but saves GraalVM is download at each build.
+``` bash
+mvn clean package -Pnative
 ```
 
 ### Run
@@ -112,15 +129,16 @@ java -jar webflux/starter-api-webflux/target/starter-api-webflux-0.0.1-SNAPSHOT.
 ```
 
 #### docker
+Depending which DB setup you chose, you might use `elephant` instead of `$HOSTNAME-db` profile
 ``` bash
 docker rm /tarter-api-webmvc
 docker rm /tarter-api-webflux
 docker run \
-  --add-host $HOSTNAME:$HOST_IP \
+  --add-xhost $HOSTNAME:$HOST_IP \
   -e SPRING_DATASOURCE_PASSWORD=$SPRING_DATASOURCE_PASSWORD \
   -e SERVER_SSL_KEY_PASSWORD=$SERVER_SSL_KEY_PASSWORD \
   -e SERVER_SSL_KEY_STORE_PASSWORD=$SERVER_SSL_KEY_STORE_PASSWORD \
-  -e SPRING_PROFILES_ACTIVE=$HOSTNAME \
+  -e SPRING_PROFILES_ACTIVE=$HOSTNAME-db \
   -p 4210:4210 \
   --name starter-api-webmvc \
   -t starter-api-webmvc:0.0.1-SNAPSHOT &
@@ -129,16 +147,17 @@ docker run \
   -e SPRING_R2DBC_PASSWORD=$SPRING_R2DBC_PASSWORD \
   -e SERVER_SSL_KEY_PASSWORD=$SERVER_SSL_KEY_PASSWORD \
   -e SERVER_SSL_KEY_STORE_PASSWORD=$SERVER_SSL_KEY_STORE_PASSWORD \
-  -e SPRING_PROFILES_ACTIVE=$HOSTNAME \
+  -e SPRING_PROFILES_ACTIVE=$HOSTNAME-db \
   -p 4310:4310 \
   --name starter-api-webflux \
   -t starter-api-webflux:0.0.1-SNAPSHOT &
 ```
 
 #### K8s
+Depending which DB setup you chose, you might use `elephant` instead of `${HOSTNAME}-db` profile
 ``` bash
 kubectl create configmap starter-api \
-  --from-literal spring.profiles.active="kubernetes,${HOSTNAME}"
+  --from-literal spring.profiles.active="kubernetes,${HOSTNAME}-db"
 kubectl create secret generic starter-api \
   --from-literal server.ssl.key.password=${SERVER_SSL_KEY_PASSWORD} \
   --from-literal server.ssl.key-store.password=${SERVER_SSL_KEY_STORE_PASSWORD} \

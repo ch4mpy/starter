@@ -22,17 +22,18 @@
 	</modules>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>16</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<modelmapper.version>2.3.9</modelmapper.version>
 		<springdoc-openapi.version>1.5.10</springdoc-openapi.version>
 		<springdoc-openapi-maven-plugin.version>1.3</springdoc-openapi-maven-plugin.version>
-		<integration-tests.host>localhost</integration-tests.host>
-		<com.c4-soft.springaddons.version>2.5.6</com.c4-soft.springaddons.version>
+		<springdoc-openapi.output-dir>${project.basedir}</springdoc-openapi.output-dir>
+		<integration-tests.hostname>${env.HOSTNAME}</integration-tests.hostname>
+		<com.c4-soft.springaddons.version>2.6.0</com.c4-soft.springaddons.version>
 
-		<spring-native.version>0.10.2</spring-native.version>
-		<native.buildtools.version>0.9.2</native.buildtools.version>
+		<spring-native.version>0.10.3-SNAPSHOT</spring-native.version>
+		<native.buildtools.version>0.9.4</native.buildtools.version>
 		<repackage.classifier />
 		<builder>paketobuildpacks/builder:tiny</builder>
 		<ca-certificates.binding>${project.basedir}/bindings/ca-certificates</ca-certificates.binding>
@@ -155,6 +156,20 @@
 			<releases>
 				<enabled>false</enabled>
 			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>graalvm-snapshots</id>
+			<name>Graalvm Snapshots</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
 
@@ -268,7 +283,7 @@
 							<artifactId>native-maven-plugin</artifactId>
 							<version>${native.buildtools.version}</version>
 							<configuration>
-								<!-- ... -->
+								<!-- https://graalvm.github.io/native-build-tools/0.9.3/maven-plugin.html -->
 							</configuration>
 							<executions>
 								<execution>
@@ -293,6 +308,25 @@
 		</profile>
 		<profile>
 			<id>openapi</id>
+			<dependencyManagement>
+				<dependencies>
+					<dependency>
+						<groupId>org.springdoc</groupId>
+						<artifactId>springdoc-openapi-security</artifactId>
+						<version>${springdoc-openapi.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.springdoc</groupId>
+						<artifactId>springdoc-openapi-ui</artifactId>
+						<version>${springdoc-openapi.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.springdoc</groupId>
+						<artifactId>springdoc-openapi-webflux-ui</artifactId>
+						<version>${springdoc-openapi.version}</version>
+					</dependency>
+				</dependencies>
+			</dependencyManagement>
 			<build>
 				<pluginManagement>
 					<plugins>
@@ -300,17 +334,10 @@
 							<groupId>org.springdoc</groupId>
 							<artifactId>springdoc-openapi-maven-plugin</artifactId>
 							<version>${springdoc-openapi-maven-plugin.version}</version>
-							<dependencies>
-								<dependency>
-									<groupId>org.springdoc</groupId>
-									<artifactId>springdoc-openapi-security</artifactId>
-									<version>${springdoc-openapi.version}</version>
-								</dependency>
-							</dependencies>
 							<configuration>
-								<apiDocsUrl>https://${integration-tests.host}:${integration-tests.port}/v3/api-docs</apiDocsUrl>
+								<apiDocsUrl>https://${integration-tests.hostname}:${integration-tests.port}/v3/api-docs</apiDocsUrl>
 								<outputFileName>${project.artifactId}.json</outputFileName>
-								<outputDir>../../..</outputDir>
+								<outputDir>${springdoc-openapi.output-dir}</outputDir>
 								<skip>false</skip>
 							</configuration>
 							<executions>

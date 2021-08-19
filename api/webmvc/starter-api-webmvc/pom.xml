@@ -142,16 +142,25 @@
 			<id>openapi</id>
 			<properties>
 				<integration-tests.port>4210</integration-tests.port>
+				<springdoc-openapi.output-dir>${project.parent.parent.basedir}/..</springdoc-openapi.output-dir>
 			</properties>
+			<dependencies>
+				<dependency>
+					<groupId>org.springdoc</groupId>
+					<artifactId>springdoc-openapi-ui</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.springdoc</groupId>
+					<artifactId>springdoc-openapi-security</artifactId>
+				</dependency>
+			</dependencies>
 			<build>
-				<pluginManagement>
-					<plugins>
-						<plugin>
-							<groupId>org.springdoc</groupId>
-							<artifactId>springdoc-openapi-maven-plugin</artifactId>
-						</plugin>
-					</plugins>
-				</pluginManagement>
+				<plugins>
+					<plugin>
+						<groupId>org.springdoc</groupId>
+						<artifactId>springdoc-openapi-maven-plugin</artifactId>
+					</plugin>
+				</plugins>
 			</build>
 		</profile>
 	</profiles>

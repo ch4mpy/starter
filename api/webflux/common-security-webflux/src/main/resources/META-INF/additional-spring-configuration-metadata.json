@@ -1,5 +1,5 @@
 {"properties": [{
-  "name": "com.c4-soft.security.oauth2.client-id",
+  "name": "com.c4-soft.security.keycloak.client-id",
   "type": "java.lang.String",
   "description": "OAuth2 client ID as declared on Authorization-server"
 },{
