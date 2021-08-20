@@ -32,7 +32,7 @@
 		<integration-tests.hostname>${env.HOSTNAME}</integration-tests.hostname>
 		<com.c4-soft.springaddons.version>2.6.1</com.c4-soft.springaddons.version>
 
-		<spring-native.version>0.10.3-SNAPSHOT</spring-native.version>
+		<spring-native.version>0.10.4-SNAPSHOT</spring-native.version>
 		<native.buildtools.version>0.9.4</native.buildtools.version>
 		<repackage.classifier />
 		<builder>paketobuildpacks/builder:tiny</builder>
