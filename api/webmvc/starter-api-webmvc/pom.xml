@@ -121,8 +121,15 @@
 		</profile>
 		<profile>
 			<id>native</id>
+			<properties>
+				<exec.mainClass>com.c4_soft.starter.StarterApiApplication</exec.mainClass>
+			</properties>
 			<build>
 				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-shade-plugin</artifactId>
+					</plugin>
 					<plugin>
 						<groupId>org.graalvm.buildtools</groupId>
 						<artifactId>native-maven-plugin</artifactId>

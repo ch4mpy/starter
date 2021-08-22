@@ -131,10 +131,12 @@ java -jar webflux/starter-api-webflux/target/starter-api-webflux-0.0.1-SNAPSHOT.
 #### docker
 Depending which DB setup you chose, you might use `elephant` instead of `$HOSTNAME-db` profile
 ``` bash
-docker rm /tarter-api-webmvc
-docker rm /tarter-api-webflux
+docker stop starter-api-webmvc
+docker rm starter-api-webmvc
+docker stop starter-api-webflux
+docker rm starter-api-webflux
 docker run \
-  --add-xhost $HOSTNAME:$HOST_IP \
+  --add-host $HOSTNAME:$HOST_IP \
   -e SPRING_DATASOURCE_PASSWORD=$SPRING_DATASOURCE_PASSWORD \
   -e SERVER_SSL_KEY_PASSWORD=$SERVER_SSL_KEY_PASSWORD \
   -e SERVER_SSL_KEY_STORE_PASSWORD=$SERVER_SSL_KEY_STORE_PASSWORD \
