@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
@@ -23,26 +22,21 @@
 	</modules>
 
 	<properties>
-		<java.version>16</java.version>
+		<java.version>11</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<modelmapper.version>2.3.9</modelmapper.version>
 		<springdoc-openapi.version>1.5.10</springdoc-openapi.version>
-		<springdoc-openapi-maven-plugin.version>1.3
-		</springdoc-openapi-maven-plugin.version>
-		<springdoc-openapi.output-dir>${project.basedir}
-		</springdoc-openapi.output-dir>
-		<integration-tests.hostname>${env.HOSTNAME}
-		</integration-tests.hostname>
-		<com.c4-soft.springaddons.version>2.6.1
-		</com.c4-soft.springaddons.version>
+		<springdoc-openapi-maven-plugin.version>1.3</springdoc-openapi-maven-plugin.version>
+		<springdoc-openapi.output-dir>${project.basedir}</springdoc-openapi.output-dir>
+		<integration-tests.hostname>${env.HOSTNAME}</integration-tests.hostname>
+		<com.c4-soft.springaddons.version>2.6.1</com.c4-soft.springaddons.version>
 
 		<spring-native.version>0.10.4-SNAPSHOT</spring-native.version>
 		<native.buildtools.version>0.9.4-SNAPSHOT</native.buildtools.version>
 		<repackage.classifier />
 		<builder>paketobuildpacks/builder:tiny</builder>
-		<ca-certificates.binding>${project.basedir}/bindings/ca-certificates
-		</ca-certificates.binding>
+		<ca-certificates.binding>${project.basedir}/bindings/ca-certificates</ca-certificates.binding>
 	</properties>
 
 	<dependencyManagement>
@@ -162,68 +156,6 @@
 		</pluginManagement>
 	</build>
 
-	<repositories>
-		<repository>
-			<id>spring-releases</id>
-			<name>Spring Releases</name>
-			<url>https://repo.spring.io/release</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>spring-snapshots</id>
-			<name>Spring Snapshots</name>
-			<url>https://repo.spring.io/snapshot</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>graalvm-native-build-tools-snapshots</id>
-			<name>GraalVM native-build-tools Snapshots</name>
-			<url>https://raw.githubusercontent.com/graalvm/native-build-tools/snapshots
-			</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>graalvm-native-build-tools-snapshots</id>
-			<name>GraalVM native-build-tools Snapshots</name>
-			<url>https://raw.githubusercontent.com/graalvm/native-build-tools/snapshots
-			</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-		<pluginRepository>
-			<id>spring-releases</id>
-			<name>Spring Releases</name>
-			<url>https://repo.spring.io/release</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
-		<pluginRepository>
-			<id>spring-snapshots</id>
-			<name>Spring Snapshots</name>
-			<url>https://repo.spring.io/snapshot</url>
-		</pluginRepository>
-	</pluginRepositories>
-
 	<profiles>
 		<profile>
 			<id>build-image</id>
@@ -304,14 +236,15 @@
 				<!-- Avoid a clash between Spring Boot repackaging and native-maven-plugin -->
 				<repackage.classifier>exec</repackage.classifier>
 			</properties>
-			<dependencies>
-				<dependency>
-					<groupId>org.graalvm.buildtools</groupId>
-					<artifactId>junit-platform-native</artifactId>
-					<version>${native.buildtools.version}</version>
-					<scope>test</scope>
-				</dependency>
-			</dependencies>
+			<dependencyManagement>
+				<dependencies>
+					<dependency>
+						<groupId>org.graalvm.buildtools</groupId>
+						<artifactId>junit-platform-native</artifactId>
+						<version>${native.buildtools.version}</version>
+					</dependency>
+				</dependencies>
+			</dependencyManagement>
 			<build>
 				<pluginManagement>
 					<plugins>
@@ -464,5 +397,67 @@
 			</build>
 		</profile>
 	</profiles>
+
+	<repositories>
+		<repository>
+			<id>spring-releases</id>
+			<name>Spring Releases</name>
+			<url>https://repo.spring.io/release</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>https://repo.spring.io/snapshot</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>graalvm-native-build-tools-snapshots</id>
+			<name>GraalVM native-build-tools Snapshots</name>
+			<url>https://raw.githubusercontent.com/graalvm/native-build-tools/snapshots
+			</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>graalvm-native-build-tools-snapshots</id>
+			<name>GraalVM native-build-tools Snapshots</name>
+			<url>https://raw.githubusercontent.com/graalvm/native-build-tools/snapshots
+			</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>spring-releases</id>
+			<name>Spring Releases</name>
+			<url>https://repo.spring.io/release</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>https://repo.spring.io/snapshot</url>
+		</pluginRepository>
+	</pluginRepositories>
 
 </project>

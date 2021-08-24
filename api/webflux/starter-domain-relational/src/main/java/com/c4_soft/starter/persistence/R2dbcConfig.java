@@ -2,9 +2,9 @@ package com.c4_soft.starter.persistence;
 
 import java.util.List;
 
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.r2dbc.convert.R2dbcCustomConversions;
+import org.springframework.data.r2dbc.config.AbstractR2dbcConfiguration;
 
 import com.c4_soft.starter.persistence.intervention.FaultAttachmentRepo.FaulAttachmenttWritingConverter;
 import com.c4_soft.starter.persistence.intervention.FaultAttachmentRepo.FaultAttachmentReadingConverter;
@@ -13,18 +13,29 @@ import com.c4_soft.starter.persistence.intervention.FaultRepo.FaultWritingConver
 import com.c4_soft.starter.persistence.user.LifixUserRepo.LifixUserReadingConverter;
 import com.c4_soft.starter.persistence.user.LifixUserRepo.LifixUserWritingConverter;
 
-@Configuration
-public class R2dbcConfig {
+import io.r2dbc.spi.ConnectionFactories;
+import io.r2dbc.spi.ConnectionFactory;
 
-    @Bean
-    protected R2dbcCustomConversions getCustomConverters() {
-        return new R2dbcCustomConversions(
-                List.of(
-                        new FaultReadingConverter(),
-                        new FaultWritingConverter(),
-                        new FaultAttachmentReadingConverter(),
-                        new FaulAttachmenttWritingConverter(),
-                        new LifixUserReadingConverter(),
-                        new LifixUserWritingConverter()));
-    }
+@Configuration
+public class R2dbcConfig extends AbstractR2dbcConfiguration {
+
+	@Value("spring.r2dbc.url")
+	private String r2dbcUrl;
+
+	@Override
+	public ConnectionFactory connectionFactory() {
+		return ConnectionFactories.get(r2dbcUrl);
+	}
+
+	@Override
+	protected List<Object> getCustomConverters() {
+		return List
+				.of(
+						new FaultReadingConverter(),
+						new FaultWritingConverter(),
+						new FaultAttachmentReadingConverter(),
+						new FaulAttachmenttWritingConverter(),
+						new LifixUserReadingConverter(),
+						new LifixUserWritingConverter());
+	}
 }

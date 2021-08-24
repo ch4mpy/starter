@@ -124,6 +124,13 @@
 			<properties>
 				<exec.mainClass>com.c4_soft.starter.StarterApiApplication</exec.mainClass>
 			</properties>
+			<dependencies>
+				<dependency>
+					<groupId>org.graalvm.buildtools</groupId>
+					<artifactId>junit-platform-native</artifactId>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
 			<build>
 				<plugins>
 					<plugin>

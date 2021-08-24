@@ -8,17 +8,19 @@ import org.springframework.nativex.hint.ProxyBits;
 import com.c4_soft.commons.security.WebSecurityConfig;
 import com.c4_soft.commons.web.CommonExceptionHandlers;
 import com.c4_soft.lifix.common.storage.FileSystemStorageService;
+import com.c4_soft.starter.persistence.R2dbcConfig;
 
 @SpringBootApplication(scanBasePackageClasses = {
-        FaultsEndpointsApplication.class,
-        FileSystemStorageService.class,
-        WebSecurityConfig.class,
-        CommonExceptionHandlers.class })
-@AotProxyHint(targetClass=com.c4_soft.starter.web.FaultController.class, proxyFeatures = ProxyBits.IS_STATIC)
+		FaultsEndpointsApplication.class,
+		FileSystemStorageService.class,
+		WebSecurityConfig.class,
+		CommonExceptionHandlers.class,
+		R2dbcConfig.class })
+@AotProxyHint(targetClass = com.c4_soft.starter.web.FaultController.class, proxyFeatures = ProxyBits.IS_STATIC)
 public class FaultsEndpointsApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(FaultsEndpointsApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(FaultsEndpointsApplication.class, args);
+	}
 
 }
