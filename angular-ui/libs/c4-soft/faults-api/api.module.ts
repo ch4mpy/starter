@@ -2,7 +2,7 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
-import { FaultControllerRestClient } from './api/faultController.service';
+import { FaultsControllerRestClient } from './api/faultsController.service';
 
 @NgModule({
   imports:      [],

@@ -1,6 +1,6 @@
 api.module.ts
 api/api.ts
-api/householdController.service.ts
+api/householdsController.service.ts
 configuration.ts
 encoder.ts
 index.ts

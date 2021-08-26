@@ -16,9 +16,11 @@
 	<modules>
 		<module>common-exception-webmvc</module>
 		<module>common-security-webmvc</module>
-		<module>starter-domain-jpa</module>
+		<module>domain-cafeskifo</module>
+		<module>domain-trashbins</module>
 
-		<module>starter-api-webmvc</module>
+		<module>households-api</module>
+		<module>orders-api</module>
 	</modules>
 
 	<dependencyManagement>
@@ -35,7 +37,12 @@
 			</dependency>
 			<dependency>
 				<groupId>com.c4-soft.starter</groupId>
-				<artifactId>starter-domain-jpa</artifactId>
+				<artifactId>domain-cafeskifo</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.c4-soft.starter</groupId>
+				<artifactId>domain-trashbins</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 

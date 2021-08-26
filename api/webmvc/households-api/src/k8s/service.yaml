@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: households-api
+  name: households-api
+spec:
+  ports:
+  - name: 4201-4201
+    port: 4201
+    protocol: TCP
+    targetPort: 4201
+  selector:
+    app: households-api
+  type: LoadBalancer
+status:
+  loadBalancer: {}

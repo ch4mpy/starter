@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { HouseholdControllerRestClient } from '@c4-soft/households-api';
+import { HouseholdsControllerRestClient } from '@c4-soft/households-api';
 
 @Injectable({ providedIn: 'root' })
 export class SettingsService {
   constructor(
     private storage: Storage,
-    private householdsApi: HouseholdControllerRestClient,
+    private householdsApi: HouseholdsControllerRestClient,
   ) {
     this.init();
   }

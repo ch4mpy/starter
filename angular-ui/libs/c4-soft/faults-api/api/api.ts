@@ -1,3 +1,3 @@
-export * from './faultController.service';
-import { FaultControllerRestClient } from './faultController.service';
-export const APIS = [FaultControllerRestClient];
+export * from './faultsController.service';
+import { FaultsControllerRestClient } from './faultsController.service';
+export const APIS = [FaultsControllerRestClient];

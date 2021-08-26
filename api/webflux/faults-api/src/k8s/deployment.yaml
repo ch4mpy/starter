@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: faults-api
+  name: faults-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: faults-api
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: faults-api
+    spec:
+      hostAliases:
+        - ip: 192.168.1.59
+          hostnames:
+            - "bravo-ch4mp"
+      containers:
+      - image: faults-api:0.0.1-SNAPSHOT
+        name: api
+        env:
+          - name: SPRING_PROFILES_ACTIVE
+            valueFrom:
+              configMapKeyRef:
+                name: starter-api
+                key: spring.profiles.active
+          - name: SPRING_R2DBC_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: starter-api
+                key: spring.r2dbc.password
+          - name: SERVER_SSL_KEY_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: starter-api
+                key: server.ssl.key.password
+          - name: SERVER_SSL_KEY_STORE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: starter-api
+                key: server.ssl.key-store.password
+        readinessProbe:
+          httpGet:
+            scheme: HTTPS
+            path: /actuator/health/readiness
+            port: 4203
+        livenessProbe:
+          httpGet:
+            scheme: HTTPS
+            path: /actuator/health/liveness
+            port: 4203
+        lifecycle:
+          preStop:
+            exec:
+              command: ["sh", "-c", "sleep 10"]
+        resources: {}
+
+status: {}

@@ -1,6 +1,6 @@
 api.module.ts
 api/api.ts
-api/faultController.service.ts
+api/faultsController.service.ts
 configuration.ts
 encoder.ts
 index.ts

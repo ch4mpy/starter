@@ -257,6 +257,26 @@
           }
         }
       }
+    },
+    "@c4-soft/orders-api": {
+      "projectType": "library",
+      "root": "libs/c4-soft/orders-api",
+      "sourceRoot": "libs/c4-soft/orders-api/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "libs/c4-soft/orders-api/tsconfig.lib.json",
+            "project": "libs/c4-soft/orders-api/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/c4-soft/orders-api/tsconfig.lib.prod.json"
+            }
+          }
+        }
+      }
     }
   },
   "defaultProject": "starter-ui",

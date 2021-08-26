@@ -16,9 +16,9 @@
 	<modules>
 		<module>common-exception-webflux</module>
 		<module>common-security-webflux</module>
-		<module>starter-domain-relational</module>
+		<module>domain-lifix</module>
 
-		<module>starter-api-webflux</module>
+		<module>faults-api</module>
 	</modules>
 
 	<dependencyManagement>
@@ -35,7 +35,7 @@
 			</dependency>
 			<dependency>
 				<groupId>com.c4-soft.starter</groupId>
-				<artifactId>starter-domain-relational</artifactId>
+				<artifactId>domain-lifix</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 

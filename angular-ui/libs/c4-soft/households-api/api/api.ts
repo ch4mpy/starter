@@ -1,3 +1,3 @@
-export * from './householdController.service';
-import { HouseholdControllerRestClient } from './householdController.service';
-export const APIS = [HouseholdControllerRestClient];
+export * from './householdsController.service';
+import { HouseholdsControllerRestClient } from './householdsController.service';
+export const APIS = [HouseholdsControllerRestClient];

@@ -2,7 +2,7 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
-import { HouseholdControllerRestClient } from './api/householdController.service';
+import { HouseholdsControllerRestClient } from './api/householdsController.service';
 
 @NgModule({
   imports:      [],
