@@ -5,8 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.data.envers.repository.config.EnableEnversRepositories;
+import org.springframework.data.envers.repository.support.EnversRevisionRepositoryFactoryBean;
 import org.springframework.nativex.hint.AotProxyHint;
 import org.springframework.nativex.hint.ProxyBits;
+import org.springframework.nativex.hint.TypeHint;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.c4_soft.commons.security.WebSecurityConfig;
@@ -19,6 +21,7 @@ import com.c4_soft.starter.cafeskifo.persistence.SecuredOrderRepo;
 @EnableTransactionManagement
 @EnableEnversRepositories(basePackageClasses = { SecuredOrderRepo.class })
 @AotProxyHint(targetClass = com.c4_soft.starter.web.OrdersController.class, proxyFeatures = ProxyBits.IS_STATIC)
+@TypeHint(types = EnversRevisionRepositoryFactoryBean.class)
 public class OrdersEndpointApplication {
 
 	public static void main(String[] args) {

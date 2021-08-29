@@ -115,13 +115,17 @@ Generate
 mvn clean package -Pbuild-native-image -DskipTests
 ```
 
-#### `native` => Docker containers with Graalvm native image
-Requires Graalvm & native build-tools to be installed on the machine, but saves GraalVM is download at each build.
+#### `native` => Graalvm native executable for the building platform
+Requires Graalvm & native build-tools to be installed on the machine.
 ``` bash
 mvn clean package -Pnative -DskipTests
 ```
 
 ### Run
+APIs are served at:
+- https://bravo-ch4mp:4201/households
+- https://bravo-ch4mp:4202/orders
+- https://bravo-ch4mp:4203/faults
 
 #### fat-jar
 ``` bash
@@ -154,7 +158,7 @@ docker run \
 
 docker run \
   --add-host $HOSTNAME:$HOST_IP \
-  -e SPRING_R2DBC_PASSWORD=$SPRING_R2DBC_PASSWORD \
+  -e SPRING_DATASOURCE_PASSWORD=$SPRING_DATASOURCE_PASSWORD \
   -e SERVER_SSL_KEY_PASSWORD=$SERVER_SSL_KEY_PASSWORD \
   -e SERVER_SSL_KEY_STORE_PASSWORD=$SERVER_SSL_KEY_STORE_PASSWORD \
   -e SPRING_PROFILES_ACTIVE=$HOSTNAME-db \
