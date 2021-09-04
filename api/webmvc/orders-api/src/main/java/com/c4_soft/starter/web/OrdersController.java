@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
@@ -51,6 +52,7 @@ public class OrdersController {
 	}
 
 	@PostMapping
+	@Transactional
 	public ResponseEntity<Long> placeOrder(@Valid @RequestBody OrderCreationRequestDto dto, OidcIdAuthenticationToken auth) {
 		final var order = orderRepo.save(new Order(auth.getToken().getSubject(), dto.getDrink(), dto.getTable()));
 
@@ -58,6 +60,7 @@ public class OrdersController {
 	}
 
 	@DeleteMapping("/{id}")
+	@Transactional
 	public ResponseEntity<?> deleteById(@PathVariable("id") long id) {
 		final var order = getOrderById(id);
 		orderRepo.delete(order);

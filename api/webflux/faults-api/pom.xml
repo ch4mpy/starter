@@ -118,7 +118,7 @@
 		<profile>
 			<id>native</id>
 			<properties>
-				<exec.mainClass>com.c4_soft.starter.FaultsEndpointsApplication</exec.mainClass>
+				<exec.mainClass>com.c4_soft.starter.FaultsEndpointApplication</exec.mainClass>
 			</properties>
 			<dependencies>
 				<dependency>

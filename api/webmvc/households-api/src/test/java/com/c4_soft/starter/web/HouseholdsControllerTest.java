@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.nativex.hint.AccessBits;
 import org.springframework.nativex.hint.TypeHint;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import com.c4_soft.springaddons.security.oauth2.test.annotations.WithMockOidcId;
 import com.c4_soft.springaddons.security.oauth2.test.mockmvc.JwtTestConf;
@@ -36,6 +37,9 @@ class HouseholdsControllerTest {
 
 	@MockBean
 	HouseholdRepo householdRepo;
+
+	@MockBean
+	PlatformTransactionManager transactionManager;
 
 	@Autowired
 	private MockMvcSupport mockMvc;

@@ -30,12 +30,11 @@
 		<springdoc-openapi-maven-plugin.version>1.3</springdoc-openapi-maven-plugin.version>
 		<springdoc-openapi.output-dir>${project.basedir}</springdoc-openapi.output-dir>
 		<integration-tests.hostname>${env.HOSTNAME}</integration-tests.hostname>
-		<com.c4-soft.springaddons.version>2.6.3</com.c4-soft.springaddons.version>
+		<com.c4-soft.springaddons.version>2.6.4</com.c4-soft.springaddons.version>
 
 		<spring-native.version>0.10.4-SNAPSHOT</spring-native.version>
 		<native.buildtools.version>0.9.4-SNAPSHOT</native.buildtools.version>
 		<repackage.classifier />
-		<builder>paketobuildpacks/builder:tiny</builder>
 		<ca-certificates.binding>${project.basedir}/bindings/ca-certificates</ca-certificates.binding>
 	</properties>
 
@@ -173,11 +172,10 @@
 									</goals>
 									<configuration>
 										<image>
+											<builder>paketobuildpacks/builder:base</builder>
 											<bindings>
-												<binding>${ca-certificates.binding}:/platform/bindings/ca-certificates:ro
-												</binding>
+												<binding>${ca-certificates.binding}:/platform/bindings/ca-certificates:ro</binding>
 											</bindings>
-											<pullPolicy>IF_NOT_PRESENT</pullPolicy>
 										</image>
 									</configuration>
 								</execution>
@@ -203,7 +201,10 @@
 									</goals>
 									<configuration>
 										<image>
-											<builder>${builder}</builder>
+											<builder>paketobuildpacks/builder:tiny</builder>
+											<bindings>
+												<binding>${ca-certificates.binding}:/platform/bindings/ca-certificates:ro</binding>
+											</bindings>
 											<env>
 												<BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
 												<BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
@@ -216,10 +217,6 @@
 													--trace-class-initialization=org.springframework.util.unit.DataSize
 												</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
 											</env>
-											<bindings>
-												<binding>${ca-certificates.binding}:/platform/bindings/ca-certificates:ro</binding>
-											</bindings>
-											<pullPolicy>IF_NOT_PRESENT</pullPolicy>
 										</image>
 									</configuration>
 								</execution>

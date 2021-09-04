@@ -125,7 +125,7 @@
 		<profile>
 			<id>native</id>
 			<properties>
-				<exec.mainClass>com.c4_soft.starter.StarterApiApplication</exec.mainClass>
+				<exec.mainClass>com.c4_soft.starter.OrdersEndpointApplication</exec.mainClass>
 			</properties>
 			<dependencies>
 				<dependency>

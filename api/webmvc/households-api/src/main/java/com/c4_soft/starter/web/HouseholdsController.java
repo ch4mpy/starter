@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import javax.transaction.Transactional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/households")
 @RequiredArgsConstructor
+@Transactional
 public class HouseholdsController {
 
 	private final HouseholdTypeRepo householdTypeRepo;
@@ -32,10 +35,7 @@ public class HouseholdsController {
 	private final ModelMapper modelMapper = new ModelMapper();
 
 	@GetMapping("/types")
-	public
-			Collection<
-					HouseholdTypeDto>
-			getAllTypes() {
+	public Collection<HouseholdTypeDto> getAllTypes() {
 		final var householdTypes = householdTypeRepo.findAll();
 		return StreamSupport
 				.stream(householdTypes.spliterator(), false)
@@ -59,14 +59,11 @@ public class HouseholdsController {
 	 */
 	@GetMapping()
 	@PreAuthorize("hasAuthority('CITIZEN_VIEW')")
-	public
-			Page<
-					HouseholdDto>
-			getPage(
-					Pageable pageable,
-					@RequestParam(required = false, defaultValue = "") String householdLabel,
-					@RequestParam(required = false, defaultValue = "") String taxpayerNameOrId,
-					@RequestParam(required = false, defaultValue = "") String householdTypeLabel) {
+	public Page<HouseholdDto> getPage(
+			Pageable pageable,
+			@RequestParam(required = false, defaultValue = "") String householdLabel,
+			@RequestParam(required = false, defaultValue = "") String taxpayerNameOrId,
+			@RequestParam(required = false, defaultValue = "") String householdTypeLabel) {
 
 		final var householdType = householdTypeRepo.findByLabelIgnoreCase(householdTypeLabel).orElse(null);
 		final var page = householdRepo.findAll(HouseholdRepo.searchSpec(householdLabel, taxpayerNameOrId, householdType), pageable);
