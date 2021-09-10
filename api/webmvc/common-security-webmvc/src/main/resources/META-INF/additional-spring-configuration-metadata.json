@@ -1,9 +1,13 @@
 {"properties": [{
-  "name": "com.c4-soft.security.keycloak.client-id",
-  "type": "java.lang.String",
-  "description": "OAuth2 client ID as declared on Authorization-server"
+      "name": "com.c4-soft.starter.keycloak.client-id",
+      "type": "java.lang.String",
+      "description": "OAuth2 client ID as declared on Authorization-server"
 },{
-  "name": "com.c4-soft.security.cors-path",
-  "type": "java.lang.String",
-  "description": "ANT style path for authorized CORS"
+  "name": "com.c4-soft.starter.cors.path",
+  "type": "java.lang.String[]",
+  "description": "Comma separated list of ANT style path for authorized CORS"
+},{
+  "name": "com.c4-soft.starter.cors.allowed-origins",
+  "type": "java.lang.String[]",
+  "description": "Comma separated list of allowed origins"
 }]}
