@@ -14,7 +14,10 @@ The aim here is to go further than most "getting-started" guides with following 
 - persitent data access with spring-data
 - REST API services packaging as runnable jars, but also "java" Docker container and GraalVM "native" Docker container
 - UI packaging as web app as well as Android and iOS apps
-- both servlet (with JPA) and fully reactive (webflux with R2DBC) API samples
+- three different app options:
+  * households-api is servlet / JPA / HATOEAS
+  * orders-API is servlet / JPA / hibernate-envers 
+  * faults-api is fully reactive (webflux with R2DBC)
 
 
 ## Requirements
