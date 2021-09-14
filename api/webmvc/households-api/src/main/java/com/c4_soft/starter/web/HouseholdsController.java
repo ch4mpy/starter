@@ -46,7 +46,9 @@ public class HouseholdsController {
 
 	private final ModelMapper modelMapper = new ModelMapper();
 
-	private final PagedResourcesAssembler<HouseholdDto> pagedHouseholdsAssembler;
+	private final HouseholdAssmebler assembler;
+
+	private final PagedResourcesAssembler<Household> pagedAssembler;
 
 	@GetMapping(path = "/types", produces = { MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 	public CollectionModel<HouseholdTypeDto> getAllTypes() {
@@ -84,9 +86,10 @@ public class HouseholdsController {
 		final var householdType = householdTypeRepo.findByLabelIgnoreCase(householdTypeLabel).orElse(null);
 		final var households = householdRepo.findAll(HouseholdRepo.searchSpec(householdLabel, taxpayerNameOrId, householdType), pageable);
 
-		return pagedHouseholdsAssembler
+		return pagedAssembler
 				.toModel(
-						households.map(household -> modelMapper.map(household, HouseholdDto.class)),
+						households,
+						assembler,
 						linkTo(methodOn(HouseholdsController.class).getPage(pageable, householdLabel, taxpayerNameOrId, householdTypeLabel)).withSelfRel());
 
 	}
