@@ -12,6 +12,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SettingsService } from './settings/settings.service';
 import { AuthConfigModule } from './auth/auth-config.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 export function init(
   platform: Platform,
@@ -31,7 +32,8 @@ export function init(
     AppRoutingModule,
     IonicModule.forRoot(),
     IonicStorageModule.forRoot(),
-    AuthConfigModule
+    AuthConfigModule,
+    BrowserAnimationsModule
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
