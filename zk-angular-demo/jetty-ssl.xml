@@ -7,11 +7,11 @@
 <!-- and either jetty-https.xml or jetty-spdy.xml (but not both)   -->
 <!-- ============================================================= -->
 <Configure id="sslContextFactory" class="org.eclipse.jetty.util.ssl.SslContextFactory">
-  <Set name="KeyStorePath"><Property name="jetty.keystore" default="file:///home/ch4mp/.ssh/bravo-ch4mp_self_signed.jks"/></Set>
-  <Set name="KeyStorePassword"><Property name="jetty.keystore.password" default="qI0ya?#rtrtR"/></Set>
-  <Set name="KeyManagerPassword"><Property name="jetty.keymanager.password" default="qI0ya?#rtrtR"/></Set>
-  <Set name="TrustStorePath"><Property name="jetty.truststore" default="file:///home/ch4mp/.ssh/bravo-ch4mp_self_signed.jks"/></Set>
-  <Set name="TrustStorePassword"><Property name="jetty.truststore.password" default="qI0ya?#rtrtR"/></Set>
+  <Set name="KeyStorePath"><Property name="jetty.keystore" default="file:///C:/users/jwaco/.ssh/bravo-ch4mp_self_signed.jks"/></Set>
+  <Set name="KeyStorePassword"><Property name="jetty.keystore.password" default="Ch4mpSk1pp3r!"/></Set>
+  <Set name="KeyManagerPassword"><Property name="jetty.keymanager.password" default="Ch4mpSk1pp3r!"/></Set>
+  <Set name="TrustStorePath"><Property name="jetty.truststore" default="file:///C:/users/jwaco/.ssh/bravo-ch4mp_self_signed.jks"/></Set>
+  <Set name="TrustStorePassword"><Property name="jetty.truststore.password" default="Ch4mpSk1pp3r!"/></Set>
   <Set name="EndpointIdentificationAlgorithm"></Set>
   <Set name="ExcludeCipherSuites">
     <Array type="String">

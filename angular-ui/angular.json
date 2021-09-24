@@ -361,15 +361,15 @@
             "development": {
               "browserTarget": "zk-angular:build:development",
               "ssl": true,
-              "sslCert": "/home/ch4mp/.ssh/bravo-ch4mp_self_signed.crt",
-              "sslKey": "/home/ch4mp/.ssh/bravo-ch4mp_req_key.pem"
+              "sslCert": "C:/Users/jwaco/.ssh/bravo-ch4mp_self_signed.crt",
+              "sslKey": "C:/Users/jwaco/.ssh/bravo-ch4mp_req_key.pem"
             },
             "bravo-ch4mp": {
               "browserTarget": "zk-angular:build:bravo-ch4mp",
               "host": "bravo-ch4mp",
               "ssl": true,
-              "sslCert": "/home/ch4mp/.ssh/bravo-ch4mp_self_signed.crt",
-              "sslKey": "/home/ch4mp/.ssh/bravo-ch4mp_req_key.pem"
+              "sslCert": "C:/Users/jwaco/.ssh/bravo-ch4mp_self_signed.crt",
+              "sslKey": "C:/Users/jwaco/.ssh/bravo-ch4mp_req_key.pem"
             }
           },
           "defaultConfiguration": "development"

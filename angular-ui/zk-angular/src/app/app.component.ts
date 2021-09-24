@@ -3,7 +3,7 @@ import {
   FaultResponseDto
 } from "@c4-soft/faults-api";
 import {
-  HouseholdControllerRestClient,
+  HouseholdsControllerRestClient,
   HouseholdTypeDto
 } from "@c4-soft/households-api";
 import { ZkService } from "./zk.service";
@@ -84,7 +84,7 @@ export class AppComponent implements OnInit {
   private zk: ZkService;
 
   constructor(
-    private householdsApi: HouseholdControllerRestClient
+    private householdsApi: HouseholdsControllerRestClient
   ) {
     this.zk = new ZkService('zkapp');
   }
