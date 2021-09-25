@@ -375,6 +375,7 @@
 							<configuration>
 								<jvmArguments>
 									-Dspring.application.admin.enabled=true
+									-Dspring.profiles.active=bravo-ch4mp,keycloak
 								</jvmArguments>
 							</configuration>
 							<executions>
