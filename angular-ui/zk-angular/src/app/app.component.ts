@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import {
   FaultResponseDto
 } from "@c4-soft/faults-api";
@@ -78,7 +78,7 @@ import { ZkService } from "./zk.service";
 export class AppComponent implements OnInit {
   cnt = 0;
 
-  householdTypes: HouseholdTypeDto[] = [];
+  householdTypes: Array<HouseholdTypeDto> = [];
   faults: FaultResponseDto[] = [];
 
   private zk: ZkService;
@@ -95,6 +95,11 @@ export class AppComponent implements OnInit {
   }
 
   incrementZk() {
+    var intputElt = document.querySelector('.matriculeInput')as HTMLInputElement;
+    intputElt.value = 'Hacked!';
+    var evt = document.createEvent("HTMLEvents");
+    evt.initEvent("blur", false, true);
+    intputElt.dispatchEvent(evt);
     this.zk.command('increment');
   }
 
@@ -110,6 +115,6 @@ export class AppComponent implements OnInit {
     this.householdsApi
       .getAllTypes()
       .toPromise()
-      .then((types) => (this.householdTypes = types));
+      .then((types) => (this.householdTypes = types._embedded.householdTypes));
   }
 }

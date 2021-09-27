@@ -27,5 +27,8 @@
 git_push.sh
 ng-package.json
 package.json
+package-lock.json
 README.md
 tsconfig.json
+tsconfig.lib.json
+tsconfig.lib.prod.json

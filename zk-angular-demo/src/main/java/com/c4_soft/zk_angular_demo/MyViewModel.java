@@ -12,22 +12,33 @@ import org.zkoss.bind.annotation.ToServerCommand;
 @ToServerCommand({ "init", "increment" })
 public class MyViewModel {
 
-    private int count;
+	private int count;
 
-    @Init
-    @Command
-    @NotifyChange("count")
-    public void init() {
-        count = 100;
-    }
+	private String matricule;
 
-    @Command
-    @NotifyChange("count")
-    public void increment() {
-        ++count;
-    }
+	@Init
+	@Command
+	@NotifyChange("count")
+	public void init() {
+		count = 100;
+	}
 
-    public int getCount() {
-        return count;
-    }
+	@Command
+	@NotifyChange("count")
+	public void increment() {
+		++count;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public String getMatricule() {
+		return matricule;
+	}
+
+	public void setMatricule(String matricule) {
+		System.out.println("Setting matricule with: " + matricule);
+		this.matricule = matricule;
+	}
 }

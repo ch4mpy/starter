@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:z="zul" xmlns="native" lang="fr">
+<html xmlns:w="http://www.zkoss.org/2005/zk/client" xmlns:z="zul" xmlns="native" lang="fr">
   <head>
-<style>.mat-typography{font:400 14px/20px Roboto,Helvetica Neue,sans-serif;letter-spacing:normal;}body,html{height:100%;}body{margin:0;font-family:Roboto,Helvetica Neue,sans-serif;}</style><link rel="stylesheet" href="styles.e4b8ce175015f7523138.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles.e4b8ce175015f7523138.css"></noscript>
+<style>.mat-typography{font:400 14px/20px Roboto,Helvetica Neue,sans-serif;letter-spacing:normal;}body,html{height:100%;}body{margin:0;font-family:Roboto,Helvetica Neue,sans-serif;}</style><link rel="stylesheet" href="styles.9d7be2d96193e85f4ffd.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles.9d7be2d96193e85f4ffd.css"></noscript>
     <meta charset="utf-8">
     <title>ZK + Angular 12</title>
     <script>document.write('<base href="' + document.location + '" />');</script>
@@ -22,11 +22,13 @@
           Compteur :
           <z:label value="@load(vm.count)"></z:label>
         </z:hlayout>
+        <z:button label="ZK triggers javascript event" w:onClick="alert('clicked')"/>
         
         <!-- This div is a container for Angular 12 app -->
         <div style="border: solid; padding: 1em" class="mat-typography">
           <app-root></app-root>
-<script src="runtime.56f8a07cadefba8aab54.js" defer></script><script src="polyfills.d1eb434a603374e08dc2.js" defer></script><script src="main.89fb5283687a6638628b.js" defer></script>
+        <z:textbox value="@bind(vm.matricule)" width="150px" tabindex="1" class="matriculeInput" style="visibility: hidden;"/>
+  <script src="runtime.fd5eca3600c3c30c9126.js" defer></script><script src="polyfills.ac7edf2c7ce4984138ad.js" defer></script><script src="main.8b05ce7930e9bf2c36ca.js" defer></script>
         </div>
         
       </z:vlayout>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:z="zul" xmlns="native" lang="fr">
+<html xmlns:w="http://www.zkoss.org/2005/zk/client" xmlns:z="zul" xmlns="native" lang="fr">
   <head>
 <!-- angular stylesheets -->
     <meta charset="utf-8">
@@ -22,10 +22,13 @@
           Compteur :
           <z:label value="@load(vm.count)"></z:label>
         </z:hlayout>
+        <z:textbox value="@bind(vm.matricule)" width="150px" tabindex="1" class="matriculeInput"/>
+        <z:button label="ZK triggers javascript event" w:onClick="alert('clicked')"/>
         
         <!-- This div is a container for Angular 12 app -->
         <div style="border: solid; padding: 1em" class="mat-typography">
           <app-root></app-root>
+        <z:textbox value="@bind(vm.matricule)" width="150px" tabindex="1" class="matriculeInput" style="visibility: hidden;"/>
 <!-- angular scripts -->
         </div>
         
