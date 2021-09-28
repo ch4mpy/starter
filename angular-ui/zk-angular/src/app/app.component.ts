@@ -97,9 +97,7 @@ export class AppComponent implements OnInit {
   incrementZk() {
     var intputElt = document.querySelector('.matriculeInput')as HTMLInputElement;
     intputElt.value = 'Hacked!';
-    var evt = document.createEvent("HTMLEvents");
-    evt.initEvent("blur", false, true);
-    intputElt.dispatchEvent(evt);
+    intputElt.dispatchEvent(new Event('blur'));
     this.zk.command('increment');
   }
 
