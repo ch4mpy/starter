@@ -32,13 +32,11 @@ public class MyViewModel {
 	}
 
 	public void setMatricule(String matricule) {
-		this.matricule = matricule;
+		this.matricule = matricule + count;
 		if (matricule != null && !matricule.isEmpty()) {
-			System.out.println("Setting matricule with: " + matricule);
-			this.matricule = "";
+			System.out.println("Setting matricule with: " + matricule + count);
+		} else {
+			System.out.println("got empty matricule: " + matricule);
 		}
-	}
-
-	public void logCurrentMatricule() {
 	}
 }

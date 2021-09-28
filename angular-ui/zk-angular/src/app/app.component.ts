@@ -6,7 +6,6 @@ import {
   HouseholdsControllerRestClient,
   HouseholdTypeDto
 } from "@c4-soft/households-api";
-import { ZkService } from "./zk.service";
 
 @Component({
   selector: "app-root",
@@ -81,28 +80,24 @@ export class AppComponent implements OnInit {
   householdTypes: Array<HouseholdTypeDto> = [];
   faults: FaultResponseDto[] = [];
 
-  private zk: ZkService;
-
   constructor(
     private householdsApi: HouseholdsControllerRestClient
-  ) {
-    this.zk = new ZkService('zkapp');
-  }
+  ) {}
 
   ngOnInit(): void {
-    this.zk.after("updateCount", (resp) => this.cnt = resp);
     this.resetZk();
   }
 
   incrementZk() {
-    var intputElt = document.querySelector('.matriculeInput')as HTMLInputElement;
+    var intputElt = document.querySelector('.matriculeTextbox') as HTMLInputElement;
     intputElt.value = 'Hacked!';
-    intputElt.dispatchEvent(new Event('blur'));
-    this.zk.command('increment');
+    intputElt.dispatchEvent(new FocusEvent('blur'));
+    
+    var incrementBtn = document.querySelector('.incrementButton') as HTMLButtonElement;
+    incrementBtn.click();
   }
 
   resetZk() {
-    this.zk.command('init');
   }
 
   clearHousehodTypes() {

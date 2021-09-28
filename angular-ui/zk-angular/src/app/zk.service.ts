@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 
 declare var zkbind: any
 
+/**
+ * Requires ZK version 8 or above
+ */
 export class ZkService {
   private zk: {
     command: (name: string) => void,

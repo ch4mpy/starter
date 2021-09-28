@@ -20,21 +20,30 @@
       id="zkapp"
       title="Application ZK"
       apply="org.zkoss.bind.BindComposer"
-      viewModel="@id('vm')@init('com.c4_soft.zk_angular_demo.MyViewModel')">
+      viewModel="@id('vm') @init('com.c4_soft.zk_angular_demo.MyViewModel')">
       <z:vlayout>
-        <z:hlayout>
-          Compteur :
-          <z:label value="@load(vm.count)"></z:label>
-        </z:hlayout>
+      	<z:vlayout>
+	        <z:hlayout>
+	          Compteur :
+	          <z:label value="@init(vm.count) @load(vm.count)" class="matriculeInput"></z:label>
+	        </z:hlayout>
+	        <z:hlayout>
+	          Matricule :
+	          <z:label value="@init(vm.matricule) @load(vm.matricule)"></z:label>
+	        </z:hlayout>
+        </z:vlayout>
         <z:button label="ZK triggers javascript event" w:onClick="alert('clicked')"/>
         
         <!-- This div is a container for Angular 12 app -->
         <div style="border: solid; padding: 1em" class="mat-typography">
           <app-root></app-root>
-            <script src="zk-angular/runtime.fd5eca3600c3c30c9126.js"></script><script src="zk-angular/polyfills.ac7edf2c7ce4984138ad.js"></script><script src="zk-angular/main.1d156289d3a748047950.js"></script>
+            <script src="zk-angular/runtime.fd5eca3600c3c30c9126.js"></script><script src="zk-angular/polyfills.ac7edf2c7ce4984138ad.js"></script><script src="zk-angular/main.79f00df1a43bdca7f3ca.js"></script>
         </div>
+        
+        <!-- Hidden elements used to trigger ZK actions from Angular components -->
         <z:hlayout style="visibility: hidden; font-size: 0px; padding: 0px 0px 0px 0px; height: 0px; " >
-          <z:textbox id="matriculeTextbox" value="@bind(vm.matricule)" width="150px" tabindex="1" class="matriculeInput" />
+          <z:textbox value="@bind(vm.matricule)" class="matriculeTextbox" />
+          <z:button label="++" onClick="@command('increment')" class="incrementButton" />
         </z:hlayout>
       </z:vlayout>
     </z:window>
