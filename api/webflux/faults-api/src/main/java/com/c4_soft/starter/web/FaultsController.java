@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.c4_soft.commons.web.ResourceNotFoundException;
 import com.c4_soft.lifix.common.storage.StorageService;
-import com.c4_soft.springaddons.security.oauth2.oidc.OidcIdAuthenticationToken;
+import com.c4_soft.springaddons.security.oauth2.oidc.OidcAuthentication;
 import com.c4_soft.starter.lifix.domain.intervention.Fault;
 import com.c4_soft.starter.lifix.domain.intervention.FaultAttachment;
 import com.c4_soft.starter.lifix.persistence.intervention.FaultAttachmentRepo;
@@ -50,7 +50,7 @@ public class FaultsController {
 
 	@PostMapping()
 	@PreAuthorize("hasAuthority('FAULT_EDITOR')")
-	public Mono<ResponseEntity<Void>> create(@RequestBody FaultEditDto dto, ServerHttpRequest req, OidcIdAuthenticationToken auth) {
+	public Mono<ResponseEntity<Void>> create(@RequestBody FaultEditDto dto, ServerHttpRequest req, OidcAuthentication auth) {
 		if (!StringUtils.hasText(dto.getDescription())) {
 			throw new EmptyDescriptionException();
 		}
@@ -67,10 +67,9 @@ public class FaultsController {
 	}
 
 	@GetMapping()
-	public Flux<FaultResponseDto> retrieveMany(
-			@RequestParam(required = false, defaultValue = "false") boolean isClosedIncluded,
-			ServerHttpRequest req,
-			OidcIdAuthenticationToken auth) {
+	public
+			Flux<FaultResponseDto>
+			retrieveMany(@RequestParam(required = false, defaultValue = "false") boolean isClosedIncluded, ServerHttpRequest req, OidcAuthentication auth) {
 		final var faults = isClosedIncluded ? faultRepo.findAll() : faultRepo.findOpened();
 		return faults.flatMap(fault -> toDto(fault, req.getURI()));
 	}
@@ -88,7 +87,7 @@ public class FaultsController {
 	@PreAuthorize("hasAuthority('FAULT_EDITOR')")
 	public
 			Mono<ResponseEntity<Object>>
-			update(@PathVariable("faultId") Long faultId, @RequestBody FaultEditDto dto, ServerHttpRequest req, OidcIdAuthenticationToken auth) {
+			update(@PathVariable("faultId") Long faultId, @RequestBody FaultEditDto dto, ServerHttpRequest req, OidcAuthentication auth) {
 		return faultRepo.findById(faultId).flatMap(fault -> {
 			fault.setDescription(dto.getDescription());
 			if (dto.isClosed() && fault.getClosedBy() == null) {
@@ -111,11 +110,9 @@ public class FaultsController {
 	@Transactional
 	@PostMapping(path = "/{faultId}/attachments", consumes = { "multipart/form-data" })
 	@PreAuthorize("hasAuthority('FAULT_EDITOR')")
-	public Mono<ResponseEntity<Object>> createAttachment(
-			@PathVariable("faultId") Long faultId,
-			@RequestPart("attachment") FilePart file,
-			ServerHttpRequest req,
-			OidcIdAuthenticationToken auth) {
+	public
+			Mono<ResponseEntity<Object>>
+			createAttachment(@PathVariable("faultId") Long faultId, @RequestPart("attachment") FilePart file, ServerHttpRequest req, OidcAuthentication auth) {
 		final var fileName = file.filename();
 		if (!fileName.contains(".") || fileName.endsWith(".")) {
 			throw new NotAcceptableFileNameException(fileName);

@@ -16,8 +16,8 @@ import org.springframework.data.envers.repository.config.EnableEnversRepositorie
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
-import com.c4_soft.springaddons.security.oauth2.test.annotations.IdTokenClaims;
-import com.c4_soft.springaddons.security.oauth2.test.annotations.WithMockOidcId;
+import com.c4_soft.springaddons.security.oauth2.test.annotations.OpenIdClaims;
+import com.c4_soft.springaddons.security.oauth2.test.annotations.WithMockOidcAuth;
 import com.c4_soft.starter.cafeskifo.domain.Order;
 
 @DataJpaTest
@@ -40,40 +40,40 @@ class SecuredOrderRepoTest {
 	}
 
 	@Test
-	@WithMockOidcId("BARMAN")
+	@WithMockOidcAuth("BARMAN")
 	void whenBarmanThenNoFilter() {
 		assertThat(orderRepo.findAll()).containsExactlyInAnyOrder(mojito, guinness);
 	}
 
 	@Test
-	@WithMockOidcId(id = @IdTokenClaims(sub = CLIENT_SUBJECT))
+	@WithMockOidcAuth(claims = @OpenIdClaims(sub = CLIENT_SUBJECT))
 	void whenClientThenNoFilter() {
 		assertThat(orderRepo.findAll()).containsExactlyInAnyOrder(guinness);
 	}
 
 	@Test
-	@WithMockOidcId("BARMAN")
+	@WithMockOidcAuth("BARMAN")
 	void whenBarmanThenCanGetAnyOrder() {
 		assertThat(orderRepo.findById(mojito.getId())).isEqualTo(Optional.of(mojito));
 		assertThat(orderRepo.findById(guinness.getId())).isEqualTo(Optional.of(guinness));
 	}
 
 	@Test
-	@WithMockOidcId(id = @IdTokenClaims(sub = CLIENT_SUBJECT))
+	@WithMockOidcAuth(claims = @OpenIdClaims(sub = CLIENT_SUBJECT))
 	void whenClientThenCanGetGuinessOnly() {
 		assertThat(orderRepo.findById(guinness.getId())).isEqualTo(Optional.of(guinness));
 		assertThrows(AccessDeniedException.class, () -> orderRepo.findById(mojito.getId()));
 	}
 
 	@Test
-	@WithMockOidcId("BARMAN")
+	@WithMockOidcAuth("BARMAN")
 	void whenBarmanThenCanDeleteAnyOrder() {
 		assertDoesNotThrow(() -> orderRepo.delete(mojito));
 		assertDoesNotThrow(() -> orderRepo.delete(guinness));
 	}
 
 	@Test
-	@WithMockOidcId(id = @IdTokenClaims(sub = CLIENT_SUBJECT))
+	@WithMockOidcAuth(claims = @OpenIdClaims(sub = CLIENT_SUBJECT))
 	void whenClientThenCanDeleteGuinessOnly() {
 		assertDoesNotThrow(() -> orderRepo.delete(guinness));
 		assertThrows(AccessDeniedException.class, () -> orderRepo.delete(mojito));

@@ -17,7 +17,7 @@ import org.springframework.nativex.hint.AccessBits;
 import org.springframework.nativex.hint.TypeHint;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import com.c4_soft.springaddons.security.oauth2.test.annotations.WithMockOidcId;
+import com.c4_soft.springaddons.security.oauth2.test.annotations.WithMockOidcAuth;
 import com.c4_soft.springaddons.security.oauth2.test.mockmvc.JwtTestConf;
 import com.c4_soft.springaddons.security.oauth2.test.mockmvc.MockMvcSupport;
 import com.c4_soft.springaddons.test.support.web.SerializationHelper;
@@ -45,14 +45,14 @@ class HouseholdsControllerTest {
 	private MockMvcSupport mockMvc;
 
 	@Test
-	@WithMockOidcId("CITIZEN_VIEW")
+	@WithMockOidcAuth("CITIZEN_VIEW")
 	void whenGetHouseholdsPageWithNoFilterArgumentThenOk() throws Exception {
 		when(householdRepo.findAll(any(), any(Pageable.class))).thenReturn(Page.empty());
 		mockMvc.get("/households").andExpect(status().isOk());
 	}
 
 	@Test
-	@WithMockOidcId("CITIZEN_VIEW")
+	@WithMockOidcAuth("CITIZEN_VIEW")
 	void whenGetHouseholdsPageWithNonEmptyHouseholdLabelThenOk() throws Exception {
 		when(householdRepo.findAll(any(), any(Pageable.class))).thenReturn(Page.empty());
 
@@ -60,7 +60,7 @@ class HouseholdsControllerTest {
 	}
 
 	@Test
-	@WithMockOidcId(authorities = { "CITIZEN_VIEW" })
+	@WithMockOidcAuth(authorities = { "CITIZEN_VIEW" })
 	void whenGetHouseholdsPageWithNonEmptyTaxpayerNameThenOk() throws Exception {
 		when(householdRepo.findAll(any(), any(Pageable.class))).thenReturn(Page.empty());
 
@@ -68,7 +68,7 @@ class HouseholdsControllerTest {
 	}
 
 	@Test
-	@WithMockOidcId("CITIZEN_VIEW")
+	@WithMockOidcAuth("CITIZEN_VIEW")
 	void whenGetHouseholdsPageWithNonEmptyTaxpayerIdThenOk() throws Exception {
 		when(householdRepo.findAll(any(), any(Pageable.class))).thenReturn(Page.empty());
 
@@ -76,7 +76,7 @@ class HouseholdsControllerTest {
 	}
 
 	@Test
-	@WithMockOidcId("CITIZEN_VIEW")
+	@WithMockOidcAuth("CITIZEN_VIEW")
 	void whenGetExistingHouseholdThenOk() throws Exception {
 		when(householdRepo.findById(42L)).thenReturn(Optional.of(new Household(42L, "Machin", new HouseholdType(), new Taxpayer())));
 
@@ -84,7 +84,7 @@ class HouseholdsControllerTest {
 	}
 
 	@Test
-	@WithMockOidcId("CITIZEN_VIEW")
+	@WithMockOidcAuth("CITIZEN_VIEW")
 	void whenGetInexistantHouseholdThenNotFound() throws Exception {
 		when(householdRepo.findById(51L)).thenReturn(Optional.empty());
 

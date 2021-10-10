@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 
 import com.c4_soft.springaddons.security.oauth2.SynchronizedJwt2GrantedAuthoritiesConverter;
-import com.c4_soft.springaddons.security.oauth2.oidc.SynchronizedJwt2OidcIdAuthenticationConverter;
+import com.c4_soft.springaddons.security.oauth2.oidc.SynchronizedJwt2OidcAuthenticationConverter;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -24,7 +24,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-		http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(new SynchronizedJwt2OidcIdAuthenticationConverter(authoritiesConverter));
+		http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(new SynchronizedJwt2OidcAuthenticationConverter(authoritiesConverter));
 
 		// @formatter:off
         http.anonymous().and()

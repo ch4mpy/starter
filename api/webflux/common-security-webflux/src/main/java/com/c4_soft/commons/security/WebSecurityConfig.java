@@ -9,7 +9,7 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.context.NoOpServerSecurityContextRepository;
 
 import com.c4_soft.springaddons.security.oauth2.ReactiveJwt2GrantedAuthoritiesConverter;
-import com.c4_soft.springaddons.security.oauth2.oidc.ReactiveJwt2OidcIdAuthenticationConverter;
+import com.c4_soft.springaddons.security.oauth2.oidc.ReactiveJwt2OidcAuthenticationConverter;
 
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
@@ -19,7 +19,7 @@ public class WebSecurityConfig {
 	@Bean
 	public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http, ReactiveJwt2GrantedAuthoritiesConverter authoritiesConverter) {
 
-		http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(new ReactiveJwt2OidcIdAuthenticationConverter(authoritiesConverter));
+		http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(new ReactiveJwt2OidcAuthenticationConverter(authoritiesConverter));
 
 		// @formatter:off
         http.anonymous().and()

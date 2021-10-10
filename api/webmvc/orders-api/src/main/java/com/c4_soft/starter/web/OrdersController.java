@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.c4_soft.commons.web.ResourceNotFoundException;
-import com.c4_soft.springaddons.security.oauth2.oidc.OidcIdAuthenticationToken;
+import com.c4_soft.springaddons.security.oauth2.oidc.OidcAuthentication;
 import com.c4_soft.starter.cafeskifo.domain.Order;
 import com.c4_soft.starter.cafeskifo.persistence.SecuredOrderRepo;
 
@@ -53,7 +53,7 @@ public class OrdersController {
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<Long> placeOrder(@Valid @RequestBody OrderCreationRequestDto dto, OidcIdAuthenticationToken auth) {
+	public ResponseEntity<Long> placeOrder(@Valid @RequestBody OrderCreationRequestDto dto, OidcAuthentication auth) {
 		final var order = orderRepo.save(new Order(auth.getToken().getSubject(), dto.getDrink(), dto.getTable()));
 
 		return ResponseEntity.created(linkTo(methodOn(OrdersController.class).getById(order.getId())).withSelfRel().toUri()).body(order.getId());
