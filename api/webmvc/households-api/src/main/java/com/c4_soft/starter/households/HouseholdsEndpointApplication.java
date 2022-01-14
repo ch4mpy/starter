@@ -1,11 +1,11 @@
-package com.c4_soft.starter;
+package com.c4_soft.starter.households;
 
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.nativex.hint.TypeHint;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -16,14 +16,18 @@ import com.c4_soft.springaddons.security.oauth2.SynchronizedJwt2AuthenticationCo
 import com.c4_soft.springaddons.security.oauth2.config.OidcServletApiSecurityConfig;
 import com.c4_soft.springaddons.security.oauth2.config.ServletSecurityBeans;
 import com.c4_soft.springaddons.security.oauth2.config.SpringAddonsSecurityProperties;
+import com.c4_soft.starter.households.web.HouseholdsController;
+import com.c4_soft.starter.trashbins.domain.Taxpayer;
+import com.c4_soft.starter.trashbins.persistence.HouseholdRepo;
 
-@SpringBootApplication(scanBasePackageClasses = { HouseholdsEndpointApplication.class, CommonResponseEntityExceptionHandler.class })
+@SpringBootApplication(scanBasePackageClasses = { HouseholdsEndpointApplication.class, HouseholdsController.class, CommonResponseEntityExceptionHandler.class })
+@EnableJpaRepositories(basePackageClasses = HouseholdRepo.class)
+@EntityScan(basePackageClasses = Taxpayer.class)
 @EnableTransactionManagement
-@TypeHint(types = { EntityScan.class, EnableJpaRepositories.class })
 public class HouseholdsEndpointApplication {
 
 	public static void main(String[] args) {
-		new SpringApplicationBuilder(HouseholdsEndpointApplication.class).run(args);
+		new SpringApplicationBuilder(HouseholdsEndpointApplication.class).web(WebApplicationType.SERVLET).run(args);
 	}
 
 	@EnableWebSecurity
