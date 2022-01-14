@@ -15,7 +15,6 @@
 
 	<modules>
 		<module>common-exception-webmvc</module>
-		<module>common-security-webmvc</module>
 		<module>domain-cafeskifo</module>
 		<module>domain-trashbins</module>
 
@@ -50,12 +49,6 @@
 				<groupId>com.c4-soft.springaddons</groupId>
 				<artifactId>spring-security-oauth2-test-webmvc-addons</artifactId>
 				<version>${com.c4-soft.springaddons.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.modelmapper</groupId>
-				<artifactId>modelmapper</artifactId>
-				<version>${modelmapper.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

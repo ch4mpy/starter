@@ -18,6 +18,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 @Entity
@@ -25,6 +26,7 @@ import lombok.Data;
 @Audited
 @Data
 @AllArgsConstructor
+@Builder
 public class Order {
 	@Id
 	@GeneratedValue
@@ -45,20 +47,8 @@ public class Order {
 	@LastModifiedDate
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false)
-	private final Date timestamp;
+	private final Date timestamp = new Date();
 
 	@Version
 	Long version;
-
-	public Order(String userSubject, String drink, String table) {
-		this(null, userSubject, drink, table, new Date(), null);
-	}
-
-	public Order(String userSubject, String drink) {
-		this(userSubject, drink, null);
-	}
-
-	protected Order() {
-		this(null, null, null);
-	}
 }

@@ -10,25 +10,25 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class Fault {
-    @Id
-    Long id;
+	@Id
+	Long id;
 
-    String description;
+	String description;
 
-    final String openedBy;
+	final String openedBy;
 
-    final Date openedAt;
+	final Date openedAt;
 
-    String closedBy;
+	String closedBy;
 
-    Date closedAt;
+	Date closedAt;
 
-    public Fault(String openerSubject, String description) {
-        this(null, description, openerSubject, new Date(), null, null);
-    }
+	public Fault(String openerSubject, String description) {
+		this(null, description, openerSubject, new Date(), null, null);
+	}
 
-    Fault() {
-        this(null, null);
-    }
+	Fault() {
+		this(null, null);
+	}
 
 }

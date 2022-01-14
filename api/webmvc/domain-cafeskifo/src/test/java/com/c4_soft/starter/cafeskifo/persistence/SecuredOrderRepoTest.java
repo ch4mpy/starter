@@ -35,8 +35,8 @@ class SecuredOrderRepoTest {
 
 	@BeforeEach
 	void setup() {
-		mojito = unsecuredRepo.save(new Order(BARMAN_SUBJECT, "mojito"));
-		guinness = unsecuredRepo.save(new Order(CLIENT_SUBJECT, "pint of Guinness", TABLE_NUMBER));
+		mojito = unsecuredRepo.save(Order.builder().userSubject(BARMAN_SUBJECT).drink("mojito").build());
+		guinness = unsecuredRepo.save(Order.builder().userSubject(CLIENT_SUBJECT).drink("pint of Guinness").table(TABLE_NUMBER).build());
 	}
 
 	@Test

@@ -1,4 +1,4 @@
-package com.c4_soft.starter.web.dto;
+package com.c4_soft.starter.households.web.dto;
 
 import java.io.Serializable;
 

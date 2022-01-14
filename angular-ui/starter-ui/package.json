@@ -9,9 +9,10 @@
     "i18n": "ng extract-i18n --output-path=starter-ui/i18n"
   },
   "dependencies": {
+    "@capacitor/core": "^3.3.2"
   },
   "devDependencies": {
-    "@capacitor/cli": "^3.1.2",
+    "@capacitor/cli": "^3.3.2",
     "@ionic/lab": "^3.2.10"
   }
 }

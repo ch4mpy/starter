@@ -20,19 +20,19 @@ import lombok.NoArgsConstructor;
 @Table(name = "household")
 public class Household {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(nullable = false)
-    private String label;
+	@Column(nullable = false)
+	private String label;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "type_id")
-    private HouseholdType type;
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "type_id")
+	private HouseholdType type;
 
-    @ManyToOne
-    @JoinColumn(name = "taxpayer_id")
-    private Taxpayer taxpayer;
+	@ManyToOne
+	@JoinColumn(name = "taxpayer_id")
+	private Taxpayer taxpayer;
 
 }

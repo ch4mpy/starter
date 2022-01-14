@@ -1,19 +1,19 @@
 package com.c4_soft.starter.web;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Data
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class OrderResponseDto {
-	public final Long id;
-	public final String drink;
-	public final String owner;
-	public final String table;
-	public final long createdOn;
-
-	public OrderResponseDto(Long id, String drink, String owner, long createdOn) {
-		this(id, drink, owner, null, createdOn);
-	}
+	public Long id;
+	public String drink;
+	public String owner;
+	public String table;
+	public long createdOn;
 
 }

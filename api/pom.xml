@@ -2,12 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.5.5</version>
-		<relativePath /> <!-- lookup parent from repository -->
-	</parent>
 	<groupId>com.c4-soft</groupId>
 	<artifactId>starter-parent</artifactId>
 	<packaging>pom</packaging>
@@ -27,21 +21,34 @@
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<modelmapper.version>2.3.9</modelmapper.version>
+		<com.c4-soft.springaddons.version>3.1.14-jdk11</com.c4-soft.springaddons.version>
+		<hibernate-enhance-maven-plugin.version>5.6.2.Final</hibernate-enhance-maven-plugin.version>
+		<lombok.version>1.18.22</lombok.version>
+		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+		<org.mapstruct.version>1.5.0.Beta2</org.mapstruct.version>
+		<spring-boot.version>2.6.3-SNAPSHOT</spring-boot.version>
+		<spring-native.version>0.11.2-SNAPSHOT</spring-native.version>
 		<springdoc-openapi.version>1.5.10</springdoc-openapi.version>
 		<springdoc-openapi-maven-plugin.version>1.3</springdoc-openapi-maven-plugin.version>
 		<springdoc-openapi.output-dir>${project.basedir}</springdoc-openapi.output-dir>
+		
 		<integration-tests.hostname>${env.HOSTNAME}</integration-tests.hostname>
-		<com.c4-soft.springaddons.version>3.0.1</com.c4-soft.springaddons.version>
 
-		<spring-native.version>0.11.0-SNAPSHOT</spring-native.version>
-		<native.buildtools.version>0.9.4-SNAPSHOT</native.buildtools.version>
 		<repackage.classifier />
+		<image.builder>paketobuildpacks/builder:base</image.builder>
 		<ca-certificates.binding>${project.basedir}/bindings/ca-certificates</ca-certificates.binding>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring-boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
 			<dependency>
 				<groupId>com.c4-soft</groupId>
 				<artifactId>common-storage</artifactId>
@@ -85,31 +92,55 @@
 				<artifactId>spring-native</artifactId>
 				<version>${spring-native.version}</version>
 			</dependency>
+
+			<dependency>
+				<groupId>org.mapstruct</groupId>
+				<artifactId>mapstruct</artifactId>
+				<version>${org.mapstruct.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok-mapstruct-binding</artifactId>
+				<version>${lombok-mapstruct-binding.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
-	<dependencies>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
-	</dependencies>
 
 	<build>
 		<pluginManagement>
 			<plugins>
 				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.8.1</version>
+					<configuration>
+						<source>${java.version}</source>
+						<target>${java.version}</target>
+						<annotationProcessorPaths>
+							<path>
+								<groupId>org.projectlombok</groupId>
+								<artifactId>lombok</artifactId>
+								<version>${lombok.version}</version>
+							</path>
+							<path>
+								<groupId>org.mapstruct</groupId>
+								<artifactId>mapstruct-processor</artifactId>
+								<version>${org.mapstruct.version}</version>
+							</path>
+						</annotationProcessorPaths>
+					</configuration>
+				</plugin>
+				<plugin>
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-maven-plugin</artifactId>
 					<configuration>
-						<excludes>
-							<exclude>
-								<groupId>org.projectlombok</groupId>
-								<artifactId>lombok</artifactId>
-							</exclude>
-						</excludes>
 						<classifier>${repackage.classifier}</classifier>
+						<image>
+							<builder>${image.builder}</builder>
+							<bindings>
+								<binding>${ca-certificates.binding}:/platform/bindings/ca-certificates:ro</binding>
+							</bindings>
+						</image>
 					</configuration>
 				</plugin>
 				<plugin>
@@ -121,93 +152,35 @@
 						<removeSpelSupport>false</removeSpelSupport>
 						<removeYamlSupport>true</removeYamlSupport>
 						<removeJmxSupport>true</removeJmxSupport>
-						<removeUnusedConfig>false</removeUnusedConfig>
 					</configuration>
-					<executions>
-						<execution>
-							<id>test-generate</id>
-							<goals>
-								<goal>test-generate</goal>
-							</goals>
-						</execution>
-						<execution>
-							<id>generate</id>
-							<goals>
-								<goal>generate</goal>
-							</goals>
-						</execution>
-					</executions>
 				</plugin>
 				<plugin>
 					<groupId>org.hibernate.orm.tooling</groupId>
 					<artifactId>hibernate-enhance-maven-plugin</artifactId>
-					<version>${hibernate.version}</version>
-					<executions>
-						<execution>
-							<id>enhance</id>
-							<goals>
-								<goal>enhance</goal>
-							</goals>
-							<configuration>
-								<failOnError>true</failOnError>
-								<enableLazyInitialization>true</enableLazyInitialization>
-								<enableDirtyTracking>true</enableDirtyTracking>
-								<enableAssociationManagement>true</enableAssociationManagement>
-								<enableExtendedEnhancement>false</enableExtendedEnhancement>
-							</configuration>
-						</execution>
-					</executions>
+					<version>${hibernate-enhance-maven-plugin.version}</version>
+					<configuration>
+						<failOnError>true</failOnError>
+						<enableLazyInitialization>true</enableLazyInitialization>
+						<enableDirtyTracking>true</enableDirtyTracking>
+						<enableAssociationManagement>true</enableAssociationManagement>
+						<enableExtendedEnhancement>false</enableExtendedEnhancement>
+					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-shade-plugin</artifactId>
 					<version>3.2.4</version>
-					<executions>
-						<execution>
-							<phase>package</phase>
-							<goals>
-								<goal>shade</goal>
-							</goals>
-							<configuration>
-								<shadedArtifactAttached>true</shadedArtifactAttached>
-							</configuration>
-						</execution>
-					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>3.0.0-M5</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
 
 	<profiles>
-		<profile>
-			<id>build-image</id>
-			<build>
-				<pluginManagement>
-					<plugins>
-						<plugin>
-							<groupId>org.springframework.boot</groupId>
-							<artifactId>spring-boot-maven-plugin</artifactId>
-							<executions>
-								<execution>
-									<id>build-image</id>
-									<goals>
-										<goal>build-image</goal>
-									</goals>
-									<configuration>
-										<image>
-											<builder>paketobuildpacks/builder:base</builder>
-											<bindings>
-												<binding>${ca-certificates.binding}:/platform/bindings/ca-certificates:ro</binding>
-											</bindings>
-										</image>
-									</configuration>
-								</execution>
-							</executions>
-						</plugin>
-					</plugins>
-				</pluginManagement>
-			</build>
-		</profile>
 		<profile>
 			<id>build-native-image</id>
 			<build>
@@ -216,129 +189,25 @@
 						<plugin>
 							<groupId>org.springframework.boot</groupId>
 							<artifactId>spring-boot-maven-plugin</artifactId>
-							<executions>
-								<execution>
-									<id>build-image</id>
-									<goals>
-										<goal>build-image</goal>
-									</goals>
-									<configuration>
-										<image>
-											<builder>paketobuildpacks/builder:tiny</builder>
-											<bindings>
-												<binding>${ca-certificates.binding}:/platform/bindings/ca-certificates:ro</binding>
-											</bindings>
-											<env>
-												<BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
-												<BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
-													-H:+ReportExceptionStackTraces
-													--enable-https
-													-H:+InlineBeforeAnalysis
-													--initialize-at-run-time=io.netty.handler.codec.compression.BrotliDecoder
-													--verbose
-													--allow-incomplete-classpath
-													--trace-class-initialization=org.springframework.util.unit.DataSize
-												</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
-											</env>
-										</image>
-									</configuration>
-								</execution>
-							</executions>
-						</plugin>
-					</plugins>
-				</pluginManagement>
-			</build>
-		</profile>
-		<profile>
-			<id>native</id>
-			<properties>
-				<!-- Avoid a clash between Spring Boot repackaging and native-maven-plugin -->
-				<repackage.classifier>exec</repackage.classifier>
-			</properties>
-			<dependencyManagement>
-				<dependencies>
-					<dependency>
-						<groupId>org.graalvm.buildtools</groupId>
-						<artifactId>junit-platform-native</artifactId>
-						<version>${native.buildtools.version}</version>
-					</dependency>
-				</dependencies>
-			</dependencyManagement>
-			<build>
-				<pluginManagement>
-					<plugins>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-assembly-plugin</artifactId>
-							<version>2.4.1</version>
 							<configuration>
-								<descriptors>
-									<descriptor>src/assembly/test-jar-with-dependencies.xml</descriptor>
-								</descriptors>
+								<image>
+									<buildpacks>
+										<buildpack>gcr.io/paketo-buildpacks/java-native-image:7.1.0</buildpack>
+									</buildpacks>
+									<env>
+										<BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
+										<BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
+											-H:+ReportExceptionStackTraces
+											--enable-https
+											-H:+InlineBeforeAnalysis
+											--initialize-at-run-time=io.netty.handler.codec.compression.BrotliDecoder
+											--verbose
+											--allow-incomplete-classpath
+											--trace-class-initialization=org.springframework.util.unit.DataSize
+										</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
+									</env>
+								</image>
 							</configuration>
-							<executions>
-								<execution>
-									<id>make-test-jar</id>
-									<phase>package</phase>
-									<goals>
-										<goal>single</goal>
-									</goals>
-								</execution>
-							</executions>
-						</plugin>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-shade-plugin</artifactId>
-							<version>3.2.4</version>
-							<executions>
-								<execution>
-									<phase>package</phase>
-									<goals>
-										<goal>shade</goal>
-									</goals>
-									<configuration>
-										<shadedArtifactAttached>true</shadedArtifactAttached>
-									</configuration>
-								</execution>
-							</executions>
-						</plugin>
-						<plugin>
-							<groupId>org.graalvm.buildtools</groupId>
-							<artifactId>native-maven-plugin</artifactId>
-							<version>${native.buildtools.version}</version>
-							<configuration>
-								<!-- https://graalvm.github.io/native-build-tools/0.9.4-SNAPSHOT/maven-plugin.html -->
-								<skip>false</skip>
-								<imageName>${project.artifactId}</imageName>
-								<mainClass>${exec.mainClass}</mainClass>
-								<buildArgs>
-									<buildArg>--no-fallback</buildArg>
-								</buildArgs>
-								<classpath>
-									<param>${project.build.directory}/${project.artifactId}-${project.version}-shaded.jar</param>
-								</classpath>
-							</configuration>
-							<executions>
-								<execution>
-									<id>build-native</id>
-									<goals>
-										<goal>build</goal>
-									</goals>
-									<phase>package</phase>
-								</execution>
-								<execution>
-									<id>test-native</id>
-									<goals>
-										<goal>test</goal>
-									</goals>
-									<phase>integration-test</phase>
-									<configuration>
-										<classpath>
-											<param>${project.build.directory}/${project.artifactId}-${project.version}-tests.jar</param>
-										</classpath>
-									</configuration>
-								</execution>
-							</executions>
 						</plugin>
 					</plugins>
 				</pluginManagement>
@@ -400,62 +269,40 @@
 
 	<repositories>
 		<repository>
-			<id>spring-releases</id>
-			<name>Spring Releases</name>
+			<id>spring-snapshot</id>
+			<name>Spring Snapshots</name>
+			<url>https://repo.spring.io/snapshot</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>spring-release</id>
+			<name>Spring release</name>
 			<url>https://repo.spring.io/release</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
 		<repository>
-			<id>spring-snapshots</id>
-			<name>Spring Snapshots</name>
-			<url>https://repo.spring.io/snapshot</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
+			<id>spring-milestone</id>
+			<name>Spring milestone</name>
+			<url>https://repo.spring.io/milestone</url>
 			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>graalvm-native-build-tools-snapshots</id>
-			<name>GraalVM native-build-tools Snapshots</name>
-			<url>https://raw.githubusercontent.com/graalvm/native-build-tools/snapshots
-			</url>
-			<releases>
 				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
 			</snapshots>
 		</repository>
 	</repositories>
 
 	<pluginRepositories>
 		<pluginRepository>
-			<id>graalvm-native-build-tools-snapshots</id>
-			<name>GraalVM native-build-tools Snapshots</name>
-			<url>https://raw.githubusercontent.com/graalvm/native-build-tools/snapshots
-			</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-		<pluginRepository>
-			<id>spring-releases</id>
-			<name>Spring Releases</name>
+			<id>spring-release</id>
+			<name>Spring release</name>
 			<url>https://repo.spring.io/release</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
 		</pluginRepository>
 		<pluginRepository>
-			<id>spring-snapshots</id>
-			<name>Spring Snapshots</name>
+			<id>spring-snapshot</id>
+			<name>Spring snapshot</name>
 			<url>https://repo.spring.io/snapshot</url>
 		</pluginRepository>
 	</pluginRepositories>

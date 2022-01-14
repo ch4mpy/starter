@@ -23,10 +23,6 @@
 		</dependency>
 		<dependency>
 			<groupId>com.c4-soft</groupId>
-			<artifactId>common-security-webflux</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.c4-soft</groupId>
 			<artifactId>common-storage</artifactId>
 		</dependency>
 		<dependency>
@@ -46,14 +42,25 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>com.c4-soft.springaddons</groupId>
+			<artifactId>spring-security-oauth2-addons</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.experimental</groupId>
 			<artifactId>spring-native</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>com.c4-soft.springaddons</groupId>
-			<artifactId>spring-security-oauth2-addons</artifactId>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
 		</dependency>
 
 
@@ -105,44 +112,66 @@
 
 	<profiles>
 		<profile>
-			<id>build-native-image</id>
+			<id>build-image</id>
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>org.springframework.experimental</groupId>
-						<artifactId>spring-aot-maven-plugin</artifactId>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>build-image</id>
+								<goals>
+									<goal>build-image</goal>
+								</goals>
+							</execution>
+						</executions>
 					</plugin>
 				</plugins>
 			</build>
 		</profile>
 		<profile>
-			<id>native</id>
+			<id>build-native-image</id>
 			<properties>
-				<exec.mainClass>com.c4_soft.starter.FaultsEndpointApplication</exec.mainClass>
+				<image.builder>paketobuildpacks/builder:tiny</image.builder>
 			</properties>
-			<dependencies>
-				<dependency>
-					<groupId>org.graalvm.buildtools</groupId>
-					<artifactId>junit-platform-native</artifactId>
-					<scope>test</scope>
-				</dependency>
-			</dependencies>
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-shade-plugin</artifactId>
-					</plugin>
-					<plugin>
-						<groupId>org.graalvm.buildtools</groupId>
-						<artifactId>native-maven-plugin</artifactId>
-						<configuration>
-							<!-- ... -->
-						</configuration>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>build-image</id>
+								<goals>
+									<goal>build-image</goal>
+								</goals>
+							</execution>
+						</executions>
 					</plugin>
 					<plugin>
 						<groupId>org.springframework.experimental</groupId>
 						<artifactId>spring-aot-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>generate</id>
+								<goals>
+									<goal>generate</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.hibernate.orm.tooling</groupId>
+						<artifactId>hibernate-enhance-maven-plugin</artifactId>
+						<version>${hibernate-enhance-maven-plugin.version}</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>enhance</goal>
+								</goals>
+							</execution>
+						</executions>
 					</plugin>
 				</plugins>
 			</build>

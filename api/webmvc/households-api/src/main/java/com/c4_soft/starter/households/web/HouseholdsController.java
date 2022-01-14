@@ -1,4 +1,4 @@
-package com.c4_soft.starter.web;
+package com.c4_soft.starter.households.web;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -9,7 +9,6 @@ import java.util.stream.StreamSupport;
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.CollectionModel;
@@ -27,11 +26,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.c4_soft.commons.web.ResourceNotFoundException;
+import com.c4_soft.starter.households.web.dto.HouseholdDto;
+import com.c4_soft.starter.households.web.dto.HouseholdTypeDto;
 import com.c4_soft.starter.trashbins.domain.Household;
 import com.c4_soft.starter.trashbins.persistence.HouseholdRepo;
 import com.c4_soft.starter.trashbins.persistence.HouseholdTypeRepo;
-import com.c4_soft.starter.web.dto.HouseholdDto;
-import com.c4_soft.starter.web.dto.HouseholdTypeDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -44,7 +43,7 @@ public class HouseholdsController {
 
 	private final HouseholdRepo householdRepo;
 
-	private final ModelMapper modelMapper = new ModelMapper();
+	private final HouseholdMapper mapper;
 
 	private final HouseholdAssmebler assembler;
 
@@ -53,11 +52,7 @@ public class HouseholdsController {
 	@GetMapping(path = "/types", produces = { MediaTypes.HAL_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 	public CollectionModel<HouseholdTypeDto> getAllTypes() {
 		final var householdTypes = householdTypeRepo.findAll();
-		final var dtos =
-				StreamSupport
-						.stream(householdTypes.spliterator(), false)
-						.map(entity -> modelMapper.map(entity, HouseholdTypeDto.class))
-						.collect(Collectors.toList());
+		final var dtos = StreamSupport.stream(householdTypes.spliterator(), false).map(mapper::toDto).collect(Collectors.toList());
 		return CollectionModel.of(dtos).add(linkTo(methodOn(this.getClass()).getAllTypes()).withSelfRel());
 	}
 
@@ -65,7 +60,7 @@ public class HouseholdsController {
 	@PreAuthorize("hasAuthority('CITIZEN_VIEW')")
 	public EntityModel<HouseholdDto> getById(@PathVariable @NotNull Long id) {
 		final var household = householdRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("No household with ID: " + id));
-		return EntityModel.of(modelMapper.map(household, HouseholdDto.class));
+		return EntityModel.of(mapper.toDto(household));
 	}
 
 	/**
@@ -97,17 +92,18 @@ public class HouseholdsController {
 	@Component
 	static class HouseholdAssmebler extends RepresentationModelAssemblerSupport<Household, EntityModel<HouseholdDto>> {
 
-		private final ModelMapper modelMapper = new ModelMapper();
+		private final HouseholdMapper mapper;
 
 		@SuppressWarnings("unchecked")
-		public HouseholdAssmebler() {
+		public HouseholdAssmebler(HouseholdMapper mapper) {
 			super(HouseholdsController.class, (Class<EntityModel<HouseholdDto>>) EntityModel.of(new HouseholdDto()).getClass());
+			this.mapper = mapper;
 		}
 
 		@Override
 		public EntityModel<HouseholdDto> toModel(Household entity) {
 			return EntityModel
-					.of(modelMapper.map(entity, HouseholdDto.class))
+					.of(mapper.toDto(entity))
 					.add(linkTo(methodOn(HouseholdsController.class).getById(entity.getId())).withSelfRel())
 					.add(linkTo(methodOn(HouseholdsController.class).getPage(null, null, null, null)).withRel("page"));
 		}

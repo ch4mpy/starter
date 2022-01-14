@@ -149,32 +149,32 @@ docker rm orders-api
 docker rm faults-api
 
 # start
-docker run \
+docker run --rm \
   --add-host $HOSTNAME:$HOST_IP \
   -e SPRING_DATASOURCE_PASSWORD=$SPRING_DATASOURCE_PASSWORD \
   -e SERVER_SSL_KEY_PASSWORD=$SERVER_SSL_KEY_PASSWORD \
   -e SERVER_SSL_KEY_STORE_PASSWORD=$SERVER_SSL_KEY_STORE_PASSWORD \
-  -e SPRING_PROFILES_ACTIVE=$HOSTNAME-db \
+  -e SPRING_DATASOURCE_URL=jdbc:postgresql://$HOST_IP/starter \
   -p 4201:4201 \
   --name households-api \
   -t households-api:0.0.1-SNAPSHOT &
 
-docker run \
+docker run --rm \
   --add-host $HOSTNAME:$HOST_IP \
   -e SPRING_DATASOURCE_PASSWORD=$SPRING_DATASOURCE_PASSWORD \
   -e SERVER_SSL_KEY_PASSWORD=$SERVER_SSL_KEY_PASSWORD \
   -e SERVER_SSL_KEY_STORE_PASSWORD=$SERVER_SSL_KEY_STORE_PASSWORD \
-  -e SPRING_PROFILES_ACTIVE=$HOSTNAME-db \
+  -e SPRING_DATASOURCE_URL=jdbc:postgresql://$HOST_IP/starter \
   -p 4202:4202 \
   --name orders-api \
   -t orders-api:0.0.1-SNAPSHOT &
 
-docker run \
+docker run --rm\
   --add-host $HOSTNAME:$HOST_IP \
   -e SPRING_R2DBC_PASSWORD=$SPRING_R2DBC_PASSWORD \
   -e SERVER_SSL_KEY_PASSWORD=$SERVER_SSL_KEY_PASSWORD \
   -e SERVER_SSL_KEY_STORE_PASSWORD=$SERVER_SSL_KEY_STORE_PASSWORD \
-  -e SPRING_PROFILES_ACTIVE=$HOSTNAME-db \
+  -e SPRING_DATASOURCE_URL=jdbc:postgresql://$HOST_IP/starter \
   -p 4203:4203 \
   --name faults-api \
   -t faults-api:0.0.1-SNAPSHOT &

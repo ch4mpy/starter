@@ -28,7 +28,6 @@ import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.reactive.server.WebTestClient.RequestHeadersSpec;
 
-import com.c4_soft.commons.security.WebSecurityConfig;
 import com.c4_soft.lifix.common.storage.StorageService;
 import com.c4_soft.springaddons.security.oauth2.test.annotations.OpenIdClaims;
 import com.c4_soft.springaddons.security.oauth2.test.annotations.WithMockOidcAuth;
@@ -42,7 +41,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @WebFluxTest
-@Import(WebSecurityConfig.class)
+@Import(com.c4_soft.starter.FaultsEndpointApplication.WebSecurityConfig.class)
 class FaultsControllerTest {
 
 	@MockBean
