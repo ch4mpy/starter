@@ -1,4 +1,4 @@
-package com.c4_soft.starter.web;
+package com.c4_soft.starter.households.web;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -15,14 +15,15 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import com.c4_soft.commons.web.CommonResponseEntityExceptionHandler;
+import com.c4_soft.springaddons.security.oauth2.config.SpringAddonsSecurityProperties;
 import com.c4_soft.springaddons.security.oauth2.test.annotations.WithMockOidcAuth;
 import com.c4_soft.springaddons.security.oauth2.test.mockmvc.JwtTestConf;
 import com.c4_soft.springaddons.security.oauth2.test.mockmvc.MockMvcSupport;
-import com.c4_soft.springaddons.test.support.web.SerializationHelper;
-import com.c4_soft.starter.households.web.HouseholdMapper;
-import com.c4_soft.starter.households.web.HouseholdsController;
+import com.c4_soft.starter.households.HouseholdsEndpointApplication;
 import com.c4_soft.starter.households.web.dto.HouseholdDto;
 import com.c4_soft.starter.trashbins.domain.Household;
 import com.c4_soft.starter.trashbins.domain.HouseholdType;
@@ -30,8 +31,10 @@ import com.c4_soft.starter.trashbins.domain.Taxpayer;
 import com.c4_soft.starter.trashbins.persistence.HouseholdRepo;
 import com.c4_soft.starter.trashbins.persistence.HouseholdTypeRepo;
 
+@ContextConfiguration(
+		classes = { HouseholdsController.class, HouseholdsEndpointApplication.WebSecurityConfig.class, CommonResponseEntityExceptionHandler.class })
 @WebMvcTest(HouseholdsController.class)
-@Import({ MockMvcSupport.class, SerializationHelper.class, JwtTestConf.class })
+@Import({ SpringAddonsSecurityProperties.class, SpringAddonsSecurityProperties.class, JwtTestConf.class, MockMvcSupport.class })
 class HouseholdsControllerTest {
 
 	@MockBean

@@ -17,12 +17,15 @@ import com.c4_soft.springaddons.security.oauth2.config.OidcServletApiSecurityCon
 import com.c4_soft.springaddons.security.oauth2.config.ServletSecurityBeans;
 import com.c4_soft.springaddons.security.oauth2.config.SpringAddonsSecurityProperties;
 import com.c4_soft.starter.households.web.HouseholdsController;
+import com.c4_soft.starter.trashbins.domain.Household;
+import com.c4_soft.starter.trashbins.domain.HouseholdType;
 import com.c4_soft.starter.trashbins.domain.Taxpayer;
 import com.c4_soft.starter.trashbins.persistence.HouseholdRepo;
+import com.c4_soft.starter.trashbins.persistence.HouseholdTypeRepo;
 
 @SpringBootApplication(scanBasePackageClasses = { HouseholdsEndpointApplication.class, HouseholdsController.class, CommonResponseEntityExceptionHandler.class })
-@EnableJpaRepositories(basePackageClasses = HouseholdRepo.class)
-@EntityScan(basePackageClasses = Taxpayer.class)
+@EnableJpaRepositories(basePackageClasses = { HouseholdRepo.class, HouseholdTypeRepo.class })
+@EntityScan(basePackageClasses = { Taxpayer.class, Household.class, HouseholdType.class })
 @EnableTransactionManagement
 public class HouseholdsEndpointApplication {
 

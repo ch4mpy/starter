@@ -19,13 +19,16 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "orders")
 @Audited
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class Order {
 	@Id
@@ -35,7 +38,7 @@ public class Order {
 	@CreatedBy
 	@LastModifiedBy
 	@Column(nullable = false)
-	private final String userSubject;
+	private String userSubject;
 
 	@Column(nullable = false)
 	private String drink;
@@ -47,7 +50,8 @@ public class Order {
 	@LastModifiedDate
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false)
-	private final Date timestamp = new Date();
+	@Default
+	private Date timestamp = new Date();
 
 	@Version
 	Long version;

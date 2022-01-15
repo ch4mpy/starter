@@ -58,7 +58,7 @@ public class HouseholdsController {
 
 	@GetMapping("/{id}")
 	@PreAuthorize("hasAuthority('CITIZEN_VIEW')")
-	public EntityModel<HouseholdDto> getById(@PathVariable @NotNull Long id) {
+	public EntityModel<HouseholdDto> getById(@PathVariable(name = "id") @NotNull Long id) {
 		final var household = householdRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("No household with ID: " + id));
 		return EntityModel.of(mapper.toDto(household));
 	}
@@ -74,9 +74,9 @@ public class HouseholdsController {
 	@PreAuthorize("hasAuthority('CITIZEN_VIEW')")
 	public PagedModel<EntityModel<HouseholdDto>> getPage(
 			Pageable pageable,
-			@RequestParam(required = false, defaultValue = "") String householdLabel,
-			@RequestParam(required = false, defaultValue = "") String taxpayerNameOrId,
-			@RequestParam(required = false, defaultValue = "") String householdTypeLabel) {
+			@RequestParam(name = "householdLabel", required = false, defaultValue = "") String householdLabel,
+			@RequestParam(name = "taxpayerNameOrId", required = false, defaultValue = "") String taxpayerNameOrId,
+			@RequestParam(name = "householdTypeLabel", required = false, defaultValue = "") String householdTypeLabel) {
 
 		final var householdType = householdTypeRepo.findByLabelIgnoreCase(householdTypeLabel).orElse(null);
 		final var households = householdRepo.findAll(HouseholdRepo.searchSpec(householdLabel, taxpayerNameOrId, householdType), pageable);

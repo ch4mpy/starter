@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.c4_soft.commons.web.ResourceNotFoundException;
 import com.c4_soft.springaddons.security.oauth2.oidc.OidcAuthentication;
+import com.c4_soft.springaddons.security.oauth2.oidc.OidcToken;
 import com.c4_soft.starter.cafeskifo.domain.Order;
 import com.c4_soft.starter.cafeskifo.persistence.UnsecuredOrderRepository;
 
@@ -45,14 +46,14 @@ public class OrdersController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<OrderResponseDto> getById(@PathVariable("id") long id) {
+	public ResponseEntity<OrderResponseDto> getById(@PathVariable(name = "id") long id) {
 		final var order = getOrderById(id);
 		return ResponseEntity.ok(orderMapper.toDto(order));
 	}
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<Long> placeOrder(@Valid @RequestBody OrderCreationRequestDto dto, OidcAuthentication auth) {
+	public ResponseEntity<Long> placeOrder(@Valid @RequestBody OrderCreationRequestDto dto, OidcAuthentication<OidcToken> auth) {
 		final var order = orderRepo.save(Order.builder().userSubject(auth.getToken().getSubject()).drink(dto.getDrink()).table(dto.getTable()).build());
 
 		return ResponseEntity.created(linkTo(methodOn(OrdersController.class).getById(order.getId())).withSelfRel().toUri()).body(order.getId());
@@ -60,7 +61,7 @@ public class OrdersController {
 
 	@DeleteMapping("/{id}")
 	@Transactional
-	public ResponseEntity<?> deleteById(@PathVariable("id") long id) {
+	public ResponseEntity<?> deleteById(@PathVariable(name = "id") long id) {
 		final var order = getOrderById(id);
 		orderRepo.delete(order);
 		return ResponseEntity.noContent().build();

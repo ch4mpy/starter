@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class FaultEditDto {
 
-    private String description;
+	private String description;
 
-    private boolean isClosed = false;
+	private Boolean isClosed = false;
 
 }

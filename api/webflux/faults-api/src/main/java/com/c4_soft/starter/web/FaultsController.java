@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.c4_soft.commons.web.ResourceNotFoundException;
 import com.c4_soft.lifix.common.storage.StorageService;
 import com.c4_soft.springaddons.security.oauth2.oidc.OidcAuthentication;
+import com.c4_soft.springaddons.security.oauth2.oidc.OidcToken;
 import com.c4_soft.starter.lifix.domain.intervention.Fault;
 import com.c4_soft.starter.lifix.domain.intervention.FaultAttachment;
 import com.c4_soft.starter.lifix.persistence.intervention.FaultAttachmentRepo;
@@ -50,13 +51,13 @@ public class FaultsController {
 
 	@PostMapping()
 	@PreAuthorize("hasAuthority('FAULT_EDITOR')")
-	public Mono<ResponseEntity<Void>> create(@RequestBody FaultEditDto dto, ServerHttpRequest req, OidcAuthentication auth) {
+	public Mono<ResponseEntity<Void>> create(@RequestBody FaultEditDto dto, ServerHttpRequest req, OidcAuthentication<OidcToken> auth) {
 		if (!StringUtils.hasText(dto.getDescription())) {
 			throw new EmptyDescriptionException();
 		}
 
 		final var fault = new Fault(auth.getName(), dto.getDescription().trim());
-		if (dto.isClosed()) {
+		if (dto.getIsClosed()) {
 			fault.setClosedBy(auth.getName());
 			fault.setClosedAt(new Date());
 		}
@@ -66,16 +67,17 @@ public class FaultsController {
 		});
 	}
 
-	@GetMapping()
-	public
-			Flux<FaultResponseDto>
-			retrieveMany(@RequestParam(required = false, defaultValue = "false") boolean isClosedIncluded, ServerHttpRequest req, OidcAuthentication auth) {
+	@GetMapping
+	public Flux<FaultResponseDto> retrieveMany(
+			@RequestParam(name = "isClosedIncluded", required = false, defaultValue = "false") boolean isClosedIncluded,
+			ServerHttpRequest req,
+			OidcAuthentication<OidcToken> auth) {
 		final var faults = isClosedIncluded ? faultRepo.findAll() : faultRepo.findOpened();
 		return faults.flatMap(fault -> toDto(fault, req.getURI()));
 	}
 
 	@GetMapping("/{faultId}")
-	public Mono<FaultResponseDto> retrieveById(@PathVariable("faultId") Long faultId, ServerHttpRequest req) {
+	public Mono<FaultResponseDto> retrieveById(@PathVariable(name = "faultId") Long faultId, ServerHttpRequest req) {
 		return faultRepo
 				.findById(faultId)
 				.flatMap(fault -> toDto(fault, req.getURI().resolve("..")))
@@ -87,13 +89,13 @@ public class FaultsController {
 	@PreAuthorize("hasAuthority('FAULT_EDITOR')")
 	public
 			Mono<ResponseEntity<Object>>
-			update(@PathVariable("faultId") Long faultId, @RequestBody FaultEditDto dto, ServerHttpRequest req, OidcAuthentication auth) {
+			update(@PathVariable(name = "faultId") Long faultId, @RequestBody FaultEditDto dto, ServerHttpRequest req, OidcAuthentication<OidcToken> auth) {
 		return faultRepo.findById(faultId).flatMap(fault -> {
 			fault.setDescription(dto.getDescription());
-			if (dto.isClosed() && fault.getClosedBy() == null) {
+			if (dto.getIsClosed() && fault.getClosedBy() == null) {
 				fault.setClosedAt(new Date());
 				fault.setClosedBy(auth.getName());
-			} else if (!dto.isClosed()) {
+			} else if (!dto.getIsClosed()) {
 				fault.setClosedAt(null);
 				fault.setClosedBy(null);
 			}
@@ -103,16 +105,18 @@ public class FaultsController {
 
 	@DeleteMapping("/{faultId}")
 	@PreAuthorize("hasAuthority('FAULT_EDITOR')")
-	public Mono<ResponseEntity<Void>> delete(@PathVariable("faultId") Long faultId) {
+	public Mono<ResponseEntity<Void>> delete(@PathVariable(name = "faultId") Long faultId) {
 		return attachmentRepo.deleteById(faultId).then(faultRepo.deleteById(faultId)).then(Mono.just(ResponseEntity.accepted().build()));
 	}
 
 	@Transactional
 	@PostMapping(path = "/{faultId}/attachments", consumes = { "multipart/form-data" })
 	@PreAuthorize("hasAuthority('FAULT_EDITOR')")
-	public
-			Mono<ResponseEntity<Object>>
-			createAttachment(@PathVariable("faultId") Long faultId, @RequestPart("attachment") FilePart file, ServerHttpRequest req, OidcAuthentication auth) {
+	public Mono<ResponseEntity<Object>> createAttachment(
+			@PathVariable(name = "faultId") Long faultId,
+			@RequestPart(name = "attachment") FilePart file,
+			ServerHttpRequest req,
+			OidcAuthentication<OidcToken> auth) {
 		final var fileName = file.filename();
 		if (!fileName.contains(".") || fileName.endsWith(".")) {
 			throw new NotAcceptableFileNameException(fileName);
@@ -126,7 +130,7 @@ public class FaultsController {
 	}
 
 	@GetMapping("/{faultId}/attachments/{attachmentName}")
-	public Mono<Resource> retrieveAttachmentById(@PathVariable("faultId") Long faultId, @PathVariable("attachmentName") String attachmentName) {
+	public Mono<Resource> retrieveAttachmentById(@PathVariable(name = "faultId") Long faultId, @PathVariable(name = "attachmentName") String attachmentName) {
 		final var attachmentParts = attachmentName.split("\\.");
 		if (attachmentParts.length != 2) {
 			throw new NotAcceptableFileNameException(attachmentName);
@@ -141,7 +145,9 @@ public class FaultsController {
 
 	@DeleteMapping("/{faultId}/attachments/{attachmentName}")
 	@PreAuthorize("hasAuthority('FAULT_EDITOR')")
-	public Mono<ResponseEntity<Object>> deleteAttachment(@PathVariable("faultId") Long faultId, @PathVariable("attachmentName") String attachmentName) {
+	public
+			Mono<ResponseEntity<Object>>
+			deleteAttachment(@PathVariable(name = "faultId") Long faultId, @PathVariable(name = "attachmentName") String attachmentName) {
 		final var attachmentParts = attachmentName.split("\\.");
 		if (attachmentParts.length != 2) {
 			throw new NotAcceptableFileNameException(attachmentName);

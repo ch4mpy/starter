@@ -1,4 +1,4 @@
-package com.c4_soft.starter;
+package com.c4_soft.starter.households;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

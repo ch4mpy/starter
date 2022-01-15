@@ -8,15 +8,19 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class FaultAttachment {
-    @Id
-    Long id;
+	@Id
+	Long id;
 
-    Long faultId;
+	Long faultId;
 
-    String extension;
+	String extension;
 
-    public FaultAttachment(Long faultId, String extension) {
-        this(null, faultId, extension);
-    }
+	public FaultAttachment(Long faultId, String extension) {
+		this(null, faultId, extension);
+	}
+
+	FaultAttachment() {
+		this(null, null);
+	}
 
 }

@@ -18,7 +18,6 @@ import com.c4_soft.starter.lifix.persistence.R2dbcConfig;
 
 @SpringBootApplication(
 		scanBasePackageClasses = { FaultsEndpointApplication.class, FileSystemStorageService.class, CommonExceptionHandlers.class, R2dbcConfig.class })
-
 public class FaultsEndpointApplication {
 
 	public static void main(String[] args) {
