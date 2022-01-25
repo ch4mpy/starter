@@ -118,22 +118,18 @@ Generate
 mvn clean package -Pbuild-native-image -DskipTests
 ```
 
-#### `native` => Graalvm native executable for the building platform
-Requires Graalvm & native build-tools to be installed on the machine.
-``` bash
-mvn clean package -Pnative -DskipTests
-```
-
 ### Run
 APIs are served at:
 - https://bravo-ch4mp:4201/households
 - https://bravo-ch4mp:4202/orders
 - https://bravo-ch4mp:4203/faults
+- https://bravo-ch4mp:4204/grants & https://bravo-ch4mp:4204/users
 
 #### fat-jar
 ``` bash
 java -jar webmvc/households-api/target/households-api-0.0.1-SNAPSHOT.jar &
 java -jar webmvc/orders-api/target/orders-api-0.0.1-SNAPSHOT.jar &
+java -jar webmvc/proxies-api/target/proxies-api-0.0.1-SNAPSHOT.jar &
 java -jar webflux/faults-api/target/faults-api-0.0.1-SNAPSHOT.jar &
 ```
 
@@ -144,9 +140,11 @@ Depending which DB setup you chose, you might use `elephant` instead of `$HOSTNA
 docker stop households-api
 docker stop orders-api
 docker stop faults-api
+docker stop proxies-api
 docker rm households-api
 docker rm orders-api
 docker rm faults-api
+docker rm proxies-api
 
 # start
 docker run --rm \
@@ -178,6 +176,16 @@ docker run --rm\
   -p 4203:4203 \
   --name faults-api \
   -t faults-api:0.0.1-SNAPSHOT &
+
+docker run --rm\
+  --add-host $HOSTNAME:$HOST_IP \
+  -e SPRING_DATASOURCE_PASSWORD=$SPRING_DATASOURCE_PASSWORD \
+  -e SERVER_SSL_KEY_PASSWORD=$SERVER_SSL_KEY_PASSWORD \
+  -e SERVER_SSL_KEY_STORE_PASSWORD=$SERVER_SSL_KEY_STORE_PASSWORD \
+  -e SPRING_DATASOURCE_URL=jdbc:postgresql://$HOST_IP/starter \
+  -p 4204:4204 \
+  --name proxies-api \
+  -t proxies-api:0.0.1-SNAPSHOT &
 ```
 
 #### K8s
@@ -190,17 +198,20 @@ kubectl create secret generic starter-api \
   --from-literal server.ssl.key-store.password=${SERVER_SSL_KEY_STORE_PASSWORD} \
   --from-literal spring.datasource.password=${SPRING_DATASOURCE_PASSWORD} \
   --from-literal spring.r2dbc.password=${SPRING_R2DBC_PASSWORD}
+docker tag faults-api:0.0.1-SNAPSHOT faults-api:0.0.1-SNAPSHOT
 docker tag households-api:0.0.1-SNAPSHOT households-api:0.0.1-SNAPSHOT
 docker tag orders-api:0.0.1-SNAPSHOT orders-api:0.0.1-SNAPSHOT
-docker tag faults-api:0.0.1-SNAPSHOT faults-api:0.0.1-SNAPSHOT
+docker tag proxies-api:0.0.1-SNAPSHOT proxies-api:0.0.1-SNAPSHOT
 
 # current dir should be starter/api
+kubectl apply -f webflux/faults-api/src/k8s/service.yaml
+kubectl apply -f webflux/faults-api/src/k8s/deployment.yaml
 kubectl apply -f webmvc/households-api/src/k8s/service.yaml
 kubectl apply -f webmvc/households-api/src/k8s/deployment.yaml
 kubectl apply -f webmvc/orders-api/src/k8s/service.yaml
 kubectl apply -f webmvc/orders-api/src/k8s/deployment.yaml
-kubectl apply -f webflux/faults-api/src/k8s/service.yaml
-kubectl apply -f webflux/faults-api/src/k8s/deployment.yaml
+kubectl apply -f webmvc/proxies-api/src/k8s/service.yaml
+kubectl apply -f webmvc/proxies-api/src/k8s/deployment.yaml
 ```
 
 ## Building and running Angular UI

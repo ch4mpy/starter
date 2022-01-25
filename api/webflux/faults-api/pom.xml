@@ -117,66 +117,12 @@
 
 	<profiles>
 		<profile>
-			<id>build-image</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.springframework.boot</groupId>
-						<artifactId>spring-boot-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>build-image</id>
-								<goals>
-									<goal>build-image</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
 			<id>build-native-image</id>
-			<properties>
-				<image.builder>paketobuildpacks/builder:tiny</image.builder>
-			</properties>
 			<build>
 				<plugins>
-					<plugin>
-						<groupId>org.springframework.boot</groupId>
-						<artifactId>spring-boot-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>build-image</id>
-								<goals>
-									<goal>build-image</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
 					<plugin>
 						<groupId>org.springframework.experimental</groupId>
 						<artifactId>spring-aot-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>generate</id>
-								<goals>
-									<goal>generate</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.hibernate.orm.tooling</groupId>
-						<artifactId>hibernate-enhance-maven-plugin</artifactId>
-						<version>${hibernate-enhance-maven-plugin.version}</version>
-						<executions>
-							<execution>
-								<goals>
-									<goal>enhance</goal>
-								</goals>
-							</execution>
-						</executions>
 					</plugin>
 				</plugins>
 			</build>
@@ -195,6 +141,10 @@
 				<dependency>
 					<groupId>org.springdoc</groupId>
 					<artifactId>springdoc-openapi-security</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.springdoc</groupId>
+					<artifactId>springdoc-openapi-native</artifactId>
 				</dependency>
 			</dependencies>
 			<build>

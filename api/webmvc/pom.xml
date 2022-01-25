@@ -20,6 +20,9 @@
 
 		<module>households-api</module>
 		<module>orders-api</module>
+		<module>proxies-api</module>
+		<module>proxies-dtos</module>
+		<module>proxies-keycloak-mapper</module>
 	</modules>
 
 	<dependencyManagement>
@@ -27,22 +30,27 @@
 			<dependency>
 				<groupId>com.c4-soft</groupId>
 				<artifactId>common-exception-webmvc</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.c4-soft</groupId>
 				<artifactId>common-security-webmvc</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.c4-soft.starter</groupId>
 				<artifactId>domain-cafeskifo</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.c4-soft.starter</groupId>
 				<artifactId>domain-trashbins</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.c4-soft.starter</groupId>
+				<artifactId>proxies-dtos</artifactId>
+				<version>${project.version}</version>
 			</dependency>
 
 			<dependency>
@@ -52,22 +60,5 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
-	<profiles>
-		<profile>
-			<id>openapi</id>
-			<build>
-				<pluginManagement>
-					<plugins>
-						<plugin>
-							<groupId>org.springdoc</groupId>
-							<artifactId>springdoc-openapi-maven-plugin</artifactId>
-							<version>${springdoc-openapi-maven-plugin.version}</version>
-						</plugin>
-					</plugins>
-				</pluginManagement>
-			</build>
-		</profile>
-	</profiles>
 
 </project>

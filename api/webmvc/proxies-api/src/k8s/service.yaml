@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: proxies-api
+  name: proxies-api
+spec:
+  ports:
+  - name: 4204-4204
+    port: 4204
+    protocol: TCP
+    targetPort: 4204
+  selector:
+    app: proxies-api
+  type: LoadBalancer
+status:
+  loadBalancer: {}
