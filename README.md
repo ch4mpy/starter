@@ -204,6 +204,7 @@ docker tag orders-api:0.0.1-SNAPSHOT orders-api:0.0.1-SNAPSHOT
 docker tag proxies-api:0.0.1-SNAPSHOT proxies-api:0.0.1-SNAPSHOT
 
 # current dir should be starter/api
+kubectl proxy &
 kubectl apply -f webflux/faults-api/src/k8s/service.yaml
 kubectl apply -f webflux/faults-api/src/k8s/deployment.yaml
 kubectl apply -f webmvc/households-api/src/k8s/service.yaml

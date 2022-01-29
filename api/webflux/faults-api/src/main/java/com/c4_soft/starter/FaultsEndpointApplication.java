@@ -1,5 +1,6 @@
 package com.c4_soft.starter;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -30,8 +31,9 @@ public class FaultsEndpointApplication {
 	public static class WebSecurityConfig extends OidcReactiveApiSecurityConfig {
 		public WebSecurityConfig(
 				ReactiveJwt2AuthenticationConverter<? extends AbstractAuthenticationToken> authenticationConverter,
-				SpringAddonsSecurityProperties securityProperties) {
-			super(authenticationConverter, securityProperties);
+				SpringAddonsSecurityProperties securityProperties,
+				@Value("${server.ssl.enabled:false}") boolean isSslEnabled) {
+			super(authenticationConverter, securityProperties, isSslEnabled);
 		}
 	}
 }

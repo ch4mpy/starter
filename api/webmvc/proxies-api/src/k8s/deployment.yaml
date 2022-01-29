@@ -45,12 +45,12 @@ spec:
                 key: server.ssl.key-store.password
         readinessProbe:
           httpGet:
-            scheme: HTTPS
+            scheme: HTTP
             path: /actuator/health/readiness
             port: 4204
         livenessProbe:
           httpGet:
-            scheme: HTTPS
+            scheme: HTTP
             path: /actuator/health/liveness
             port: 4204
         lifecycle:

@@ -1,5 +1,6 @@
 package com.c4_soft.starter.proxies.security;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -15,7 +16,8 @@ import com.c4_soft.springaddons.security.oauth2.config.SpringAddonsSecurityPrope
 public class WebSecurityConfig extends OidcServletApiSecurityConfig {
 	public WebSecurityConfig(
 			SynchronizedJwt2AuthenticationConverter<? extends AbstractAuthenticationToken> authenticationConverter,
-			SpringAddonsSecurityProperties securityProperties) {
-		super(authenticationConverter, securityProperties);
+			SpringAddonsSecurityProperties securityProperties,
+			@Value("${server.ssl.enabled:false}") boolean isSslEnabled) {
+		super(authenticationConverter, securityProperties, isSslEnabled);
 	}
 }

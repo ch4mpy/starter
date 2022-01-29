@@ -10,9 +10,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import com.c4_soft.commons.web.CommonResponseEntityExceptionHandler;
 import com.c4_soft.starter.proxies.domain.User;
 import com.c4_soft.starter.proxies.jpa.UserRepository;
-import com.c4_soft.starter.proxies.web.GrantsController;
 
-@SpringBootApplication(scanBasePackageClasses = { ProxiesApiApplication.class, GrantsController.class, CommonResponseEntityExceptionHandler.class })
+@SpringBootApplication(scanBasePackageClasses = { ProxiesApiApplication.class, CommonResponseEntityExceptionHandler.class })
 @EnableJpaRepositories(basePackageClasses = { UserRepository.class })
 @EntityScan(basePackageClasses = { User.class })
 @EnableTransactionManagement
