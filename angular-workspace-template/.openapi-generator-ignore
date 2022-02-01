@@ -1,0 +1,5 @@
+.openapi-generator-ignore
+.gitignore
+git_push.sh
+README.md
+tsconfig.json
