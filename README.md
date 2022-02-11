@@ -74,6 +74,8 @@ If you have several JDKs installed, you should run `self_signed.sh` for each and
   - on Fedora 34 `sudo cp ~/.ssh/${HOSTNAME}_self_signed.pem /etc/pki/ca-trust/source/anchors/ && sudo update-ca-trust && certutil -d sql:$HOME/.pki/nssdb -n ${HOSTNAME} -A -t "TCu,TCu,TCu" -i ~/.ssh/${HOSTNAME}_self_signed.pem`
 - define `SERVER_SSL_KEY_STORE` environement variable to something like `file:///C:/Users/ch4mp/.ssh/bravo-ch4mp_self_signed.jks` or `file:///home/ch4mp/.ssh/bravo-ch4mp_self_signed.jks`
 
+You might refer to this [answer I posted on stackoverflow](https://stackoverflow.com/questions/63874373/how-to-properly-setup-my-ionic-angular-dev-machine-with-self-signed-certificat/63874376#63874376) for details about configuring Angular / Ionic app with SSL certificates.
+
 ## Building and running REST API
 APIs are served at https://localhost:4201/households (servlet), https://localhost:4202/orders (servlet) and https://localhost:4203/faults (reactive)
 All requests must be issued with authentication.

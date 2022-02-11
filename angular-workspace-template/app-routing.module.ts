@@ -8,13 +8,17 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'settings',
-    loadChildren: () => import('./settings/settings.module').then( m => m.SettingsPageModule)
+    path: 'account',
+    loadChildren: () => import('./user-account/user-account.module').then( m => m.UserAccountModule)
   },
   {
-    path: 'account',
-    loadChildren: () => import('./user-account/user-account.module').then( m => m.UserAccountPageModule)
-  }
+    path: 'settings',
+    loadChildren: () => import('./settings/settings.module').then( m => m.SettingsModule)
+  },
+  {
+    path: '**',
+    redirectTo: 'settings',
+  },
 ];
 
 @NgModule({
