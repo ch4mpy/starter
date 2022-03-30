@@ -11,9 +11,6 @@ cd WORKSPACE_NAME
 ###################################################
 ng g application --inline-style --inline-template --routing --style=scss APP_NAME
 
-# add Material for Angular
-ng add @angular/material
-
 # add OIDC client lib
 npm i angular-oauth2-oidc
 
@@ -117,6 +114,10 @@ sed -i '/"watch":/d' package.json
 ##################################################################################################
 # Replace Angular minimal app with an Ionic app composed of a menu in a split-pane and two pages #
 ##################################################################################################
+
+# add Material for Angular
+ng add @angular/material
+
 cd projects/APP_NAME/src/app
 cp ../../../../../angular-workspace-template/user.service.ts user.service.ts
 
